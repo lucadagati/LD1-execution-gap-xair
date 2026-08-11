@@ -1,0 +1,19 @@
+# XAIR Runtime configuration (v0.1)
+defaults:
+  freshness_window_ms: 500
+  deadline_ms: 800
+  xr_priority: 10
+  ai_priority: 5
+
+server:
+  xair_host: "0.0.0.0"
+  xair_port: 8080
+  adapter_http_port: 9092
+  adapter_ws_port: 9091
+  rosbridge_port: 9090
+
+redis:
+  url: "redis://127.0.0.1:6379/0"
+  enabled: false
+
+conflict_policy: "priority_then_xr"

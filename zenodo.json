@@ -1,0 +1,13 @@
+{
+  "title": "XAIR Runtime v0.1.0-alpha — Execution Layer for AI/XR Industrial CPS",
+  "description": "Reference implementation of XAIR with symmetric HTTP evaluation (E1b stale RESUME, E3 conflict, E4 load). Includes AdaptiX-Quest Unity client scripts. Evaluation: paper_metrics_summary.json in experiments/results/.",
+  "upload_type": "software",
+  "publication_date": "2026-08-05",
+  "version": "v0.1.0-alpha",
+  "creators": [
+    {"name": "D'Agati, Luca", "affiliation": "University of Messina", "orcid": ""}
+  ],
+  "keywords": ["cyber-physical systems", "execution layer", "human-robot collaboration", "Industry 4.0"],
+  "license": "Apache-2.0",
+  "notes": "Mint DOI: create GitHub release v0.1.0-alpha, upload bundle, replace 10.5281/zenodo.TBD in paper appendix."
+}

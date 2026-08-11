@@ -1,0 +1,10 @@
+{
+  "motion_count": 5,
+  "last_joints": {
+    "arm_slide_joint": 0.4998514105211632,
+    "conveyor_joint": 6.279995705796509
+  },
+  "source": "gazebo",
+  "ros": true,
+  "arm_position": 0.4998514105211632
+}

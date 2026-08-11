@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xair-runtime"
+version = "0.1.0a1"
+description = "XAIR execution-time validation runtime for industrial CPS"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "fastapi>=0.110.0",
+  "uvicorn[standard]>=0.27.0",
+  "pydantic>=2.0.0",
+  "jsonschema>=4.21.0",
+  "redis>=5.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "httpx>=0.27.0",
+  "matplotlib>=3.8.0",
+  "asyncua>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["xair*"]

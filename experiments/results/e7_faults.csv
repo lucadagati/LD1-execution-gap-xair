@@ -1,0 +1,4 @@
+fault,outcome,outcome1,outcome2,pass,ros_published
+duplicate_id,,EXECUTE,EXECUTE,True,
+clock_skew_future,EXECUTE,,,True,
+stale_context,REVOKE,,,True,False

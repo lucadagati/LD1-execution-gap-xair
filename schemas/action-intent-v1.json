@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xair.dev/schemas/action-intent-v1.json",
+  "title": "Action Intent Schema (AIS v1)",
+  "description": "XAIR Action Intent: first-class action entity with temporal validity, context, and execution semantics.",
+  "type": "object",
+  "required": [
+    "id",
+    "source",
+    "timestamp_decision",
+    "freshness_window_ms",
+    "payload"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique intent identifier"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["cv", "ai", "xr", "human", "composite"],
+      "description": "Intent producer"
+    },
+    "timestamp_decision": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO8601 instant when the intent was produced"
+    },
+    "freshness_window_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Duration (ms) for which the intent remains temporally valid"
+    },
+    "deadline_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Latest allowed actuation time relative to timestamp_decision (optional)"
+    },
+    "preconditions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/predicate" },
+      "default": []
+    },
+    "safety_constraints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/predicate" },
+      "default": []
+    },
+    "payload": { "$ref": "#/$defs/action_descriptor" },
+    "priority": {
+      "type": "integer",
+      "default": 0,
+      "description": "Higher values indicate higher scheduling priority"
+    },
+    "revocable": {
+      "type": "boolean",
+      "default": true
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Optional ID for multi-agent coordination"
+    }
+  },
+  "$defs": {
+    "predicate": {
+      "type": "object",
+      "required": ["expr"],
+      "properties": {
+        "expr": {
+          "type": "string",
+          "description": "Simple expression over environment state, e.g. robot.state == IDLE"
+        }
+      }
+    },
+    "action_descriptor": {
+      "type": "object",
+      "required": ["action_type", "target_entity"],
+      "properties": {
+        "action_type": { "type": "string" },
+        "target_entity": { "type": "string" },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "degradation_policy": {
+          "type": "string",
+          "enum": ["none", "reduce_speed", "partial_pose", "hold_position"],
+          "default": "none"
+        }
+      }
+    }
+  }
+}

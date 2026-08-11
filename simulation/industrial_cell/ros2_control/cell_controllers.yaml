@@ -1,0 +1,17 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    cell_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+cell_position_controller:
+  ros__parameters:
+    joints:
+      - arm_slide_joint
+      - conveyor_joint
+      - gripper_joint
+    interface_name: position

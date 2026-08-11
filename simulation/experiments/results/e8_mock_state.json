@@ -1,0 +1,9 @@
+{
+  "line": {
+    "state": "RUN"
+  },
+  "gripper": {
+    "state": "OPEN"
+  },
+  "motion_count": 10
+}

@@ -1,0 +1,22 @@
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "source": "ai",
+  "timestamp_decision": "2026-08-04T14:30:00.100Z",
+  "freshness_window_ms": 500,
+  "deadline_ms": 800,
+  "preconditions": [
+    {"expr": "line.state != 'PAUSED'"},
+    {"expr": "robot.speed < 0.1"}
+  ],
+  "safety_constraints": [
+    {"expr": "human_proximity_m > 0.5"}
+  ],
+  "payload": {
+    "action_type": "STOP_ROBOT",
+    "target_entity": "robot_3",
+    "parameters": {"reason": "defect_detected"},
+    "degradation_policy": "none"
+  },
+  "priority": 10,
+  "revocable": true
+}

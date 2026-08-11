@@ -1,0 +1,37 @@
+{
+  "direct": {
+    "attempted": 100,
+    "unknown_rate": 0.0,
+    "SER": 1.0,
+    "POA": 0.0,
+    "vl_p99_ms": 0
+  },
+  "naive": {
+    "attempted": 100,
+    "unknown_rate": 0.0,
+    "SER": 1.0,
+    "POA": 0.0,
+    "vl_p99_ms": 0
+  },
+  "local": {
+    "attempted": 100,
+    "unknown_rate": 0.0,
+    "SER": 0.0,
+    "POA": 1.0,
+    "vl_p99_ms": 3.696481930091977
+  },
+  "local_stale": {
+    "attempted": 100,
+    "unknown_rate": 0.0,
+    "SER": 0.0,
+    "POA": 1.0,
+    "vl_p99_ms": 0.060613034293055534
+  },
+  "xair": {
+    "attempted": 100,
+    "unknown_rate": 0.0,
+    "SER": 0.0,
+    "POA": 1.0,
+    "vl_p99_ms": 0.06792694330215454
+  }
+}
