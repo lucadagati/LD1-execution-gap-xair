@@ -9,21 +9,23 @@ REPO_URL="${REPO_URL:-$REPO_ROOT}"
 
 echo "=== XAIR clean-clone audit ==="
 rm -rf "$AUDIT_DIR"
-if [ -d "$REPO_URL/.git" ] && [ "$REPO_URL" = "$REPO_ROOT" ]; then
-  git clone "$REPO_ROOT" "$AUDIT_DIR"
-elif [[ "${REPO_URL:-}" == https://* ]] || [[ "${REPO_URL:-}" == git@* ]]; then
+if [[ "${REPO_URL:-}" == https://* ]] || [[ "${REPO_URL:-}" == git@* ]]; then
+  git clone "$REPO_URL" "$AUDIT_DIR"
+elif [ -d "$REPO_URL/.git" ]; then
   git clone "$REPO_URL" "$AUDIT_DIR"
 else
   rsync -a --exclude '.venv' --exclude '.git' --exclude '__pycache__' "$REPO_ROOT/" "$AUDIT_DIR/"
 fi
 
-cd "$AUDIT_DIR"
 XAIR="$AUDIT_DIR"
 SCRIPTS="$AUDIT_DIR/scripts"
 
-"$SCRIPTS/start_full_stack.sh"
 python3 -m venv "$XAIR/.venv"
 "$XAIR/.venv/bin/pip" install -e "$XAIR[dev]" -q
+
+export XAIR_URL="${XAIR_URL:-http://127.0.0.1:8080}"
+export XAIR_ADAPTER_WEBSOCKET=0
+"$SCRIPTS/start_full_stack.sh"
 
 PY="$XAIR/.venv/bin/python"
 $PY "$XAIR/experiments/run_e0_lifecycle.py" | grep -q '"passed": 7'

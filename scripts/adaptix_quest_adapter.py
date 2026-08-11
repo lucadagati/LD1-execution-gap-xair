@@ -16,7 +16,10 @@ from urllib.parse import parse_qs, urlparse
 
 _SCRIPTS = Path(__file__).resolve().parent
 sys.path.insert(0, str(_SCRIPTS))
-sys.path.insert(0, str(_SCRIPTS.parent / "XAIR_Runtime"))
+if (_SCRIPTS.parent / "xair").is_dir():
+    sys.path.insert(0, str(_SCRIPTS.parent))
+elif (_SCRIPTS.parent / "XAIR_Runtime" / "xair").is_dir():
+    sys.path.insert(0, str(_SCRIPTS.parent / "XAIR_Runtime"))
 
 from xair_http_client import XAIRHttpClient
 from xair.core.deep_merge import deep_merge
@@ -600,8 +603,11 @@ if __name__ == "__main__":
     ws_port = int(sys.argv[1]) if len(sys.argv) > 1 else 9091
     http_port = int(sys.argv[2]) if len(sys.argv) > 2 else 9092
 
-    if websockets:
+    enable_ws = os.environ.get("XAIR_ADAPTER_WEBSOCKET", "").lower() in ("1", "true", "yes")
+    if websockets and enable_ws:
         threading.Thread(target=run_http_server, args=(http_port,), daemon=True).start()
         run_websocket_server(ws_port)
     else:
+        if enable_ws and not websockets:
+            print("[WARN] websockets package missing; HTTP-only adapter")
         run_http_server(http_port)
