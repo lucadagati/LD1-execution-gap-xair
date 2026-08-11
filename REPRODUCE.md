@@ -22,6 +22,14 @@ python3 -m venv .venv
 ./scripts/verify_e2e.sh
 ```
 
+```mermaid
+flowchart LR
+    R["Redis optional"] --> X["XAIR :8080"]
+    X --> A["HTTP adapter :9092"]
+    A --> ROS["ROS witness optional"]
+    CLI["Experiment drivers"] -->|"POST /intent"| A
+```
+
 Starts Redis (if Docker available), XAIR on `:8080`, HTTP adapter on `:9092`, and ROS audit subscriber when ROS 2 is sourced.
 
 ## Full paper campaign

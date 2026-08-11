@@ -18,6 +18,30 @@ XAIR implements a **publication-boundary gate** that:
 
 XAIR does **not** replace safety-rated PLCs or formal runtime enforcers. It governs **semantic admissibility** of discrete, schema-valid intents from heterogeneous producers before they reach ROS 2, OPC UA, or similar transports.
 
+### Execution gap (timeline)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant P as Producer
+    participant X as XAIR
+    participant A as Adapter
+    participant M as Middleware / ROS
+
+    Note over P: decide intent at t_d
+    P->>A: submit AIS JSON
+    A->>X: forward for validation at t_v
+    X->>X: check freshness, preconditions, constraints
+    X-->>A: EXECUTE / REVOKE / DELAY / DEGRADE
+    Note over A: residual window Δ_p = t_p − t_v
+    A->>A: optimistic recheck context version v → v′
+    alt v′ = v and still EXECUTE
+        A->>M: publish at t_p
+    else context changed during Δ_p
+        A-->>P: REVOKE (stale publication blocked)
+    end
+```
+
 ---
 
 ## What is in this repository?
@@ -35,25 +59,138 @@ XAIR does **not** replace safety-rated PLCs or formal runtime enforcers. It gove
 | **Simulation** | `simulation/` | Gazebo industrial cell (E8), OPC UA HIL context writer (E15) |
 | **CI** | `.github/workflows/ci.yml` | Pytest, quick integration runs, clean-clone audit |
 
+### AIS schema (`schemas/action-intent-v1.json`)
+
+```mermaid
+classDiagram
+    class ActionIntent {
+        +UUID id
+        +string source
+        +datetime timestamp_decision
+        +int freshness_window_ms
+        +int deadline_ms
+        +Predicate[] preconditions
+        +Predicate[] safety_constraints
+        +ActionDescriptor payload
+        +int priority
+        +bool revocable
+        +UUID correlation_id
+    }
+    class Predicate {
+        +string expr
+    }
+    class ActionDescriptor {
+        +string action_type
+        +string target_entity
+        +object parameters
+        +string degradation_policy
+    }
+    ActionIntent --> Predicate : preconditions
+    ActionIntent --> Predicate : safety_constraints
+    ActionIntent --> ActionDescriptor : payload
+```
+
+Sources: `cv` · `ai` · `xr` · `human` · `composite` — see [`examples/`](examples/) for sample payloads.
+
+### Intent lifecycle (audit FSM)
+
+```mermaid
+stateDiagram-v2
+    [*] --> CREATED
+    CREATED --> VALIDATING
+    VALIDATING --> EXECUTED : EXECUTE
+    VALIDATING --> DELAYED : DELAY
+    VALIDATING --> DEGRADED : DEGRADE
+    VALIDATING --> REVOKED : REVOKE
+    VALIDATING --> EXPIRED : deadline / freshness
+    DELAYED --> VALIDATING : re-queue
+    DEGRADED --> VALIDATING : re-queue same id
+    EXECUTED --> [*]
+    REVOKED --> [*]
+    EXPIRED --> [*]
+```
+
 ---
 
 ## Architecture (high level)
 
+```mermaid
+flowchart TB
+    subgraph producers["Intent producers"]
+        XR["XR / Unity client"]
+        SIM["Experiment drivers"]
+        HTTP["HTTP clients"]
+    end
+
+    subgraph adapter["HTTP adapter :9092"]
+        MODE["mode query param<br/>direct | naive | local | xair | …"]
+        RECHECK["optimistic recheck<br/>context version at t_p"]
+    end
+
+    subgraph xair["XAIR edge service :8080"]
+        IR["IntentReceiver"]
+        TV["TemporalValidator"]
+        CV["ContextValidator"]
+        DE["DecisionEngine"]
+        LT["LifecycleTracker"]
+        IR --> TV --> CV --> DE --> LT
+    end
+
+    subgraph store["Context store"]
+        SNAP[("versioned snapshot<br/>Redis or in-memory")]
+    end
+
+    subgraph plant["Plant / middleware"]
+        ROS["ROS 2 topics"]
+        OPC["OPC UA (E15)"]
+    end
+
+    producers -->|"POST /intent"| adapter
+    adapter -->|"POST /v1/intents"| IR
+    CV <-->|"read v"| SNAP
+    adapter -->|"POST /v1/context/snapshot"| SNAP
+    DE -->|"outcome + audit"| adapter
+    RECHECK --> ROS
+    RECHECK --> OPC
+    MODE -.->|"policy class"| adapter
 ```
- Producers                    XAIR edge service                 Actuator adapter
- (HTTP clients,              ┌─────────────────────┐           (ROS 2 / mock)
-  Unity, simulators)         │  IntentReceiver     │
-       │                     │  TemporalValidator  │
-       │  POST AIS JSON      │  ContextValidator   │  EXECUTE  │
-       └────────────────────►│  DecisionEngine     ├──────────►│ publish + recheck v at t_p
-                               │  LifecycleTracker   │           │
-                               └──────────┬──────────┘           ▼
-                                          │                  middleware / ROS topics
-                               versioned context snapshot
-                               (Redis or in-memory)
+
+### Internal validation pipeline
+
+```mermaid
+flowchart LR
+    IN["AIS envelope"] --> SCH["JSON Schema"]
+    SCH --> TMP["Temporal check<br/>freshness / deadline / skew"]
+    TMP --> CTX["Context predicates<br/>preconditions + constraints"]
+    CTX --> DEC{"Decision at t_v"}
+    DEC -->|admissible| EX["EXECUTE"]
+    DEC -->|busy target| DL["DELAY"]
+    DEC -->|policy| DG["DEGRADE"]
+    DEC -->|invalid| RV["REVOKE"]
+    EX --> PUB["Publication gate at t_p"]
+    PUB -->|v′ ≠ v| RV2["REVOKE stale"]
+    PUB -->|v′ = v| OK["Middleware publish"]
 ```
 
 **Adapter modes** (evaluated symmetrically over the same HTTP path):
+
+```mermaid
+flowchart TB
+    subgraph ladder["Consistency-class ladder (E9)"]
+        D["direct — no guard"]
+        N["naive — freshness only"]
+        L["local — eager sync"]
+        LS["local_stale — silent remote writers"]
+        LP["local_push — parameterized invalidation"]
+        LA["local_authoritative — read-through"]
+        X["xair — centralized snapshot + recheck"]
+        D --> N --> L
+        L --> LS
+        L --> LP
+        L --> LA
+        LA --> X
+    end
+```
 
 | Mode | Behavior |
 |------|----------|
@@ -63,7 +200,7 @@ XAIR does **not** replace safety-rated PLCs or formal runtime enforcers. It gove
 | `local_stale` | Local cache without refresh (negative control) |
 | `local_push` | Push-notified cache invalidation (parameterized) |
 | `local_authoritative` | Read-through to authoritative snapshot |
-| `xair` | Centralized validation + optimistic recheck at \(t_p\) |
+| `xair` | Centralized validation + optimistic recheck at t_p |
 
 ---
 
@@ -151,6 +288,25 @@ The repository includes the result traces used to produce the paper tables and f
 - **Latency**: internal validation (XAIR hot path) vs end-to-end (HTTP ingress through adapter publication)
 
 Ground truth is declared per suite (drift schedule, injection protocol, or explicit pass criteria) — not inferred post hoc from logs.
+
+```mermaid
+flowchart LR
+    subgraph inputs["Experiment inputs"]
+        AIS["Fixed AIS payloads"]
+        DRIFT["Declared drift protocol"]
+        POL["Adapter policy class"]
+    end
+    subgraph observe["Observation boundary"]
+        PUB["Publication decision"]
+        ROS["ROS delivery witness E8"]
+    end
+    subgraph metrics["Reported metrics"]
+        SER["SER stale execution rate"]
+        CRR["CRR correct revocations"]
+        LAT["Latency p50 / p99"]
+    end
+    inputs --> observe --> metrics
+```
 
 ---
 
