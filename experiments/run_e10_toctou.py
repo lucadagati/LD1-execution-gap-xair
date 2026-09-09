@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""E10: TOCTOU window measurement with controlled injection in [t_v, t_p]."""
+"""E10: TOCTOU window measurement with controlled injection in [t_v, t_p].
+
+Uses the adapter's native `inject_pause_after_validation_ms` / `publish_delay_ms`
+query parameters so injection timing is measured server-side relative to the
+adapter's own t_validate_end, rather than approximated by a client-side sleep.
+"""
 
 from __future__ import annotations
 
@@ -8,8 +13,6 @@ import csv
 import json
 import math
 import random
-import threading
-import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -17,10 +20,9 @@ from urllib.parse import urlencode
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = "http://127.0.0.1:9092"
-XAIR = "http://127.0.0.1:8080"
 RESULTS = ROOT / "experiments" / "results" / "e10_toctou.csv"
 
-PUBLISH_DELAY_MS = 3.0
+DEFAULT_OFFSETS_MS = (0, 1, 3, 10, 30)
 
 
 def _post(url: str, body: dict | None = None) -> dict:
@@ -34,7 +36,7 @@ def _post(url: str, body: dict | None = None) -> dict:
 
 
 def post_intent(body: dict, **query) -> dict:
-    qs = urlencode({k: str(v) for k, v in query.items()})
+    qs = urlencode({k: str(v) for k, v in query.items() if v is not None})
     return _post(f"{ADAPTER}/intent?{qs}", body)
 
 
@@ -59,65 +61,79 @@ def build_intent() -> dict:
     }
 
 
-def inject_paused(delay_s: float) -> None:
-    time.sleep(max(0.0, delay_s))
-    _post(f"{XAIR}/v1/context/snapshot", {"line": {"state": "PAUSED"}, "gripper": {"state": "CLOSED"}})
-
-
-def run_trial(inject_offset_ms: float, run_idx: int, do_inject: bool) -> dict:
+def run_trial(offset_ms: float, publish_delay_ms: float, run_idx: int, do_inject: bool) -> dict:
     init = {"line": {"state": "RUN"}, "gripper": {"state": "OPEN"}}
     _post(f"{ADAPTER}/context", init)
-    _post(f"{XAIR}/v1/context/snapshot", init)
-    time.sleep(0.02)
 
     intent = build_intent()
-    injector = None
+    resp = post_intent(
+        intent,
+        mode="xair",
+        publish_delay_ms=publish_delay_ms,
+        inject_pause_after_validation_ms=offset_ms if do_inject else None,
+    )
+
+    t_validate_end = resp.get("t_validate_end_ms")
+    t_injection_start = resp.get("t_injection_start_ms")
+    t_injection_end = resp.get("t_injection_end_ms")
+    t_recheck_end = resp.get("t_recheck_end_ms")
+
+    timing_valid = None
     if do_inject:
-        # Inject during widened publish window: validate_end + offset
-        inject_at = (PUBLISH_DELAY_MS / 1000.0) * 0.5 + inject_offset_ms / 1000.0
-        injector = threading.Thread(target=inject_paused, args=(inject_at,), daemon=True)
-        injector.start()
+        timing_valid = (
+            t_validate_end is not None
+            and t_injection_start is not None
+            and t_injection_end is not None
+            and t_recheck_end is not None
+            and t_validate_end < t_injection_start <= t_injection_end < t_recheck_end
+        )
 
-    resp = post_intent(intent, mode="xair", publish_delay_ms=PUBLISH_DELAY_MS)
-    if injector:
-        injector.join(timeout=2.0)
-
-    window = float(resp.get("toctou_window_ms") or 0)
-    recheck_pub = float(resp.get("recheck_to_publish_ms") or 0)
     blocked = 1 if resp.get("reason") == "context_version_changed_at_publish" else 0
     authorized = 1 if resp.get("outcome") == "EXECUTE" else 0
-    # Stale publication only when an injected drift still authorized EXECUTE.
     stale = 1 if do_inject and authorized else 0
+
     return {
         "run": run_idx,
         "inject": int(do_inject),
-        "inject_offset_ms": inject_offset_ms,
-        "publish_delay_ms": PUBLISH_DELAY_MS,
-        "toctou_window_ms": window,
-        "recheck_to_publish_ms": recheck_pub,
-        "t_validate_end_ms": resp.get("t_validate_end_ms", 0),
-        "t_recheck_start_ms": resp.get("t_recheck_start_ms", 0),
-        "t_recheck_end_ms": resp.get("t_recheck_end_ms", 0),
-        "t_publish_end_ms": resp.get("t_publish_end_ms", 0),
+        "inject_offset_ms": offset_ms if do_inject else 0,
+        "publish_delay_ms": publish_delay_ms,
+        "timing_valid": int(timing_valid) if timing_valid is not None else "",
+        "validation_to_gate_ms": resp.get("validation_to_gate_ms"),
+        "validation_to_publish_ms": resp.get("validation_to_publish_ms"),
+        "recheck_to_publish_ms": resp.get("recheck_to_publish_ms"),
+        "t_validate_end_ms": t_validate_end,
+        "t_injection_start_ms": t_injection_start,
+        "t_injection_end_ms": t_injection_end,
+        "t_recheck_end_ms": t_recheck_end,
         "toctou_blocked": blocked,
         "authorized_publish": authorized,
         "stale_publish": stale,
         "outcome": resp.get("outcome"),
+        "reason": resp.get("reason"),
     }
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--runs", type=int, default=50)
+    parser.add_argument("--runs-per-delay", type=int, default=40, help="Trials per offset cell (mix of injected + control)")
+    parser.add_argument("--offsets-ms", type=float, nargs="+", default=list(DEFAULT_OFFSETS_MS))
+    parser.add_argument("--publish-delay-ms", type=float, default=50.0)
+    parser.add_argument("--inject-fraction", type=float, default=0.75, help="Fraction of each cell's trials that are injected (rest are non-injected controls)")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
     rng = random.Random(args.seed)
 
+    n_inject = round(args.runs_per_delay * args.inject_fraction)
+    n_control = args.runs_per_delay - n_inject
+
     rows = []
-    for i in range(args.runs):
-        do_inject = rng.random() < 0.7
-        offset = rng.uniform(0.2, PUBLISH_DELAY_MS * 0.95) if do_inject else 0.0
-        rows.append(run_trial(offset, i, do_inject))
+    run_idx = 0
+    for offset in args.offsets_ms:
+        plan = [True] * n_inject + [False] * n_control
+        rng.shuffle(plan)
+        for do_inject in plan:
+            rows.append(run_trial(offset, args.publish_delay_ms, run_idx, do_inject))
+            run_idx += 1
 
     RESULTS.parent.mkdir(parents=True, exist_ok=True)
     with RESULTS.open("w", newline="") as f:
@@ -126,19 +142,35 @@ def main() -> int:
         w.writerows(rows)
 
     inj = [r for r in rows if r["inject"]]
+    ctrl = [r for r in rows if not r["inject"]]
+    timing_valid_rows = [r for r in inj if r["timing_valid"] == 1]
     blocked = sum(r["toctou_blocked"] for r in inj)
     stale = sum(r["stale_publish"] for r in inj)
+    ctrl_released = sum(r["authorized_publish"] for r in ctrl)
     n = len(inj)
-    lo, hi = wilson_ci(blocked, n) if n else (0.0, 0.0)
-    windows = sorted(float(r["toctou_window_ms"]) for r in rows)
+    lo, hi = wilson_ci(stale, n) if n else (0.0, 0.0)
+
+    def pct(vals, q):
+        s = sorted(v for v in vals if v is not None)
+        if not s:
+            return 0.0
+        idx = min(len(s) - 1, max(0, int(len(s) * q) - (1 if q >= 1 else 0)))
+        return s[idx]
+
+    gate_lat = [r["validation_to_gate_ms"] for r in rows if r["validation_to_gate_ms"] is not None]
+    pub_lat = [r["validation_to_publish_ms"] for r in rows if r["validation_to_publish_ms"] is not None]
+
     print(json.dumps({
         "runs": len(rows),
         "injected_runs": n,
+        "control_runs": len(ctrl),
+        "timing_valid_injections": len(timing_valid_rows),
         "toctou_blocked": blocked,
         "stale_publish": stale,
-        "blocked_ci95": [lo, hi],
-        "window_p50_ms": windows[len(windows) // 2] if windows else 0,
-        "window_p99_ms": windows[int(len(windows) * 0.99) - 1] if windows else 0,
+        "stale_publish_ci95": [lo, hi],
+        "control_released": ctrl_released,
+        "validation_to_gate_p50_p95_p99_ms": [pct(gate_lat, 0.5), pct(gate_lat, 0.95), pct(gate_lat, 0.99)],
+        "validation_to_release_p50_p95_p99_ms": [pct(pub_lat, 0.5), pct(pub_lat, 0.95), pct(pub_lat, 0.99)],
         "out": str(RESULTS),
     }, indent=2))
     return 0

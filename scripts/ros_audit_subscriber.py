@@ -16,14 +16,15 @@ import tempfile
 import time
 from pathlib import Path
 
+_SCRIPTS = Path(__file__).resolve().parent
+_XAIR_ROOT = _SCRIPTS.parent / "xair_runtime"
+if not _XAIR_ROOT.is_dir():
+    _XAIR_ROOT = _SCRIPTS.parent / "XAIR_Runtime"
+
 AUDIT_FILE = Path(
     os.environ.get(
         "ROS_AUDIT_FILE",
-        Path(__file__).resolve().parents[1]
-        / "XAIR_Runtime"
-        / "experiments"
-        / "results"
-        / "ros_audit_state.json",
+        _XAIR_ROOT / "experiments" / "results" / "ros_audit_state.json",
     )
 )
 
@@ -50,19 +51,26 @@ def main() -> int:
     rclpy.init()
     node = rclpy.create_node("xair_ros_audit_witness")
 
-    state = {"pose_count": 0, "gripper_count": 0, "last_pose_ts": None, "started_at": time.time()}
+    state = {"pose_count": 0, "gripper_count": 0, "last_pose_ts": None, "started_at": time.time(), "alive_at": time.time()}
+
+    def touch_alive() -> None:
+        state["alive_at"] = time.time()
+        _atomic_write(state)
 
     def on_pose(_msg) -> None:
         state["pose_count"] += 1
         state["last_pose_ts"] = time.time()
+        state["alive_at"] = state["last_pose_ts"]
         _atomic_write(state)
 
     def on_gripper(_msg) -> None:
         state["gripper_count"] += 1
+        state["alive_at"] = time.time()
         _atomic_write(state)
 
     node.create_subscription(Pose, "/UE_TCP_position", on_pose, 10)
     node.create_subscription(Point, "/UE_Gripper_angles", on_gripper, 10)
+    node.create_timer(1.0, touch_alive)
 
     _atomic_write(state)
     print(f"ROS audit witness up; state -> {AUDIT_FILE}", flush=True)

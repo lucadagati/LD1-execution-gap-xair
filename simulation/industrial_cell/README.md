@@ -4,39 +4,17 @@ Manufacturing cell simulation for E8 motion proof: conveyor + TCP slide + grippe
 
 ## Layout
 
-```mermaid
-flowchart TB
-    subgraph sim["simulation/industrial_cell/"]
-        W["world/conveyor_cell.sdf"]
-        U["urdf/cell.urdf.xacro"]
-        L["launch/cell_headless.launch.py"]
-        subgraph nodes["nodes/"]
-            CS["command_subscriber.py"]
-            GT["gazebo_motion_tracker.py"]
-            CP["context_publisher.py"]
-            SIM["cell_simulator.py fallback"]
-        end
-    end
-    W --> L
-    U --> L
-    L --> nodes
 ```
-
-## Context loop (E8)
-
-```mermaid
-sequenceDiagram
-    participant A as HTTP adapter
-    participant G as Gazebo / ros2_control
-    participant T as motion tracker
-    participant E as run_e8_gazebo_cell.py
-
-    A->>G: /UE_TCP_position on EXECUTE
-    G->>G: joint commands arm / conveyor / gripper
-    G->>T: /joint_states
-    T->>T: update e8_motion_state.json
-    E->>E: compare motion delta vs baseline mode
-    Note over E: Direct/Naive may move on stale RESUME<br/>XAIR/Local should not
+industrial_cell/
+├── world/conveyor_cell.sdf      # Gazebo Harmonic world (floor, conveyor frame)
+├── urdf/cell.urdf.xacro         # arm_slide, conveyor, gripper + gz_ros2_control
+├── ros2_control/cell_controllers.yaml
+├── launch/cell_headless.launch.py
+└── nodes/
+    ├── command_subscriber.py    # /UE_TCP_position → joint commands
+    ├── gazebo_motion_tracker.py # /joint_states → e8_motion_state.json
+    ├── context_publisher.py     # XAIR context → /cell/state
+    └── cell_simulator.py        # fallback tracker (no Gazebo)
 ```
 
 ## Prerequisites
@@ -75,8 +53,6 @@ python experiments/run_e8_gazebo_cell.py --runs 30
 2. `command_subscriber` maps pose → `cell_position_controller` (arm, conveyor, gripper).
 3. `gazebo_motion_tracker` increments `motion_count` when joints move.
 4. E8 compares motion delta: Direct/Naive should move; XAIR/Local should not on stale RESUME.
-
-(See sequence diagram above.)
 
 ## Verify
 

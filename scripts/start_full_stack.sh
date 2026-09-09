@@ -9,6 +9,7 @@ mkdir -p "$PID_DIR"
 
 export XAIR_URL="${XAIR_URL:-http://127.0.0.1:8080}"
 export REDIS_URL="${REDIS_URL:-redis://127.0.0.1:6379/0}"
+export ROS_AUDIT_FILE="${ROS_AUDIT_FILE:-$XAIR_ROOT/experiments/results/ros_audit_state.json}"
 
 echo "=== AdaptiX + XAIR full stack ==="
 echo "  layout: ADAPTIX_ROOT=$ADAPTIX_ROOT"
@@ -50,47 +51,41 @@ for i in 1 2 3 4 5; do
   sleep 1
 done
 
-# HTTP adapter (always — ROS is optional for publish witness only)
-if ! pgrep -f "adaptix_quest_adapter.py" >/dev/null; then
-  echo "Avvio adaptix_quest_adapter (9091/9092)..."
-  if [ -f "$XAIR_ROOT/.venv/bin/python" ]; then
-    ADAPTER_PY="$XAIR_ROOT/.venv/bin/python"
-  else
-    ADAPTER_PY=python3
-  fi
-  nohup env XAIR_URL="$XAIR_URL" XAIR_ADAPTER_WEBSOCKET=0 \
-    "$ADAPTER_PY" "$SCRIPTS/adaptix_quest_adapter.py" \
-    > "$PID_DIR/adapter.log" 2>&1 &
-  echo $! > "$PID_DIR/adapter.pid"
-  for i in 1 2 3 4 5; do
-    if curl -sf http://127.0.0.1:9092/health >/dev/null; then
-      echo "[OK] HTTP adapter :9092"
-      break
-    fi
-    sleep 1
-  done
-fi
-
-# ROS 2 + rosbridge (optional)
+# ROS 2 + adapter + rosbridge
 if [ -f /opt/ros/jazzy/setup.bash ]; then
+  # ROS setup.bash references optional AMENT_* vars; tolerate unbound under `set -u`.
   set +u
   # shellcheck disable=SC1091
   source /opt/ros/jazzy/setup.bash
   set -u
-  if ! pgrep -f "rosbridge_websocket" >/dev/null; then
-    echo "Avvio rosbridge :9090..."
-    nohup ros2 launch rosbridge_server rosbridge_websocket_launch.xml \
-      port:=9090 address:=0.0.0.0 > "$PID_DIR/rosbridge.log" 2>&1 &
-    echo $! > "$PID_DIR/rosbridge.pid"
-  fi
-  if ! pgrep -f "ros_audit_subscriber.py" >/dev/null; then
+  if ! pgrep -f "$SCRIPTS/ros_audit_subscriber.py" >/dev/null; then
     echo "Avvio ROS audit witness..."
-    nohup python3 "$SCRIPTS/ros_audit_subscriber.py" \
+    # PYTHONPATH_PREPEND (not PYTHONPATH) so run_with_ros.sh merges it with
+    # rclpy's site-packages instead of clobbering them (see run_with_ros.sh).
+    nohup env ROS_AUDIT_FILE="$ROS_AUDIT_FILE" PYTHONPATH_PREPEND="$XAIR_ROOT:$SCRIPTS" \
+      "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/ros_audit_subscriber.py" \
       > "$PID_DIR/ros_audit.log" 2>&1 &
     echo $! > "$PID_DIR/ros_audit.pid"
+    sleep 2
+  fi
+  if pgrep -f "$SCRIPTS/adaptix_quest_adapter.py" >/dev/null; then
+    echo "[OK] adaptix_quest_adapter già in esecuzione"
+  else
+    echo "Avvio adaptix_quest_adapter (9091/9092)..."
+    nohup env XAIR_URL="$XAIR_URL" PYTHONPATH_PREPEND="$XAIR_ROOT:$SCRIPTS" \
+      "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/adaptix_quest_adapter.py" \
+      > "$PID_DIR/adapter.log" 2>&1 &
+    echo $! > "$PID_DIR/adapter.pid"
+    sleep 2
+  fi
+  if ! pgrep -f "rosbridge_websocket" >/dev/null; then
+    echo "Avvio rosbridge :9090..."
+    nohup "$SCRIPTS/run_with_ros.sh" ros2 launch rosbridge_server rosbridge_websocket_launch.xml port:=9090 address:=0.0.0.0 \
+      > "$PID_DIR/rosbridge.log" 2>&1 &
+    echo $! > "$PID_DIR/rosbridge.pid"
   fi
 else
-  echo "[WARN] ROS 2 Jazzy non installato — adapter HTTP attivo, witness ROS disabilitato"
+  echo "[WARN] ROS 2 Jazzy non installato — solo XAIR HTTP"
 fi
 
 echo ""

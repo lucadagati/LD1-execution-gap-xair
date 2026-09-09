@@ -21,7 +21,7 @@ run,valid_intent,outcome,wrongful_revoke,ros_published
 19,True,EXECUTE,False,True
 20,True,EXECUTE,False,True
 21,True,EXECUTE,False,True
-22,True,,False,False
+22,True,EXECUTE,False,True
 23,True,EXECUTE,False,True
 24,True,EXECUTE,False,True
 25,True,EXECUTE,False,True
@@ -77,7 +77,7 @@ run,valid_intent,outcome,wrongful_revoke,ros_published
 75,True,EXECUTE,False,True
 76,True,EXECUTE,False,True
 77,True,EXECUTE,False,True
-78,True,,False,False
+78,True,EXECUTE,False,True
 79,True,EXECUTE,False,True
 80,True,EXECUTE,False,True
 81,True,EXECUTE,False,True

@@ -13,7 +13,12 @@ class ContextValidator:
     """Evaluate preconditions and safety constraints against context snapshot."""
 
     _PATTERN = re.compile(
-        r"^(\w+(?:\.\w+)*)\s*(==|!=|<=|>=|<|>)\s*('([^']*)'|\"([^\"]*)\"|(-?\d+(?:\.\d+)?))$"
+        r"^(?P<path>\w+(?:\.\w+)*)\s*"
+        r"(?P<op>==|!=|<=|>=|<|>)\s*"
+        r"(?:'(?P<sval>[^']*)'"
+        r"|\"(?P<dval>[^\"]*)\""
+        r"|(?P<bval>true|false|True|False)"
+        r"|(?P<nval>-?\d+(?:\.\d+)?))$"
     )
 
     def __init__(
@@ -60,20 +65,28 @@ class ContextValidator:
             return False, "eval_timeout"
         expr = expr.strip()
         if not expr:
-            return True, expr
+            return False, "empty_expression"
+        expr = re.sub(r"(?<![!<>=])=(?!=)", "==", expr)
         m = self._PATTERN.match(expr)
         if not m:
             return False, f"unsupported: {expr}"
-        path, op, _, sval, dval, nval = m.groups()
+        path = m.group("path")
+        op = m.group("op")
         left = self._resolve(path)
-        if sval is not None:
-            right = sval
-        elif dval is not None:
-            right = dval
+        if m.group("sval") is not None:
+            right = m.group("sval")
+        elif m.group("dval") is not None:
+            right = m.group("dval")
+        elif m.group("bval") is not None:
+            right = m.group("bval").lower() == "true"
         else:
-            right = float(nval) if "." in (nval or "") else int(nval)
+            nval = m.group("nval")
+            right = float(nval) if "." in nval else int(nval)
 
-        if isinstance(left, (int, float)) and isinstance(right, str):
+        # MES snapshots may report booleans as strings; align before comparing.
+        if isinstance(right, bool) and isinstance(left, str) and left.lower() in ("true", "false"):
+            left = left.lower() == "true"
+        elif not isinstance(left, bool) and isinstance(left, (int, float)) and isinstance(right, str):
             try:
                 right = float(right) if "." in right else int(right)
             except ValueError:

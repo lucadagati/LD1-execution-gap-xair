@@ -18,9 +18,10 @@ class ExecutionDecisionEngine:
         if not temporal_ok:
             return DecisionOutcome.REVOKE, temporal_reason
 
+        if resource_busy:
+            return DecisionOutcome.DELAY, "target_busy"
+
         if not context_ok:
-            if resource_busy:
-                return DecisionOutcome.DELAY, context_reason
             return DecisionOutcome.REVOKE, context_reason
 
         if intent.payload.degradation_policy != "none":

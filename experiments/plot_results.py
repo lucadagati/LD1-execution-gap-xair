@@ -17,6 +17,9 @@ import matplotlib.pyplot as plt
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "experiments" / "results"
 DEFAULT_OUT = ROOT / "experiments" / "plots"
+_paper_figures = ROOT.parent / "ResearchTrack" / "execution-gap-paper" / "figures"
+if _paper_figures.parent.exists():
+    DEFAULT_OUT = _paper_figures
 
 BASELINE_ORDER = ("direct", "naive", "local", "xair")
 DISPLAY = {
@@ -208,8 +211,8 @@ def main() -> None:
         internal_p99 = float(row["vl_internal_p99_ms"])
         e2e_p50 = float(row["vl_e2e_p50_ms"])
         e2e_p99 = float(row["vl_e2e_p99_ms"])
-        tp = float(row["throughput_ips"])
-        n_int = int(row["intents"])
+        tp = float(row.get("throughput_released_ips") or row.get("throughput_ips") or 0)
+        n_int = int(row.get("completed_trials") or row.get("intents") or row.get("intents_requested") or 0)
         fig, ax = plt.subplots(figsize=(5.8, 3.4))
         labels = ["internal p50", "internal p99", "e2e p50", "e2e p99"]
         vals = [internal_p50, internal_p99, e2e_p50, e2e_p99]

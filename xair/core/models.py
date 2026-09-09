@@ -11,6 +11,7 @@ class IntentState(str, Enum):
     CREATED = "CREATED"
     PENDING = "PENDING"
     VALIDATING = "VALIDATING"
+    AUTHORIZED = "AUTHORIZED"
     EXECUTED = "EXECUTED"
     DELAYED = "DELAYED"
     DEGRADED = "DEGRADED"
@@ -103,3 +104,5 @@ class IntentRecord:
     outcome: DecisionOutcome | None = None
     reason: str = ""
     validation_latency_ms: float = 0.0
+    context_version: int = 0
+    publication_decision: str | None = None

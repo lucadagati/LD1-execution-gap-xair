@@ -40,6 +40,13 @@ def submit_intent_batch(body: list[IntentPayload]):
             results.append({"id": intent.id, "source": intent.source, "outcome": "REVOKE", "reason": "conflict_loser"})
         elif winner and intent.id == winner.id:
             record = runtime.process_intent(intent)
+            if record.outcome in (DecisionOutcome.EXECUTE, DecisionOutcome.DEGRADE):
+                # The batch endpoint has no downstream publish/report step to
+                # trigger coordinator.release() later (unlike the adapter's
+                # t_p gateway path), so the target-resource lock would
+                # otherwise never be freed and every subsequent conflict on
+                # the same target would resolve as busy regardless of policy.
+                runtime.coordinator.release(record.intent)
             results.append({
                 "id": intent.id,
                 "source": intent.source,
@@ -65,8 +72,14 @@ def submit_intent(body: IntentPayload):
             "context_trusted": False,
         }
     intent = ActionIntent.from_dict(body.model_dump(exclude_none=True))
+    # Duplicate ids must return the existing record rather than reprocess:
+    # a second pass through process_intent() would re-acquire the target
+    # lock (coordinator.acquire) even though the idempotent confirm_publication
+    # guard for the *first* pass has already marked it PUBLISH, so the
+    # second acquisition would never be released.
+    duplicate = runtime.lifecycle.get(intent.id) is not None if intent.id else False
     runtime.submit_intent(intent)
-    result = runtime.process_intent(intent)
+    result = runtime.lifecycle.get(intent.id) if duplicate else runtime.process_intent(intent)
     meta = context_meta()
     return {
         "id": intent.id,
@@ -76,6 +89,37 @@ def submit_intent(body: IntentPayload):
         "validation_latency_ms": result.validation_latency_ms,
         "context_version": meta["version"],
         "context_trusted": meta["store_trusted"],
+        "duplicate": duplicate,
+    }
+
+
+class PublicationReport(BaseModel):
+    published: bool
+    reason: str
+    context_version: int | None = None
+
+
+@app.post("/v1/intents/{intent_id}/publication")
+def report_publication(intent_id: str, body: PublicationReport):
+    """Adapter-reported outcome of the t_p publication gate (recheck/publish/suppress).
+
+    Closes the lifecycle as EXECUTED or REVOKED; this is the endpoint the
+    actuator gateway calls after its own version/predicate recheck, per the
+    Reference Model (Sec. V): validation at t_v does not by itself authorize
+    release.
+    """
+    try:
+        record = runtime.confirm_publication(
+            intent_id, body.published, body.reason, context_version=body.context_version
+        )
+    except KeyError:
+        raise HTTPException(status_code=404, detail="intent not found")
+    return {
+        "id": intent_id,
+        "state": record.state.value,
+        "outcome": record.outcome.value if record.outcome else None,
+        "publication_decision": record.publication_decision,
+        "reason": record.reason,
     }
 
 

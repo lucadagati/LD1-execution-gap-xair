@@ -9,17 +9,20 @@ import json
 import os
 import re
 import sys
+import threading
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 _SCRIPTS = Path(__file__).resolve().parent
-sys.path.insert(0, str(_SCRIPTS))
-if (_SCRIPTS.parent / "xair").is_dir():
-    sys.path.insert(0, str(_SCRIPTS.parent))
-elif (_SCRIPTS.parent / "XAIR_Runtime" / "xair").is_dir():
-    sys.path.insert(0, str(_SCRIPTS.parent / "XAIR_Runtime"))
+_XAIR_ROOT = _SCRIPTS.parent / "xair_runtime"
+if not _XAIR_ROOT.is_dir():
+    _XAIR_ROOT = _SCRIPTS.parent / "XAIR_Runtime"
+sys.path.insert(0, str(_XAIR_ROOT))
+if str(_SCRIPTS) not in sys.path:
+    sys.path.append(str(_SCRIPTS))
 
 from xair_http_client import XAIRHttpClient
 from xair.core.deep_merge import deep_merge
@@ -33,7 +36,9 @@ XAIR = XAIRHttpClient()
 DEFAULT_MODE = os.environ.get("XAIR_VALIDATION_MODE", "xair")
 _context_cache: dict = {}
 _PREDICATE = re.compile(
-    r"^(\w+(?:\.\w+)*)\s*(==|!=|<=|>=|<|>)\s*('([^']*)'|\"([^\"]*)\"|(-?\d+(?:\.\d+)?))$"
+    r"^(\w+(?:\.\w+)*)\s*(==|=|!=|<=|>=|<|>)\s*"
+    r"('([^']*)'|\"([^\"]*)\"|(-?\d+(?:\.\d+)?)|(true|false))$",
+    re.IGNORECASE,
 )
 
 
@@ -51,22 +56,30 @@ def _eval_preconditions(data: dict) -> tuple[bool, str]:
         expr = item.get("expr", item) if isinstance(item, dict) else str(item)
         expr = expr.strip()
         if not expr:
-            continue
+            return False, "unsupported:empty_expression"
         m = _PREDICATE.match(expr)
         if not m:
             return False, f"unsupported:{expr}"
-        path, op, _, sval, dval, nval = m.groups()
+        path, op, _, sval, dval, nval, bval = m.groups()
+        if op == "=":
+            op = "=="
         left = _resolve_context(path)
         if sval is not None:
             right = sval
         elif dval is not None:
             right = dval
-        else:
+        elif nval is not None:
             right = float(nval) if "." in (nval or "") else int(nval)
+        else:
+            right = (bval or "").lower() == "true"
         ops = {"==": lambda a, b: a == b, "!=": lambda a, b: a != b,
                "<": lambda a, b: a < b, "<=": lambda a, b: a <= b,
                ">": lambda a, b: a > b, ">=": lambda a, b: a >= b}
-        if left is None or not ops[op](left, right):
+        try:
+            valid = left is not None and ops[op](left, right)
+        except TypeError:
+            return False, f"type_mismatch:{expr}"
+        if not valid:
             return False, f"precondition_failed:{expr}"
     return True, "pre_ok"
 
@@ -84,7 +97,11 @@ def main_ros():
     rclpy, Pose, Point = setup_ros()
     if rclpy is None:
         return None, None, None, None, None
-    rclpy.init()
+    try:
+        rclpy.init()
+    except RuntimeError:
+        # Witness or another node may have initialized the context already.
+        pass
     node = rclpy.create_node("adaptix_quest_adapter")
     pub_pose = node.create_publisher(Pose, "/UE_TCP_position", 10)
     pub_gripper = node.create_publisher(Point, "/UE_Gripper_angles", 10)
@@ -93,6 +110,7 @@ def main_ros():
 
 _node = _pub_pose = _pub_gripper = _Pose = _Point = None
 _ros_publish_count = 0
+_gateway_release_count = 0
 
 
 def publish_command(pose_dict, gripper_dict):
@@ -133,6 +151,7 @@ def _legacy_to_ais(data: dict) -> dict:
     pose = data.get("pose", {})
     gripper = data.get("gripper", {})
     return {
+        "id": data.get("id") or str(uuid.uuid4()),
         "source": data.get("source", "xr"),
         "timestamp_decision": ts,
         "freshness_window_ms": int(data.get("freshness_window_ms", 500)),
@@ -159,10 +178,17 @@ def _parse_freshness_ok(data: dict) -> tuple[bool, str]:
     delta_ms = (now - ts).total_seconds() * 1000.0
     if delta_ms > window:
         return False, f"freshness_exceeded:{delta_ms:.1f}ms"
+    deadline = data.get("deadline_ms")
+    if deadline is not None and delta_ms > int(deadline):
+        return False, f"deadline_exceeded:{delta_ms:.1f}ms"
+    if delta_ms < -1000.0:
+        return False, f"timestamp_too_far_in_future:{delta_ms:.1f}ms"
     return True, "fresh"
 
 
 def _publish_from_intent(data: dict) -> bool:
+    global _gateway_release_count
+    _gateway_release_count += 1
     params = data.get("payload", {}).get("parameters", {})
     pose = params.get("pose") or {"position": {"x": 0.1, "y": 0.2, "z": 0.3}, "orientation": {"w": 1.0}}
     gripper = params.get("gripper") or {"x": 0.0, "y": 0.0, "z": 0.0}
@@ -221,7 +247,7 @@ def _reject_incomplete_ais(data: dict, baseline: str) -> dict | None:
     """Fail closed on structurally incomplete AIS unless legacy XR pose/command fields are present."""
     if data.get("pose") or data.get("command"):
         return None
-    missing = [k for k in ("timestamp_decision", "freshness_window_ms", "payload") if not data.get(k)]
+    missing = [k for k in ("id", "timestamp_decision", "freshness_window_ms", "payload") if not data.get(k)]
     if missing:
         return {
             "ok": False,
@@ -266,6 +292,7 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
             "reason": "direct_bypass_no_validation",
             "validation_latency_ms": 0.0,
             "ros_published": ros_ok,
+            "gateway_released": True,
             "baseline": "direct",
         }
 
@@ -291,6 +318,7 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
             "reason": "naive_temporal_only",
             "validation_latency_ms": 0.0,
             "ros_published": ros_ok,
+            "gateway_released": True,
             "baseline": "naive",
         }
 
@@ -309,6 +337,7 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
             "reason": "local_guard_temporal_context",
             "validation_latency_ms": (time.perf_counter() - t0) * 1000,
             "ros_published": ros_ok,
+            "gateway_released": True,
             "baseline": "local",
         }
 
@@ -326,6 +355,7 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
             "reason": "local_stale_cache",
             "validation_latency_ms": (time.perf_counter() - t0) * 1000,
             "ros_published": ros_ok,
+            "gateway_released": True,
             "baseline": "local_stale",
         }
 
@@ -348,6 +378,7 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
             "reason": "local_push_invalidate",
             "validation_latency_ms": (time.perf_counter() - t0) * 1000,
             "ros_published": ros_ok,
+            "gateway_released": True,
             "baseline": "local_push",
         }
 
@@ -386,6 +417,18 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
                 "baseline": "local_authoritative",
             }
         _context_cache = deep_merge(_context_cache, ctx2)
+        temporal_ok, _ = _parse_freshness_ok(data)
+        if not temporal_ok:
+            return {
+                "ok": False,
+                "intent_id": data.get("id"),
+                "outcome": "REVOKE",
+                "state": "REVOKED",
+                "reason": "temporal_validity_failed_at_publish",
+                "validation_latency_ms": (time.perf_counter() - t0) * 1000,
+                "ros_published": False,
+                "baseline": "local_authoritative",
+            }
         if not _eval_preconditions(data)[0]:
             return {
                 "ok": False,
@@ -407,6 +450,7 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
             "reason": "local_authoritative_read",
             "validation_latency_ms": (tp - t0) * 1000,
             "ros_published": ros_ok,
+            "gateway_released": True,
             "context_version": ver2,
             "toctou_window_ms": (tp - tv) * 1000,
             "baseline": "local_authoritative",
@@ -421,10 +465,50 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
     t_validate_end = time.perf_counter()
     outcome = result.get("outcome")
     validation_version = result.get("context_version")
+    if result.get("duplicate"):
+        return {
+            "ok": True,
+            "intent_id": result.get("id"),
+            "outcome": outcome,
+            "state": result.get("state"),
+            "reason": "duplicate_idempotent_replay",
+            "validation_latency_ms": result.get("validation_latency_ms"),
+            "ros_published": False,
+            "gateway_released": False,
+            "context_version": validation_version,
+            "duplicate": True,
+            "baseline": "xair",
+        }
+
     ros_ok = False
-    toctou_blocked = False
-    t_recheck_start = t_recheck_end = t_publish_end = t_validate_end
+    gateway_released = False
+    gate_blocked = False
+    gate_reason = result.get("reason") or "validation_rejected"
+    t_recheck_start = t_recheck_end = t_validate_end
+    t_publish_end: float | None = None
+    injection_started: float | None = None
+    injection_completed: float | None = None
+    injection_thread: threading.Thread | None = None
     publish_delay_ms = float(query.get("publish_delay_ms", 0) or 0)
+
+    inject_after_ms_raw = query.get("inject_pause_after_validation_ms")
+    if inject_after_ms_raw is not None:
+        inject_after_ms = float(inject_after_ms_raw or 0)
+
+        def inject_invalid_context() -> None:
+            nonlocal injection_started, injection_completed
+            if inject_after_ms > 0:
+                time.sleep(inject_after_ms / 1000.0)
+            injection_started = time.perf_counter()
+            XAIR.update_context({
+                "line": {"state": "PAUSED"},
+                "gripper": {"state": "CLOSED"},
+            })
+            injection_completed = time.perf_counter()
+
+        injection_thread = threading.Thread(target=inject_invalid_context, daemon=True)
+        injection_thread.start()
+
     if outcome in ("EXECUTE", "DEGRADE"):
         if publish_delay_ms > 0:
             time.sleep(publish_delay_ms / 1000.0)
@@ -437,38 +521,90 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
                 and current_version is not None
                 and int(current_version) != int(validation_version)
             ):
-                toctou_blocked = True
+                gate_blocked = True
+                gate_reason = "context_version_changed_at_publish"
                 outcome = "REVOKE"
             elif snap.get("context_trusted") is False:
-                toctou_blocked = True
+                gate_blocked = True
+                gate_reason = "context_untrusted_at_publish"
                 outcome = "REVOKE"
             else:
-                t_recheck_end = time.perf_counter()
-                ros_ok = _publish_from_intent(data)
-                t_publish_end = time.perf_counter()
-        except Exception:
-            ros_ok = False
-            outcome = "REVOKE"
-            t_recheck_end = t_publish_end = time.perf_counter()
-        if toctou_blocked:
+                _context_cache = deep_merge(_context_cache, snap.get("context") or {})
+                temporal_ok, temporal_reason = _parse_freshness_ok(data)
+                predicates_ok, predicates_reason = _eval_preconditions(data)
+                if not temporal_ok:
+                    gate_blocked = True
+                    gate_reason = f"{temporal_reason}_at_publish"
+                    outcome = "REVOKE"
+                elif not predicates_ok:
+                    gate_blocked = True
+                    gate_reason = f"{predicates_reason}_at_publish"
+                    outcome = "REVOKE"
+                else:
+                    gate_reason = "published_after_gate_recheck"
             t_recheck_end = time.perf_counter()
-    toctou_window_ms = (t_recheck_start - t_validate_end) * 1000.0
-    recheck_to_publish_ms = max(0.0, (t_publish_end - t_recheck_end) * 1000.0)
+            if not gate_blocked:
+                ros_ok = _publish_from_intent(data)
+                gateway_released = True
+                t_publish_end = time.perf_counter()
+        except Exception as exc:
+            gate_blocked = True
+            outcome = "REVOKE"
+            t_recheck_end = time.perf_counter()
+            gate_reason = f"publication_gate_error:{type(exc).__name__}"
+
+        try:
+            publication = XAIR.report_publication(
+                str(result.get("id")),
+                published=gateway_released,
+                reason=gate_reason,
+                context_version=current_version if "current_version" in locals() else validation_version,
+            )
+            result["state"] = publication.get("state", result.get("state"))
+            result["outcome"] = publication.get("outcome", outcome)
+        except Exception as exc:
+            gate_blocked = True
+            outcome = "REVOKE"
+            gate_reason = f"publication_audit_error:{type(exc).__name__}"
+
+    if injection_thread is not None:
+        injection_thread.join(timeout=max(1.0, (publish_delay_ms / 1000.0) + 1.0))
+
+    validation_to_gate_ms = (t_recheck_end - t_validate_end) * 1000.0
+    validation_to_publish_ms = (
+        (t_publish_end - t_validate_end) * 1000.0 if t_publish_end is not None else None
+    )
+    recheck_to_publish_ms = (
+        max(0.0, (t_publish_end - t_recheck_end) * 1000.0)
+        if t_publish_end is not None
+        else None
+    )
     return {
-        "ok": outcome in ("EXECUTE", "DEGRADE") and not toctou_blocked,
+        "ok": gateway_released and not gate_blocked,
         "intent_id": result.get("id"),
         "outcome": outcome,
         "state": result.get("state"),
-        "reason": "context_version_changed_at_publish" if toctou_blocked else result.get("reason"),
+        "reason": gate_reason,
         "validation_latency_ms": result.get("validation_latency_ms"),
         "ros_published": ros_ok,
+        "gateway_released": gateway_released,
         "context_version": validation_version,
-        "toctou_window_ms": toctou_window_ms,
+        "validation_to_gate_ms": validation_to_gate_ms,
+        "validation_to_publish_ms": validation_to_publish_ms,
         "recheck_to_publish_ms": recheck_to_publish_ms,
         "t_validate_end_ms": (t_validate_end - t0_wall) * 1000.0,
         "t_recheck_start_ms": (t_recheck_start - t0_wall) * 1000.0,
         "t_recheck_end_ms": (t_recheck_end - t0_wall) * 1000.0,
-        "t_publish_end_ms": (t_publish_end - t0_wall) * 1000.0,
+        "t_publish_end_ms": (
+            (t_publish_end - t0_wall) * 1000.0 if t_publish_end is not None else None
+        ),
+        "t_injection_start_ms": (
+            (injection_started - t0_wall) * 1000.0 if injection_started is not None else None
+        ),
+        "t_injection_end_ms": (
+            (injection_completed - t0_wall) * 1000.0 if injection_completed is not None else None
+        ),
+        "gate_blocked": gate_blocked,
         "baseline": "xair",
     }
 
@@ -529,7 +665,11 @@ def run_http_server(port=9092):
             path, _query = _parse_path(self.path)
             if path == "health":
                 ok = XAIR.health_ok()
-                self._send_json(200, {"xair": ok, "ros_publish_count": _ros_publish_count})
+                self._send_json(200, {
+                    "xair": ok,
+                    "gateway_release_count": _gateway_release_count,
+                    "ros_publish_count": _ros_publish_count,
+                })
             else:
                 self.send_error(404)
 
@@ -583,8 +723,6 @@ def spin_node(node):
 
 
 if __name__ == "__main__":
-    import threading
-
     if not XAIR.health_ok():
         print("ERRORE: XAIR non raggiungibile. Avvia prima start_full_stack.sh o uvicorn su :8080")
         sys.exit(1)
@@ -603,11 +741,8 @@ if __name__ == "__main__":
     ws_port = int(sys.argv[1]) if len(sys.argv) > 1 else 9091
     http_port = int(sys.argv[2]) if len(sys.argv) > 2 else 9092
 
-    enable_ws = os.environ.get("XAIR_ADAPTER_WEBSOCKET", "").lower() in ("1", "true", "yes")
-    if websockets and enable_ws:
+    if websockets:
         threading.Thread(target=run_http_server, args=(http_port,), daemon=True).start()
         run_websocket_server(ws_port)
     else:
-        if enable_ws and not websockets:
-            print("[WARN] websockets package missing; HTTP-only adapter")
         run_http_server(http_port)

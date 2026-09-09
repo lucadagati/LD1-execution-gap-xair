@@ -7,7 +7,10 @@ SCRIPTS="$ROOT/scripts"
 XAIR="$ROOT/XAIR_Runtime"
 PY="$XAIR/.venv/bin/python"
 
+set +u
+# shellcheck disable=SC1091
 source /opt/ros/jazzy/setup.bash
+set -u
 "$SCRIPTS/start_full_stack.sh"
 "$SCRIPTS/start_gazebo_cell.sh" || true
 

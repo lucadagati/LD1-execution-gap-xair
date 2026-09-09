@@ -19,7 +19,7 @@
     },
     "source": {
       "type": "string",
-      "enum": ["cv", "ai", "xr", "human", "composite"],
+      "enum": ["cv", "ai", "xr", "human", "mes", "composite"],
       "description": "Intent producer"
     },
     "timestamp_decision": {

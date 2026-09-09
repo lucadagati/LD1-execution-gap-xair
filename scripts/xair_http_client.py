@@ -38,6 +38,23 @@ class XAIRHttpClient:
     def get_context(self) -> dict:
         return self._request("GET", "/v1/context/snapshot")
 
+    def report_publication(
+        self,
+        intent_id: str,
+        published: bool,
+        reason: str,
+        context_version: int | None = None,
+    ) -> dict:
+        return self._request(
+            "POST",
+            f"/v1/intents/{intent_id}/publication",
+            {
+                "published": published,
+                "reason": reason,
+                "context_version": context_version,
+            },
+        )
+
     def metrics(self) -> dict:
         req = urllib.request.Request(f"{self.base_url}/v1/metrics", method="GET")
         with urllib.request.urlopen(req, timeout=5) as resp:

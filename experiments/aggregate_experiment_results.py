@@ -275,6 +275,26 @@ def summarize_e14(path: Path) -> dict:
     return out
 
 
+def summarize_a1(path: Path) -> dict:
+    rows = load_csv(path)
+    if not rows:
+        return {}
+    out = {}
+    for arm in sorted(set(r.get("arm", r.get("baseline", "")) for r in rows)):
+        sub = [r for r in rows if r.get("arm", r.get("baseline")) == arm]
+        n = len(sub)
+        stale = sum(1 for r in sub if str(r.get("stale_executed", "0")) in ("1", "True", "true"))
+        valid = sum(1 for r in sub if str(r.get("schema_valid", "1")) in ("1", "True", "true"))
+        ser_p, ser_lo, ser_hi = wilson_ci(stale, n)
+        out[arm] = {
+            "attempted": n,
+            "SER": ser_p,
+            "SER_ci95": [ser_lo, ser_hi],
+            "schema_validity_rate": valid / n if n else 0,
+        }
+    return out
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, default=RESULTS / "paper_metrics_summary.json")
@@ -312,6 +332,15 @@ def main():
     e0 = RESULTS / "e0_lifecycle.json"
     if e0.exists():
         summary["e0_lifecycle"] = json.loads(e0.read_text())
+    if (RESULTS / "a1_baselines.csv").exists():
+        summary["a1_baselines"] = summarize_a1(RESULTS / "a1_baselines.csv")
+    if (RESULTS / "a2_latency_sweep.csv").exists():
+        summary["a2_latency"] = load_csv(RESULTS / "a2_latency_sweep.csv")
+    if (RESULTS / "a3_agent_loop.csv").exists():
+        summary["a3_agent"] = load_csv(RESULTS / "a3_agent_loop.csv")
+    a4 = RESULTS / "a4_evidence_audit.json"
+    if a4.exists():
+        summary["a4_audit"] = json.loads(a4.read_text())
     args.out.write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
     return 0

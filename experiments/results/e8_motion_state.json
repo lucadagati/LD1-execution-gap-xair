@@ -1,10 +1,10 @@
 {
-  "motion_count": 5,
+  "motion_count": 0,
   "last_joints": {
-    "arm_slide_joint": 0.4998514105211632,
-    "conveyor_joint": 6.279995705796509
+    "arm_slide_joint": 0.04789910469889915,
+    "conveyor_joint": 6.279997605911432
   },
   "source": "gazebo",
   "ros": true,
-  "arm_position": 0.4998514105211632
+  "arm_position": 0.04789910469889915
 }

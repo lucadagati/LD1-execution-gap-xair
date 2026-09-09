@@ -26,7 +26,12 @@ def post_intent(i: int) -> tuple[dict, float]:
         "timestamp_decision": ts,
         "freshness_window_ms": 500,
         "preconditions": [{"expr": "line.state == 'RUN'"}],
-        "payload": {"action_type": "TICK", "target_entity": f"robot_{i % 10}", "parameters": {}},
+        # Distinct target per intent: this endpoint posts directly to XAIR core
+        # (bypassing the adapter's t_p publish/report step), so an EXECUTE here
+        # acquires the coordinator's per-target lock with nothing to release it.
+        # A reused target would therefore show DELAY (target_busy) on its
+        # second use rather than isolating validation/adapter overhead.
+        "payload": {"action_type": "TICK", "target_entity": f"e4_target_{i}", "parameters": {}},
     }
     t0 = time.perf_counter()
     req = urllib.request.Request(
@@ -62,11 +67,14 @@ def main():
 
     internal_lats = []
     e2e_lats = []
+    outcomes: dict[str, int] = {}
     t0 = time.perf_counter()
     for i in range(args.intents):
         out, e2e = post_intent(i)
         internal_lats.append(float(out.get("validation_latency_ms") or 0))
         e2e_lats.append(e2e)
+        outcome = out.get("outcome") or "UNKNOWN"
+        outcomes[outcome] = outcomes.get(outcome, 0) + 1
     elapsed = time.perf_counter() - t0
 
     def p99(vals: list[float]) -> float:
@@ -76,6 +84,10 @@ def main():
         "intents": args.intents,
         "elapsed_s": elapsed,
         "throughput_ips": args.intents / elapsed,
+        "outcome_execute": outcomes.get("EXECUTE", 0),
+        "outcome_delay": outcomes.get("DELAY", 0),
+        "outcome_revoke": outcomes.get("REVOKE", 0),
+        "outcome_degrade": outcomes.get("DEGRADE", 0),
         "vl_internal_p50_ms": sorted(internal_lats)[len(internal_lats) // 2],
         "vl_internal_p99_ms": p99(internal_lats),
         "vl_e2e_p50_ms": sorted(e2e_lats)[len(e2e_lats) // 2],
@@ -86,6 +98,9 @@ def main():
         w.writeheader()
         w.writerow(row)
     print(json.dumps(row, indent=2))
+    if outcomes.get("EXECUTE", 0) != args.intents:
+        print(f"WARNING: {args.intents - outcomes.get('EXECUTE', 0)}/{args.intents} intents did not EXECUTE: {outcomes}", file=sys.stderr)
+        return 1
     return 0
 
 
