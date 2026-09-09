@@ -42,16 +42,16 @@ done
   --out "$DATA/paper_metrics_summary.json"
 "$PY" "$XAIR_ROOT/experiments/plot_results.py" --out "$PAPER/figures"
 
-if git -C "$REPO_ROOT" rev-parse HEAD >/dev/null 2>&1; then
-  RELEASE_REF="HEAD"
-  if git -C "$REPO_ROOT" rev-parse "v0.2.2-tii-resubmit^{commit}" >/dev/null 2>&1; then
-    RELEASE_REF="v0.2.2-tii-resubmit^{commit}"
-  fi
+# $REPO_ROOT (the adaptix monorepo layout) is not itself a git checkout;
+# the pushed, git-tracked repository is the flat-layout sibling directory
+# xair-github-repo/. Read its HEAD/tag rather than guessing a fixed name.
+GIT_REPO="$REPO_ROOT/xair-github-repo"
+if git -C "$GIT_REPO" rev-parse HEAD >/dev/null 2>&1; then
   {
-    echo "commit=$(git -C "$REPO_ROOT" rev-parse "$RELEASE_REF")"
-    echo "describe=$(git -C "$REPO_ROOT" describe --tags --always "$RELEASE_REF" 2>/dev/null || echo none)"
-    echo "tag=v0.2.2-tii-resubmit"
-    echo "repository=https://github.com/lucadagati/adaptix"
+    echo "commit=$(git -C "$GIT_REPO" rev-parse HEAD)"
+    echo "describe=$(git -C "$GIT_REPO" describe --tags --always 2>/dev/null || echo none)"
+    echo "tag=$(git -C "$GIT_REPO" describe --tags --exact-match 2>/dev/null || echo none)"
+    echo "repository=https://github.com/lucadagati/XAIR_eXecution-time_Action_Intent_Runtime"
   } > "$REPO_ROOT/COMMIT.txt"
 else
   echo "no-git" > "$REPO_ROOT/COMMIT.txt"

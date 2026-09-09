@@ -2,7 +2,7 @@
 # Build a GitHub release tarball: code + data + repro scripts, NO paper LaTeX.
 set -euo pipefail
 
-TAG="${1:-v0.2.2-tii-resubmit}"
+TAG="${1:-v0.2.3-tii-resubmit}"
 OUT="${2:-execution-gap-github-${TAG}.tar.gz}"
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

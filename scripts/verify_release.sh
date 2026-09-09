@@ -5,7 +5,7 @@ set -euo pipefail
 # shellcheck source=/dev/null
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_resolve_layout.sh"
 
-TAG="v0.2.2-tii-resubmit"
+TAG="v0.2.3-tii-resubmit"
 COMMIT_FILE="$REPO_ROOT/COMMIT.txt"
 DATA="$REPO_ROOT/data/execution-gap"
 FAIL=0
