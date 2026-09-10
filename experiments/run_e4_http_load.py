@@ -22,6 +22,7 @@ def post_intent(i: int) -> tuple[dict, float]:
 
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
     body = {
+        "id": str(uuid.uuid4()),
         "source": "ai",
         "timestamp_decision": ts,
         "freshness_window_ms": 500,

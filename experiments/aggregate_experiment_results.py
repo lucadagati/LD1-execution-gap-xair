@@ -199,23 +199,36 @@ def summarize_e10(path: Path) -> dict:
     rows = load_csv(path)
     if not rows:
         return {}
-    windows = [float(r.get("toctou_window_ms") or 0) for r in rows]
+
+    def pct(vals: list[float], q: float) -> float:
+        s = sorted(vals)
+        if not s:
+            return 0.0
+        idx = min(len(s) - 1, max(0, int(len(s) * q) - (1 if q >= 1 else 0)))
+        return s[idx]
+
+    gate_lat = [float(r["validation_to_gate_ms"]) for r in rows if r.get("validation_to_gate_ms")]
+    release_lat = [float(r["validation_to_publish_ms"]) for r in rows if r.get("validation_to_publish_ms")]
     injected = [r for r in rows if int(r.get("inject", 0))]
     blocked = sum(int(r.get("toctou_blocked", 0)) for r in injected)
     stale = sum(int(r.get("stale_publish", 0)) for r in injected)
     n_inj = len(injected)
-    ws = sorted(windows)
     _, lo, hi = wilson_ci(blocked, n_inj) if n_inj else (0.0, 0.0, 0.0)
     return {
         "runs": len(rows),
         "injected_runs": n_inj,
+        "timing_valid_injections": sum(1 for r in injected if r.get("timing_valid") == "1"),
         "toctou_blocked": blocked,
         "toctou_blocked_rate": blocked / n_inj if n_inj else 0,
         "blocked_ci95": [lo, hi],
         "stale_publish": stale,
         "stale_publish_rate": stale / n_inj if n_inj else 0,
-        "window_p50_ms": ws[len(ws) // 2] if ws else 0,
-        "window_p99_ms": ws[int(len(ws) * 0.99) - 1] if ws else 0,
+        "validation_to_gate_p50_ms": pct(gate_lat, 0.5),
+        "validation_to_gate_p95_ms": pct(gate_lat, 0.95),
+        "validation_to_gate_p99_ms": pct(gate_lat, 0.99),
+        "validation_to_release_p50_ms": pct(release_lat, 0.5),
+        "validation_to_release_p95_ms": pct(release_lat, 0.95),
+        "validation_to_release_p99_ms": pct(release_lat, 0.99),
     }
 
 

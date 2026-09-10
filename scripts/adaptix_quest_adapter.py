@@ -509,7 +509,13 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
         injection_thread = threading.Thread(target=inject_invalid_context, daemon=True)
         injection_thread.start()
 
-    if outcome in ("EXECUTE", "DEGRADE"):
+    # DEGRADE means XAIR transformed the payload and requeued the *same*
+    # intent id for a separate revalidation pass (Reference Model, Sec. V);
+    # it is not yet ready for actuation. This HTTP endpoint does not chain a
+    # follow-up process_next() call, so publishing here would actuate the
+    # producer's original (un-transformed) parameters instead of the
+    # degraded ones -- treat it like any other non-terminal outcome instead.
+    if outcome == "EXECUTE":
         if publish_delay_ms > 0:
             time.sleep(publish_delay_ms / 1000.0)
         t_recheck_start = time.perf_counter()

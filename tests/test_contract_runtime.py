@@ -58,6 +58,21 @@ class ContractRuntimeTests(unittest.TestCase):
         self.assertEqual(record.outcome, DecisionOutcome.DELAY)
         self.assertEqual(record.state, IntentState.DELAYED)
 
+    def test_busy_invalid_context_target_revokes_not_delays(self) -> None:
+        # Reference Model (Sec. V): DELAY is reserved for an otherwise
+        # semantically valid intent. A context-invalid intent on a busy
+        # target must REVOKE, not silently DELAY behind the busy target.
+        runtime = XAIRRuntime(context={"line": {"state": "PAUSED"}})
+        holder = ActionIntent.from_dict(intent_dict(payload={
+            "action_type": "MOVE",
+            "target_entity": "line_1",
+            "parameters": {},
+        }))
+        runtime.coordinator.acquire(holder)
+        record = runtime.process_intent(ActionIntent.from_dict(intent_dict()))
+        self.assertEqual(record.outcome, DecisionOutcome.REVOKE)
+        self.assertEqual(record.state, IntentState.REVOKED)
+
     def test_degradation_is_applied_then_revalidated(self) -> None:
         # Reference Model (Fig. 2 FSM): DEGRADE returns the intent to VALIDATING
         # rather than resolving to EXECUTE within the same process_intent() call.

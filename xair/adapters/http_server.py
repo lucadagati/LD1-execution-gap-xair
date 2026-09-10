@@ -1,36 +1,59 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
+import jsonschema
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from xair.adapters.runtime_state import context_meta, refresh_context, runtime, update_context_store
 from xair.core.models import ActionIntent, DecisionOutcome, IntentState
 
 app = FastAPI(title="XAIR Runtime", version="0.1.0-alpha")
 
+_SCHEMA_PATH = Path(__file__).resolve().parents[2] / "schemas" / "action-intent-v1.json"
+_SCHEMA = json.loads(_SCHEMA_PATH.read_text())
+_VALIDATOR = jsonschema.Draft202012Validator(_SCHEMA, format_checker=jsonschema.FormatChecker())
 
-class IntentPayload(BaseModel):
-    id: str | None = None
-    source: str
-    timestamp_decision: str
-    freshness_window_ms: int
-    deadline_ms: int | None = None
-    preconditions: list[dict[str, str]] = Field(default_factory=list)
-    safety_constraints: list[dict[str, str]] = Field(default_factory=list)
-    payload: dict
-    priority: int = 0
-    revocable: bool = True
-    correlation_id: str | None = None
+
+def _schema_error(body) -> str | None:
+    """Return the first AIS v1 schema violation, or None if body is valid."""
+    if not isinstance(body, dict):
+        return "body_not_an_object"
+    errors = sorted(_VALIDATOR.iter_errors(body), key=lambda e: list(e.path))
+    if not errors:
+        return None
+    e = errors[0]
+    loc = ".".join(str(p) for p in e.path) or "<root>"
+    return f"{loc}: {e.message}"
 
 
 @app.post("/v1/intents/batch")
-def submit_intent_batch(body: list[IntentPayload]):
+def submit_intent_batch(body: list[dict]):
     """Submit concurrent intents; resolve conflicts via coordinator policy."""
     refresh_context()
-    intents = [ActionIntent.from_dict(b.model_dump(exclude_none=True)) for b in body]
-    winner, losers = runtime.coordinator.resolve(intents)
-    results = []
-    loser_ids = {l.id for l in losers}
+    schema_errors = {i: err for i, item in enumerate(body) if (err := _schema_error(item))}
+    valid_items = [item for i, item in enumerate(body) if i not in schema_errors]
+    intents = [ActionIntent.from_dict(item) for item in valid_items]
+    # Resolve winners per target_entity: intents on different resources are
+    # not in conflict and must not be forced into a false conflict_loser
+    # just because they arrived in the same batch.
+    by_target: dict[str, list[ActionIntent]] = {}
+    for intent in intents:
+        by_target.setdefault(intent.payload.target_entity, []).append(intent)
+    loser_ids: set[str] = set()
+    winner_ids: set[str] = set()
+    for group in by_target.values():
+        group_winner, group_losers = runtime.coordinator.resolve(group)
+        loser_ids.update(l.id for l in group_losers)
+        if group_winner:
+            winner_ids.add(group_winner.id)
+    results = [
+        {"id": item.get("id"), "source": item.get("source"), "outcome": "REVOKE", "reason": f"schema_invalid:{err}"}
+        for i, item in enumerate(body)
+        if (err := schema_errors.get(i))
+    ]
     for intent in intents:
         if intent.id in loser_ids:
             runtime.lifecycle.register(intent)
@@ -38,7 +61,7 @@ def submit_intent_batch(body: list[IntentPayload]):
                 intent.id, IntentState.REVOKED, DecisionOutcome.REVOKE, "conflict_loser"
             )
             results.append({"id": intent.id, "source": intent.source, "outcome": "REVOKE", "reason": "conflict_loser"})
-        elif winner and intent.id == winner.id:
+        elif intent.id in winner_ids:
             record = runtime.process_intent(intent)
             if record.outcome in (DecisionOutcome.EXECUTE, DecisionOutcome.DEGRADE):
                 # The batch endpoint has no downstream publish/report step to
@@ -55,15 +78,21 @@ def submit_intent_batch(body: list[IntentPayload]):
             })
     cv = sum(1 for r in results if r.get("outcome") == "EXECUTE" and r.get("source") == "ai"
              and any(x.get("source") == "xr" and x.get("outcome") == "EXECUTE" for x in results))
-    return {"results": results, "cv": cv, "winner": winner.source if winner else None}
+    winners = [i for i in intents if i.id in winner_ids]
+    return {
+        "results": results,
+        "cv": cv,
+        "winner": winners[0].source if len(winners) == 1 else None,
+        "winners": [w.source for w in winners],
+    }
 
 
 @app.post("/v1/intents")
-def submit_intent(body: IntentPayload):
+def submit_intent(body: dict):
     ver, trusted = refresh_context()
     if not trusted:
         return {
-            "id": body.id,
+            "id": body.get("id"),
             "state": IntentState.REVOKED.value,
             "outcome": DecisionOutcome.REVOKE.value,
             "reason": "context_store_untrusted",
@@ -71,7 +100,18 @@ def submit_intent(body: IntentPayload):
             "context_version": ver,
             "context_trusted": False,
         }
-    intent = ActionIntent.from_dict(body.model_dump(exclude_none=True))
+    schema_err = _schema_error(body)
+    if schema_err:
+        return {
+            "id": body.get("id") if isinstance(body, dict) else None,
+            "state": IntentState.REVOKED.value,
+            "outcome": DecisionOutcome.REVOKE.value,
+            "reason": f"schema_invalid:{schema_err}",
+            "validation_latency_ms": 0.0,
+            "context_version": context_meta()["version"],
+            "context_trusted": trusted,
+        }
+    intent = ActionIntent.from_dict(body)
     # Duplicate ids must return the existing record rather than reprocess:
     # a second pass through process_intent() would re-acquire the target
     # lock (coordinator.acquire) even though the idempotent confirm_publication
@@ -144,6 +184,9 @@ def revoke_intent(intent_id: str):
     runtime.lifecycle.transition(
         intent_id, IntentState.REVOKED, DecisionOutcome.REVOKE, "human_supervisory_revoke"
     )
+    # An AUTHORIZED intent holds its target lock (coordinator.acquire); a
+    # supervisory revoke must free it, or the target stays busy forever.
+    runtime.coordinator.release(record.intent)
     return {"id": intent_id, "state": "REVOKED"}
 
 

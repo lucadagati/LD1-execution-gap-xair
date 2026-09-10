@@ -321,19 +321,27 @@ def main() -> None:
 
     e10_path = RESULTS / "e10_toctou.csv"
     if e10_path.exists():
-        windows = []
+        gate_lat, release_lat = [], []
         with e10_path.open() as f:
             for row in csv.DictReader(f):
-                windows.append(float(row.get("toctou_window_ms") or 0))
-        windows.sort()
-        if windows:
-            xs = windows
-            ys = [(i + 1) / len(xs) for i in range(len(xs))]
+                if row.get("validation_to_gate_ms"):
+                    gate_lat.append(float(row["validation_to_gate_ms"]))
+                if row.get("validation_to_publish_ms"):
+                    release_lat.append(float(row["validation_to_publish_ms"]))
+        gate_lat.sort()
+        release_lat.sort()
+        if gate_lat:
             fig, ax = plt.subplots(figsize=(5.5, 3.2))
-            ax.plot(xs, ys, color="#2980b9", linewidth=2)
-            ax.set_xlabel("TOCTOU window (ms)")
+            ax.plot(gate_lat, [(i + 1) / len(gate_lat) for i in range(len(gate_lat))],
+                    color="#2980b9", linewidth=2, label=f"Validation-to-gate ($n{{=}}{len(gate_lat)}$)")
+            if release_lat:
+                ax.plot(release_lat, [(i + 1) / len(release_lat) for i in range(len(release_lat))],
+                        color="#c0392b", linewidth=2, linestyle="--",
+                        label=f"Validation-to-release ($n{{=}}{len(release_lat)}$)")
+            ax.set_xlabel("Latency (ms)")
             ax.set_ylabel("CDF")
-            ax.set_title(f"E10: measured validate-to-publish window ({len(windows)} trials)")
+            ax.set_title("E10: validation-to-gate and validation-to-release latency")
+            ax.legend(fontsize=7)
             ax.grid(True, alpha=0.3)
             fig.tight_layout()
             save(fig, args.out, "e10_toctou_cdf")

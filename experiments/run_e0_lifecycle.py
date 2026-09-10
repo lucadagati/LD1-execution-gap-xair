@@ -57,7 +57,7 @@ def main() -> int:
     o = rt.process_intent(ActionIntent.from_dict(_intent_dict(timestamp_decision=past, freshness_window_ms=50)))
     results.append({"case": "REVOKE_freshness", "outcome": o.outcome.value if o.outcome else None, "pass": o.outcome == DecisionOutcome.REVOKE})
 
-    rt = XAIRRuntime(context={"line": {"state": "PAUSED"}, "gripper": {"state": "OPEN"}})
+    rt = XAIRRuntime(context={"line": {"state": "RUN"}, "gripper": {"state": "OPEN"}})
     holder = ActionIntent.from_dict(_intent_dict(id="hold-robot-3", payload={"action_type": "MOVE", "target_entity": "robot_3", "parameters": {}}))
     rt.coordinator.acquire(holder)
     o = rt.process_intent(ActionIntent.from_dict(_intent_dict(payload={"action_type": "GRASP", "target_entity": "robot_3", "parameters": {}})))
