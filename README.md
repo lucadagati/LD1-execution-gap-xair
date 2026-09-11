@@ -248,7 +248,9 @@ Detailed protocol notes: [`experiments/EVALUATION.md`](experiments/EVALUATION.md
 |-------|--------|------------------|
 | **E0** | `run_e0_lifecycle.py` | Intent lifecycle transitions (execute, revoke, delay, degrade, expire) |
 | **E1** | `run_e1_baselines.py` | Stale RESUME under context drift; SER across adapter modes |
+| **E3** | `run_e3_http_stack.py` | Multi-producer resource conflict (AI vs XR) via the batch endpoint |
 | **E4** | `run_e4_http_load.py` | Throughput and internal vs end-to-end latency (10k intents) |
+| **E6** | `run_e6_network.py` | Real `tc netem` delay/jitter/loss impairment (`--use-netem`) |
 | **E8** | `run_e8_gazebo_cell.py` | Coherent-cache cell scenario + ROS delivery witness |
 | **E9** | `run_e9_consistency_sweep.py` | Cache-coherence class sweep (delay × policy heatmap) |
 | **E10** | `run_e10_toctou.py` | Validate-to-publish window under induced publish delay |
@@ -342,11 +344,11 @@ Configuration: [`config.yaml`](config.yaml), environment variables `REDIS_URL`, 
   title   = {{XAIR Runtime: Execution-Time Validation for Industrial CPS}},
   year    = {2026},
   url     = {https://github.com/lucadagati/XAIR_eXecution-time_Action_Intent_Runtime},
-  version = {0.1.0a1}
+  version = {0.1.1a1}
 }
 ```
 
-See also [`CITATION.cff`](CITATION.cff) for Zenodo/GitHub citation metadata.
+See also [`CITATION.cff`](CITATION.cff) for machine-readable citation metadata.
 
 ---
 

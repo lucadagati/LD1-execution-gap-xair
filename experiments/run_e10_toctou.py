@@ -120,7 +120,9 @@ def main() -> int:
     parser.add_argument("--publish-delay-ms", type=float, default=50.0)
     parser.add_argument("--inject-fraction", type=float, default=0.75, help="Fraction of each cell's trials that are injected (rest are non-injected controls)")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--out", type=Path, default=RESULTS)
     args = parser.parse_args()
+    out_path = args.out
     rng = random.Random(args.seed)
 
     n_inject = round(args.runs_per_delay * args.inject_fraction)
@@ -135,8 +137,8 @@ def main() -> int:
             rows.append(run_trial(offset, args.publish_delay_ms, run_idx, do_inject))
             run_idx += 1
 
-    RESULTS.parent.mkdir(parents=True, exist_ok=True)
-    with RESULTS.open("w", newline="") as f:
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
@@ -160,6 +162,19 @@ def main() -> int:
     gate_lat = [r["validation_to_gate_ms"] for r in rows if r["validation_to_gate_ms"] is not None]
     pub_lat = [r["validation_to_publish_ms"] for r in rows if r["validation_to_publish_ms"] is not None]
 
+    by_offset = {}
+    for offset in args.offsets_ms:
+        cell = [r for r in inj if r["inject_offset_ms"] == offset]
+        n_cell = len(cell)
+        stale_cell = sum(r["stale_publish"] for r in cell)
+        lo_c, hi_c = wilson_ci(stale_cell, n_cell) if n_cell else (0.0, 0.0)
+        by_offset[str(offset)] = {
+            "injected_runs": n_cell,
+            "stale_publish": stale_cell,
+            "stale_publish_rate": stale_cell / n_cell if n_cell else 0.0,
+            "stale_publish_ci95": [lo_c, hi_c],
+        }
+
     print(json.dumps({
         "runs": len(rows),
         "injected_runs": n,
@@ -169,9 +184,10 @@ def main() -> int:
         "stale_publish": stale,
         "stale_publish_ci95": [lo, hi],
         "control_released": ctrl_released,
+        "by_offset_ms": by_offset,
         "validation_to_gate_p50_p95_p99_ms": [pct(gate_lat, 0.5), pct(gate_lat, 0.95), pct(gate_lat, 0.99)],
         "validation_to_release_p50_p95_p99_ms": [pct(pub_lat, 0.5), pct(pub_lat, 0.95), pct(pub_lat, 0.99)],
-        "out": str(RESULTS),
+        "out": str(out_path),
     }, indent=2))
     return 0
 

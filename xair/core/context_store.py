@@ -22,14 +22,27 @@ class RedisContextStore:
         self._version = 0
         self._redis_required = bool(self._url)
         self._redis_available = False
-        if self._url and redis is not None:
-            try:
-                self._client = redis.from_url(self._url, decode_responses=True)
-                self._client.ping()
-                self._redis_available = True
-            except Exception:
-                self._client = None
-                self._redis_available = False
+        self._ensure_client()
+
+    def _ensure_client(self) -> None:
+        """(Re)connect if a client is required but not currently held.
+
+        A client is dropped to None on any failure and only re-created here,
+        so a Redis container that is not yet accepting connections at
+        process startup (a real race on cold start, e.g. a freshly launched
+        container) does not permanently disable the store for the rest of
+        the process's life: every subsequent update/snapshot retries.
+        """
+        if self._client is not None or not self._url or redis is None:
+            return
+        try:
+            client = redis.from_url(self._url, decode_responses=True)
+            client.ping()
+            self._client = client
+            self._redis_available = True
+        except Exception:
+            self._client = None
+            self._redis_available = False
 
     @property
     def enabled(self) -> bool:
@@ -49,23 +62,28 @@ class RedisContextStore:
 
     def _bump_version(self) -> int:
         self._version += 1
-        if self._client and self._redis_available:
+        if self._client:
             try:
                 self._client.set("xair:context_version", str(self._version))
+                self._redis_available = True
             except Exception:
+                self._client = None
                 self._redis_available = False
         return self._version
 
     def update(self, context: dict) -> int:
+        self._ensure_client()
         self._memory = deep_merge(self._memory, context)
-        if self._client and self._redis_available:
+        if self._client:
             try:
                 raw = self._client.get("xair:context")
                 merged = json.loads(raw) if raw else {}
                 merged = deep_merge(merged, context)
                 self._client.set("xair:context", json.dumps(merged))
                 self._memory = merged
+                self._redis_available = True
             except Exception:
+                self._client = None
                 self._redis_available = False
         return self._bump_version()
 
@@ -75,6 +93,7 @@ class RedisContextStore:
         When Redis is configured but unreachable, store_trusted is False so
         callers must delay or revoke rather than execute on stale memory.
         """
+        self._ensure_client()
         if self._client:
             try:
                 raw = self._client.get("xair:context")
@@ -85,6 +104,7 @@ class RedisContextStore:
                     self._version = int(ver_raw)
                 self._redis_available = True
             except Exception:
+                self._client = None
                 self._redis_available = False
 
         trusted = (not self._redis_required) or self._redis_available

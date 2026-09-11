@@ -52,7 +52,7 @@ echo "[3/8] E9 sweep spot (2 runs/cell)..."
 $PY "$XAIR/experiments/run_e9_consistency_sweep.py" --runs 2 --seed 1
 
 echo "[4/8] E10 spot (10 runs)..."
-$PY "$XAIR/experiments/run_e10_toctou.py" --runs 10 --seed 1
+$PY "$XAIR/experiments/run_e10_toctou.py" --runs-per-delay 10 --seed 1
 
 echo "[5/8] E12 spot..."
 $PY "$XAIR/experiments/run_e12_scaling.py" --trials 10 --producers 1 --context-kb 1

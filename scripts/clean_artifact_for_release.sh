@@ -10,7 +10,7 @@ XAIR="$XAIR_ROOT"
 
 echo "=== Cleaning ephemeral artifact state under $ART_CODE ==="
 
-rm -rf "$XAIR/.venv" "$ART_CODE/.run" "$ART_CODE/AdaptiX-Quest"
+rm -rf "$XAIR/.venv" "$ART_CODE/.run" "$ART_CODE/AdaptiX-Quest/TestResults"
 find "$ART_CODE" "$XAIR" -type d -name '__pycache__' -prune -exec rm -rf {} + 2>/dev/null || true
 find "$ART_CODE" "$XAIR" -type d -name '*.egg-info' -prune -exec rm -rf {} + 2>/dev/null || true
 find "$ART_CODE" "$XAIR" -type f \( -name '*.pid' -o -name '*.log' \) -delete 2>/dev/null || true

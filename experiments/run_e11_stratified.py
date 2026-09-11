@@ -58,12 +58,14 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--baseline", default="xair")
     parser.add_argument("--drift-prob", type=float, default=0.5, help="Probability context is invalidated before intent")
+    parser.add_argument("--out", type=Path, default=RESULTS)
     args = parser.parse_args()
+    out_path = args.out
     rng = random.Random(args.seed)
     rows = []
     for i in range(args.runs):
         pause_ms = rng.uniform(*PAUSE_MS)
-        n_pred = rng.choice((2, 4, 8))
+        n_pred = rng.choice((2, 4, 8, 16, 32))
         source = rng.choice(SOURCES)
         ctx_speed = rng.randint(1, 5)
         drifted = rng.random() < args.drift_prob
@@ -99,8 +101,8 @@ def main() -> int:
             "stale_executed": 1 if drifted and outcome == "EXECUTE" else 0,
             "validation_latency_ms": resp.get("validation_latency_ms", 0),
         })
-    RESULTS.parent.mkdir(parents=True, exist_ok=True)
-    with RESULTS.open("w", newline="") as f:
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
@@ -112,7 +114,7 @@ def main() -> int:
         "drifted_runs": drifted_n,
         "correct_rate": correct / len(rows),
         "stale_rate": stale / max(drifted_n, 1),
-        "out": str(RESULTS),
+        "out": str(out_path),
     }, indent=2))
     return 0
 

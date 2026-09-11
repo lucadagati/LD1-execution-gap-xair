@@ -1,65 +1,51 @@
 #!/usr/bin/env bash
-# Verify GitHub release tag, COMMIT.txt, runtime, and frozen data layout.
+# Verify this repository's release tag, commit, and canonical result files.
+# Run from within a checkout of the published (flat) repo, e.g.:
+#   git clone https://github.com/lucadagati/XAIR_eXecution-time_Action_Intent_Runtime.git
+#   cd XAIR_eXecution-time_Action_Intent_Runtime && ./scripts/verify_release.sh [tag]
 set -euo pipefail
 
-# shellcheck source=/dev/null
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_resolve_layout.sh"
-
-TAG="v0.2.3-tii-resubmit"
-COMMIT_FILE="$REPO_ROOT/COMMIT.txt"
-DATA="$REPO_ROOT/data/execution-gap"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TAG="${1:-v0.2.3-tii-resubmit}"
+RESULTS="$ROOT/experiments/results"
 FAIL=0
 
-echo "=== Release verification (GitHub bundle) ==="
+echo "=== Release verification ($TAG) ==="
 
-if ! git -C "$REPO_ROOT" rev-parse "$TAG^{commit}" >/dev/null 2>&1; then
+if ! git -C "$ROOT" rev-parse "$TAG^{commit}" >/dev/null 2>&1; then
   echo "FAIL: tag $TAG missing" >&2
   FAIL=1
 else
-  TAG_COMMIT="$(git -C "$REPO_ROOT" rev-parse "$TAG^{commit}")"
-  echo "OK: tag $TAG -> $TAG_COMMIT"
+  echo "OK: tag $TAG -> $(git -C "$ROOT" rev-parse "$TAG^{commit}")"
 fi
 
-if [ ! -f "$COMMIT_FILE" ]; then
-  echo "FAIL: missing $COMMIT_FILE" >&2
+if [ ! -d "$ROOT/xair/core" ] || [ ! -d "$ROOT/xair/adapters" ]; then
+  echo "FAIL: incomplete xair/ package" >&2
   FAIL=1
 else
-  DECLARED="$(grep '^commit=' "$COMMIT_FILE" | cut -d= -f2)"
-  if [ -n "${TAG_COMMIT:-}" ] && [ "$DECLARED" != "$TAG_COMMIT" ]; then
-    if git -C "$REPO_ROOT" merge-base --is-ancestor "$DECLARED" "$TAG_COMMIT" 2>/dev/null; then
-      echo "OK: COMMIT.txt commit=$DECLARED (release ancestor of tag $TAG_COMMIT)"
-    else
-      echo "FAIL: COMMIT.txt commit=$DECLARED vs tag $TAG_COMMIT" >&2
-      FAIL=1
-    fi
-  else
-    echo "OK: COMMIT.txt commit=$DECLARED"
+  echo "OK: xair/ package complete"
+fi
+
+for f in e0_lifecycle.json e1_baselines.csv e4_load_http.csv e10_toctou.csv \
+         e11_stratified.csv e12_scaling.csv e13_faults.csv e14_variants.csv \
+         e15_opcua_hil.csv paper_metrics_summary.json; do
+  if [ ! -f "$RESULTS/$f" ]; then
+    echo "FAIL: missing canonical result $RESULTS/$f" >&2
+    FAIL=1
   fi
-fi
-
-if [ ! -d "$XAIR_ROOT/xair/core" ] || [ ! -d "$XAIR_ROOT/xair/adapters" ]; then
-  echo "FAIL: incomplete XAIR_Runtime/xair package" >&2
-  FAIL=1
-else
-  echo "OK: XAIR_Runtime/xair package complete"
-fi
-
-if [ ! -f "$DATA/e10_toctou.csv" ] || [ ! -f "$DATA/e4_load_http.csv" ]; then
-  echo "FAIL: missing frozen campaign CSVs under data/execution-gap/" >&2
-  FAIL=1
-else
-  echo "OK: data/execution-gap/ campaign CSVs present"
-fi
+done
+[ "$FAIL" -eq 0 ] && echo "OK: canonical experiments/results/ present"
 
 if [ "$FAIL" -ne 0 ]; then
   echo "=== Release verification FAILED ===" >&2
   exit 1
 fi
 
-"$SCRIPTS/verify_artifact.sh"
-TRACKED="$(git -C "$REPO_ROOT" ls-files "$XAIR_ROOT/xair/core" | wc -l)"
+"$ROOT/scripts/verify_artifact.sh"
+
+TRACKED="$(git -C "$ROOT" ls-files xair/core | wc -l)"
 if [ "$TRACKED" -lt 5 ]; then
-  echo "FAIL: XAIR_Runtime/xair/core not tracked in git ($TRACKED files)" >&2
+  echo "FAIL: xair/core not tracked in git ($TRACKED files)" >&2
   exit 1
 fi
 echo "OK: xair/core tracked ($TRACKED files)"

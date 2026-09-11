@@ -702,7 +702,9 @@ def run_http_server(port=9092):
     server.serve_forever()
 
 
-async def handle_client(websocket, path):
+async def handle_client(websocket, *_legacy_path):
+    # websockets>=13 calls the handler with a single `websocket` argument;
+    # older versions also pass the connection path. Accept either.
     try:
         async for message in websocket:
             data = json.loads(message)
@@ -716,11 +718,17 @@ def run_websocket_server(port=9091):
     if not websockets:
         return
     import asyncio
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    start = websockets.serve(handle_client, "0.0.0.0", port, ping_interval=20, ping_timeout=20)
-    loop.run_until_complete(start)
-    loop.run_forever()
+
+    async def _serve() -> None:
+        # websockets>=13's asyncio server binds eagerly and requires a
+        # running loop at construction time, unlike the older
+        # loop.run_until_complete(websockets.serve(...)) pattern; the
+        # async-context-manager form below is supported across both old
+        # and new major versions.
+        async with websockets.serve(handle_client, "0.0.0.0", port, ping_interval=20, ping_timeout=20):
+            await asyncio.Future()
+
+    asyncio.run(_serve())
 
 
 def spin_node(node):

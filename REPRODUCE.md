@@ -48,7 +48,9 @@ Raw outputs land in `experiments/results/*.csv` and `experiments/results/paper_m
 |-------|--------|---------|
 | E0 | `run_e0_lifecycle.py` | Intent lifecycle transitions |
 | E1 | `run_e1_baselines.py` | Stale RESUME baselines (direct/naive/local/xair) |
+| E3 | `run_e3_http_stack.py` | Multi-producer conflict (AI vs XR) via the batch endpoint |
 | E4 | `run_e4_http_load.py` | Load latency (10k intents) |
+| E6 | `run_e6_network.py` | Real network delay/jitter/loss (`--use-netem`) |
 | E8 | `run_e8_gazebo_cell.py` | Coherent-cache cell + ROS witness |
 | E9 | `run_e9_consistency_sweep.py` | Cache-coherence class sweep |
 | E10 | `run_e10_toctou.py` | TOCTOU window under induced publish delay |

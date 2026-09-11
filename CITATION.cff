@@ -12,7 +12,7 @@ authors:
     given-names: "Giovanni"
 license: Apache-2.0
 repository-code: "https://github.com/lucadagati/XAIR_eXecution-time_Action_Intent_Runtime"
-version: "0.1.0a1"
+version: "0.1.1a1"
 keywords:
   - runtime assurance
   - execution-time validation

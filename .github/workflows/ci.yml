@@ -55,7 +55,7 @@ jobs:
         run: |
           python experiments/run_e1_baselines.py --runs 5 --baselines xair direct --seed 1
           python experiments/run_e9_consistency_sweep.py --runs 2 --seed 1
-          python experiments/run_e10_toctou.py --runs 5 --seed 1
+          python experiments/run_e10_toctou.py --runs-per-delay 5 --seed 1
           python experiments/aggregate_experiment_results.py
           python experiments/plot_results.py --out experiments/plots
       - name: Upload artifacts

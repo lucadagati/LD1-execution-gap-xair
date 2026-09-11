@@ -1,0 +1,21 @@
+{
+  "note": "Two independent E8-Gazebo campaigns (n=30 per baseline each), pooled n=60. Run 1's raw per-trial CSV was overwritten by run 2 (fixed output filename in run_e8_gazebo_cell.py); this file preserves both runs' aggregate summaries for traceability. e8_gazebo_cell_sim.csv on disk is run 2's raw per-trial data; ",
+  "run1": {
+    "xair":   {"stale_executed_rate": 0.0, "sim_motion_rate": 0.0333333333, "witness_agreement_rate": 1.0},
+    "direct": {"stale_executed_rate": 1.0, "sim_motion_rate": 0.7333333333, "witness_agreement_rate": 1.0},
+    "naive":  {"stale_executed_rate": 1.0, "sim_motion_rate": 0.2666666667, "witness_agreement_rate": 1.0},
+    "local":  {"stale_executed_rate": 0.0, "sim_motion_rate": 0.0333333333, "witness_agreement_rate": 1.0}
+  },
+  "run2": {
+    "xair":   {"stale_executed_rate": 0.0, "sim_motion_rate": 0.0,          "witness_agreement_rate": 1.0},
+    "direct": {"stale_executed_rate": 1.0, "sim_motion_rate": 0.7333333333, "witness_agreement_rate": 1.0},
+    "naive":  {"stale_executed_rate": 1.0, "sim_motion_rate": 0.5,          "witness_agreement_rate": 1.0},
+    "local":  {"stale_executed_rate": 0.0, "sim_motion_rate": 0.0333333333, "witness_agreement_rate": 1.0}
+  },
+  "pooled_n60": {
+    "xair":   {"sim_motion": "1/60",  "rate": 0.0167},
+    "direct": {"sim_motion": "44/60", "rate": 0.7333},
+    "naive":  {"sim_motion": "23/60", "rate": 0.3833},
+    "local":  {"sim_motion": "2/60",  "rate": 0.0333}
+  }
+}
