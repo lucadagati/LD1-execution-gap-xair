@@ -51,7 +51,35 @@ for i in 1 2 3 4 5; do
   sleep 1
 done
 
-# ROS 2 + adapter + rosbridge
+# AdaptiX adapter (9091/9092): always started. It degrades to HTTP-only
+# (ros_published always false) when ROS 2 isn't present -- run_with_ros.sh
+# no-ops the ROS sourcing in that case instead of failing, and the adapter's
+# own `import rclpy` is already try/except-guarded. Without this, the whole
+# HTTP surface the experiment scripts depend on (/intent /context /command)
+# would never start on a host without ROS 2, e.g. plain CI runners.
+if pgrep -f "$SCRIPTS/adaptix_quest_adapter.py" >/dev/null; then
+  echo "[OK] adaptix_quest_adapter già in esecuzione"
+else
+  echo "Avvio adaptix_quest_adapter (9091/9092)..."
+  # PYTHONPATH_PREPEND (not PYTHONPATH) so run_with_ros.sh merges it with
+  # rclpy's site-packages instead of clobbering them (see run_with_ros.sh).
+  nohup env XAIR_URL="$XAIR_URL" PYTHONPATH_PREPEND="$XAIR_ROOT:$SCRIPTS" \
+    "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/adaptix_quest_adapter.py" \
+    > "$PID_DIR/adapter.log" 2>&1 &
+  echo $! > "$PID_DIR/adapter.pid"
+  sleep 2
+fi
+
+# Health adapter (mirrors the XAIR health-poll loop above)
+for i in 1 2 3 4 5; do
+  if curl -sf http://127.0.0.1:9092/health >/dev/null; then
+    echo "[OK] adapter /health"
+    break
+  fi
+  sleep 1
+done
+
+# ROS 2 + audit witness + rosbridge (optional: only meaningful with ROS 2)
 if [ -f /opt/ros/jazzy/setup.bash ]; then
   # ROS setup.bash references optional AMENT_* vars; tolerate unbound under `set -u`.
   set +u
@@ -60,22 +88,10 @@ if [ -f /opt/ros/jazzy/setup.bash ]; then
   set -u
   if ! pgrep -f "$SCRIPTS/ros_audit_subscriber.py" >/dev/null; then
     echo "Avvio ROS audit witness..."
-    # PYTHONPATH_PREPEND (not PYTHONPATH) so run_with_ros.sh merges it with
-    # rclpy's site-packages instead of clobbering them (see run_with_ros.sh).
     nohup env ROS_AUDIT_FILE="$ROS_AUDIT_FILE" PYTHONPATH_PREPEND="$XAIR_ROOT:$SCRIPTS" \
       "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/ros_audit_subscriber.py" \
       > "$PID_DIR/ros_audit.log" 2>&1 &
     echo $! > "$PID_DIR/ros_audit.pid"
-    sleep 2
-  fi
-  if pgrep -f "$SCRIPTS/adaptix_quest_adapter.py" >/dev/null; then
-    echo "[OK] adaptix_quest_adapter già in esecuzione"
-  else
-    echo "Avvio adaptix_quest_adapter (9091/9092)..."
-    nohup env XAIR_URL="$XAIR_URL" PYTHONPATH_PREPEND="$XAIR_ROOT:$SCRIPTS" \
-      "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/adaptix_quest_adapter.py" \
-      > "$PID_DIR/adapter.log" 2>&1 &
-    echo $! > "$PID_DIR/adapter.pid"
     sleep 2
   fi
   if ! pgrep -f "rosbridge_websocket" >/dev/null; then
@@ -85,7 +101,7 @@ if [ -f /opt/ros/jazzy/setup.bash ]; then
     echo $! > "$PID_DIR/rosbridge.pid"
   fi
 else
-  echo "[WARN] ROS 2 Jazzy non installato — solo XAIR HTTP"
+  echo "[WARN] ROS 2 Jazzy non installato — solo XAIR HTTP (adapter già avviato sopra)"
 fi
 
 echo ""
