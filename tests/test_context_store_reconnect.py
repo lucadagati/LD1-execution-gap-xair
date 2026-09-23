@@ -37,8 +37,10 @@ class RedisReconnectTests(unittest.TestCase):
         with patch("xair.core.context_store.redis") as mock_redis:
             client = MagicMock()
             client.get.return_value = None
+            client.pipeline.return_value.__enter__.return_value.get.return_value = None
             mock_redis.from_url.return_value = client
-            store.update({"line": {"state": "RUN"}})
+            version = store.update({"line": {"state": "RUN"}})
+        self.assertEqual(version, 1)
         self.assertIsNotNone(store._client)
         _, _, trusted = store.snapshot()
         self.assertTrue(trusted)

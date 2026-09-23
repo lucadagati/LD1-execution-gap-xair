@@ -1,113 +1,80 @@
 #!/usr/bin/env bash
-# Avvia stack completo: Redis (optional) + XAIR + AdaptiX adapter + ROSBridge
+# Start the evaluation stack: Redis (docker, optional) + XAIR + actuator gateway (+ ROS witness/rosbridge if ROS 2 is installed).
 set -euo pipefail
 
 # shellcheck source=/dev/null
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_resolve_layout.sh"
-PID_DIR="$ADAPTIX_ROOT/.run"
-mkdir -p "$PID_DIR"
+mkdir -p "$RUN_DIR" "$XAIR_RESULTS_DIR"
 
-export XAIR_URL="${XAIR_URL:-http://127.0.0.1:8080}"
-export REDIS_URL="${REDIS_URL:-redis://127.0.0.1:6379/0}"
-export ROS_AUDIT_FILE="${ROS_AUDIT_FILE:-$XAIR_ROOT/experiments/results/ros_audit_state.json}"
+# Empty REDIS_URL selects the in-memory store (single XAIR process only).
+export REDIS_URL="${REDIS_URL-redis://127.0.0.1:6379/0}"
+export ROS_AUDIT_FILE="${ROS_AUDIT_FILE:-$XAIR_RESULTS_DIR/ros_audit_state.json}"
 
-echo "=== AdaptiX + XAIR full stack ==="
-echo "  layout: ADAPTIX_ROOT=$ADAPTIX_ROOT"
-echo "  XAIR:   $XAIR_ROOT"
+echo "=== XAIR evaluation stack ==="
+echo "  repo:    $REPO_ROOT"
+echo "  XAIR:    $XAIR_URL   gateway: $ADAPTER_URL   redis: ${REDIS_URL:-<in-memory>}"
 
-# Redis (optional via docker)
-if command -v docker &>/dev/null && [ -f "$XAIR_ROOT/docker-compose.yml" ]; then
-  if docker compose -f "$XAIR_ROOT/docker-compose.yml" ps redis 2>/dev/null | grep -q running; then
-    echo "[OK] Redis già in esecuzione"
-  else
-    echo "Avvio Redis (docker)..."
-    docker compose -f "$XAIR_ROOT/docker-compose.yml" up -d redis 2>/dev/null || true
+if [ -n "$REDIS_URL" ] && command -v docker &>/dev/null && [ -f "$REPO_ROOT/docker-compose.yml" ]; then
+  if ! docker compose -f "$REPO_ROOT/docker-compose.yml" ps redis 2>/dev/null | grep -q -i "up\|running"; then
+    echo "Starting Redis (docker compose)..."
+    docker compose -f "$REPO_ROOT/docker-compose.yml" up -d redis 2>/dev/null || true
   fi
 fi
 
-# XAIR FastAPI
-if pgrep -f "uvicorn xair.adapters.http_server" >/dev/null; then
-  echo "[OK] XAIR uvicorn già in esecuzione"
+wait_http() {  # url label
+  for _ in $(seq 1 25); do
+    if curl -sf "$1" >/dev/null; then echo "[OK] $2"; return 0; fi
+    sleep 0.2
+  done
+  echo "[FAIL] $2 not reachable at $1" >&2
+  return 1
+}
+
+if curl -sf "$XAIR_URL/v1/metrics" >/dev/null 2>&1; then
+  echo "[OK] XAIR already running at $XAIR_URL"
 else
-  if [ -f "$XAIR_ROOT/.venv/bin/uvicorn" ]; then
-    UVICORN="$XAIR_ROOT/.venv/bin/uvicorn"
-  else
-    UVICORN=uvicorn
-  fi
-  echo "Avvio XAIR su :8080..."
-  cd "$XAIR_ROOT"
-  nohup env REDIS_URL="$REDIS_URL" "$UVICORN" xair.adapters.http_server:app \
-    --host 0.0.0.0 --port 8080 > "$PID_DIR/xair.log" 2>&1 &
-  echo $! > "$PID_DIR/xair.pid"
-  sleep 2
+  echo "Starting XAIR on :$XAIR_PORT..."
+  (cd "$REPO_ROOT" && nohup env REDIS_URL="$REDIS_URL" PYTHONPATH="$REPO_ROOT" \
+    "$PY" -m uvicorn xair.adapters.http_server:app --host 127.0.0.1 --port "$XAIR_PORT" \
+    > "$RUN_DIR/xair.log" 2>&1 & echo $! > "$RUN_DIR/xair.pid")
+  wait_http "$XAIR_URL/v1/metrics" "XAIR /v1/metrics"
 fi
 
-# Health XAIR
-for i in 1 2 3 4 5; do
-  if curl -sf "$XAIR_URL/v1/metrics" >/dev/null; then
-    echo "[OK] XAIR metrics endpoint"
-    break
-  fi
-  sleep 1
-done
-
-# AdaptiX adapter (9091/9092): always started. It degrades to HTTP-only
-# (ros_published always false) when ROS 2 isn't present -- run_with_ros.sh
-# no-ops the ROS sourcing in that case instead of failing, and the adapter's
-# own `import rclpy` is already try/except-guarded. Without this, the whole
-# HTTP surface the experiment scripts depend on (/intent /context /command)
-# would never start on a host without ROS 2, e.g. plain CI runners.
-if pgrep -f "$SCRIPTS/adaptix_quest_adapter.py" >/dev/null; then
-  echo "[OK] adaptix_quest_adapter già in esecuzione"
+# The gateway always starts. Without ROS 2 it runs HTTP-only (ros_published is
+# false; gateway_released, the measured endpoint, is unaffected).
+if curl -sf "$ADAPTER_URL/health" >/dev/null 2>&1; then
+  echo "[OK] gateway already running at $ADAPTER_URL"
 else
-  echo "Avvio adaptix_quest_adapter (9091/9092)..."
+  echo "Starting actuator gateway on :$ADAPTER_HTTP_PORT (ws :$ADAPTER_WS_PORT)..."
   # PYTHONPATH_PREPEND (not PYTHONPATH) so run_with_ros.sh merges it with
-  # rclpy's site-packages instead of clobbering them (see run_with_ros.sh).
-  nohup env XAIR_URL="$XAIR_URL" PYTHONPATH_PREPEND="$XAIR_ROOT:$SCRIPTS" \
-    "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/adaptix_quest_adapter.py" \
-    > "$PID_DIR/adapter.log" 2>&1 &
-  echo $! > "$PID_DIR/adapter.pid"
-  sleep 2
+  # rclpy's site-packages instead of clobbering them.
+  nohup env XAIR_URL="$XAIR_URL" PYTHONPATH_PREPEND="$REPO_ROOT:$SCRIPTS" \
+    "$SCRIPTS/run_with_ros.sh" "$PY" "$SCRIPTS/adaptix_quest_adapter.py" "$ADAPTER_WS_PORT" "$ADAPTER_HTTP_PORT" \
+    > "$RUN_DIR/adapter.log" 2>&1 &
+  echo $! > "$RUN_DIR/adapter.pid"
+  wait_http "$ADAPTER_URL/health" "gateway /health"
 fi
 
-# Health adapter (mirrors the XAIR health-poll loop above)
-for i in 1 2 3 4 5; do
-  if curl -sf http://127.0.0.1:9092/health >/dev/null; then
-    echo "[OK] adapter /health"
-    break
-  fi
-  sleep 1
-done
-
-# ROS 2 + audit witness + rosbridge (optional: only meaningful with ROS 2)
 if [ -f /opt/ros/jazzy/setup.bash ]; then
-  # ROS setup.bash references optional AMENT_* vars; tolerate unbound under `set -u`.
   set +u
   # shellcheck disable=SC1091
   source /opt/ros/jazzy/setup.bash
   set -u
   if ! pgrep -f "$SCRIPTS/ros_audit_subscriber.py" >/dev/null; then
-    echo "Avvio ROS audit witness..."
-    nohup env ROS_AUDIT_FILE="$ROS_AUDIT_FILE" PYTHONPATH_PREPEND="$XAIR_ROOT:$SCRIPTS" \
+    echo "Starting ROS audit witness..."
+    nohup env ROS_AUDIT_FILE="$ROS_AUDIT_FILE" PYTHONPATH_PREPEND="$REPO_ROOT:$SCRIPTS" \
       "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/ros_audit_subscriber.py" \
-      > "$PID_DIR/ros_audit.log" 2>&1 &
-    echo $! > "$PID_DIR/ros_audit.pid"
-    sleep 2
+      > "$RUN_DIR/ros_audit.log" 2>&1 &
+    echo $! > "$RUN_DIR/ros_audit.pid"
   fi
   if ! pgrep -f "rosbridge_websocket" >/dev/null; then
-    echo "Avvio rosbridge :9090..."
-    nohup "$SCRIPTS/run_with_ros.sh" ros2 launch rosbridge_server rosbridge_websocket_launch.xml port:=9090 address:=0.0.0.0 \
-      > "$PID_DIR/rosbridge.log" 2>&1 &
-    echo $! > "$PID_DIR/rosbridge.pid"
+    echo "Starting rosbridge :${ROSBRIDGE_PORT:-9090}..."
+    nohup "$SCRIPTS/run_with_ros.sh" ros2 launch rosbridge_server rosbridge_websocket_launch.xml \
+      port:="${ROSBRIDGE_PORT:-9090}" address:=0.0.0.0 > "$RUN_DIR/rosbridge.log" 2>&1 &
+    echo $! > "$RUN_DIR/rosbridge.pid"
   fi
 else
-  echo "[WARN] ROS 2 Jazzy non installato — solo XAIR HTTP (adapter già avviato sopra)"
+  echo "[INFO] ROS 2 Jazzy not installed: HTTP-only gateway, no ROS witness"
 fi
 
-echo ""
-echo "Stack pronto:"
-echo "  XAIR API:    $XAIR_URL"
-echo "  Adapter:     http://0.0.0.0:9092 (/command /intent /context)"
-echo "  ROSBridge:   ws://0.0.0.0:9090"
-echo "  Verifica:    $SCRIPTS/verify_e2e.sh"
-echo "  Log:         $PID_DIR/"
+echo "Stack ready. Logs: $RUN_DIR/   E2E check: $SCRIPTS/verify_e2e.sh"

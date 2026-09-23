@@ -13,7 +13,6 @@ industrial_cell/
 └── nodes/
     ├── command_subscriber.py    # /UE_TCP_position → joint commands
     ├── gazebo_motion_tracker.py # /joint_states → e8_motion_state.json
-    ├── context_publisher.py     # XAIR context → /cell/state
     └── cell_simulator.py        # fallback tracker (no Gazebo)
 ```
 
@@ -22,29 +21,26 @@ industrial_cell/
 Ubuntu 24.04 + ROS 2 Jazzy + Gazebo Harmonic:
 
 ```bash
-cd adaptix/scripts && ./setup_gazebo.sh
+./scripts/setup_gazebo.sh
 ```
 
-## Quick start (full E8 with Gazebo)
+## Quick start (full E8-Gazebo)
 
 ```bash
-# Terminal 1: HTTP/ROS stack
-cd adaptix/scripts && ./start_full_stack.sh
-
-# Terminal 2: Gazebo Harmonic headless + ros2_control
-cd adaptix/scripts && ./start_gazebo_cell.sh
-# or: ros2 launch XAIR_Runtime/simulation/industrial_cell/launch/cell_headless.launch.py
-
-# Terminal 3: E8 with Gazebo joint motion proof
-cd adaptix/XAIR_Runtime
-.venv/bin/python experiments/run_e8_gazebo_cell.py --runs 30 --use-gazebo
+./scripts/run_e8_gazebo_full.sh 30 1   # 30 runs per baseline, campaign tag "1"
 ```
+
+The wrapper starts the HTTP/ROS stack, the headless cell
+(`scripts/start_gazebo_cell.sh`) and the joint-state motion tracker, then runs
+`experiments/run_e8_gazebo_cell.py`. Each campaign writes its own file
+(`experiments/results/e8_gazebo_campaign<tag>.csv`), so repeated campaigns are
+never overwritten.
 
 ## Fallback (ROS topics only, no Gazebo)
 
 ```bash
 python3 simulation/industrial_cell/nodes/cell_simulator.py &
-python experiments/run_e8_gazebo_cell.py --runs 30
+.venv/bin/python experiments/run_e8_gazebo_cell.py --runs 30 --campaign fallback
 ```
 
 ## Context loop
@@ -52,7 +48,7 @@ python experiments/run_e8_gazebo_cell.py --runs 30
 1. Adapter publishes `/UE_TCP_position` and `/UE_Gripper_angles` on EXECUTE.
 2. `command_subscriber` maps pose → `cell_position_controller` (arm, conveyor, gripper).
 3. `gazebo_motion_tracker` increments `motion_count` when joints move.
-4. E8 compares motion delta: Direct/Naive should move; XAIR/Local should not on stale RESUME.
+4. E8 records two witnesses per trial: the ROS audit subscriber (message seen on the actuator topic) and the joint-motion delta. Only the first is a release witness; motion is a noisier physical-effect proxy.
 
 ## Verify
 

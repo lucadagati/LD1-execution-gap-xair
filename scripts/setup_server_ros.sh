@@ -39,9 +39,7 @@ if [ "$UBUNTU_VERSION" = "24.04" ]; then
   echo ""
   echo "Per Gazebo Harmonic (E8 cell sim): $ADAPTIX_DIR/setup_gazebo.sh"
   echo ""
-  echo "Setup completato (ROS 2 Jazzy). Per avviare:"
-  echo "  source /opt/ros/jazzy/setup.bash"
-  echo "  $ADAPTIX_DIR/start_adaptix_ros_remote.sh"
+  echo "Setup completato (ROS 2 Jazzy). Per avviare lo stack: $ADAPTIX_DIR/start_full_stack.sh"
   exit 0
 fi
 
@@ -72,5 +70,4 @@ if ! ros pkg list 2>/dev/null | grep -q rosbridge; then
 fi
 
 echo ""
-echo "Setup completato. Per avviare: $ADAPTIX_DIR/start_adaptix_ros_remote.sh"
-echo "Nota: lo script start_adaptix_ros_remote.sh è configurato per ROS 2 Jazzy; su 18.04/20.04 adattare manualmente (roscore + roslaunch)."
+echo "Setup completato. Nota: start_full_stack.sh supporta solo ROS 2 Jazzy; su 18.04/20.04 avviare rosbridge manualmente."

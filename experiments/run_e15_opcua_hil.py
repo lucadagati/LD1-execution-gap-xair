@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""E15: industrial context path — OPC UA HIL when asyncua is available."""
+"""E15: OPC UA context path (local asyncua server) with intents on the HTTP gateway.
+
+Not hardware-in-the-loop: the OPC UA server runs on the same host. Without
+asyncua the suite falls back to HTTP snapshots and records transport=http_snapshot.
+"""
 
 from __future__ import annotations
 
@@ -14,12 +18,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlencode
 
-ROOT = Path(__file__).resolve().parents[1]
-ADAPTER = "http://127.0.0.1:9092"
-XAIR = "http://127.0.0.1:8080"
+from common import ADAPTER, RESULTS_DIR, ROOT, XAIR, released
+
 BRIDGE = ROOT / "simulation" / "opcua_hil_bridge.py"
-RESULTS = ROOT / "experiments" / "results" / "e15_opcua_hil.csv"
-LOG = ROOT / "experiments" / "results" / "e15_transport.log"
+RESULTS = RESULTS_DIR / "e15_opcua_hil.csv"
+LOG = RESULTS_DIR / "e15_transport.log"
 OPCUA_PORT = 4840
 
 
@@ -78,15 +81,12 @@ def remote_context_update(state: str, transport: str, bridge_proc: subprocess.Po
 
 def run_trial(run_idx: int, transport: str, bridge_proc: subprocess.Popen | None) -> list[dict]:
     init = {"line": {"state": "RUN"}, "gripper": {"state": "OPEN"}, "source": "mes", "transport": transport}
-    drift = {"line": {"state": "PAUSED"}, "gripper": {"state": "CLOSED"}, "source": "mes", "transport": transport}
     _post(f"{ADAPTER}/context", init)
     remote_context_update("RUN", transport, bridge_proc)
     if not wait_context("RUN"):
         raise RuntimeError(f"run {run_idx}: context did not reach RUN")
-    remote_context_update("PAUSED", transport, bridge_proc)
-    if not wait_context("PAUSED"):
-        raise RuntimeError(f"run {run_idx}: context did not reach PAUSED before intent")
-
+    # The intent is decided while the line is RUN (admissible at t_d); the
+    # MES then pauses the line over OPC UA before the intent is submitted.
     intent = {
         "id": str(uuid.uuid4()),
         "source": "mes",
@@ -95,6 +95,9 @@ def run_trial(run_idx: int, transport: str, bridge_proc: subprocess.Popen | None
         "preconditions": [{"expr": "line.state == 'RUN'"}],
         "payload": {"action_type": "RESUME", "target_entity": "line_1"},
     }
+    remote_context_update("PAUSED", transport, bridge_proc)
+    if not wait_context("PAUSED"):
+        raise RuntimeError(f"run {run_idx}: context did not reach PAUSED before intent")
     rows = []
     for mode in ("local_stale", "local_push", "xair"):
         q = {"mode": mode}
@@ -108,7 +111,8 @@ def run_trial(run_idx: int, transport: str, bridge_proc: subprocess.Popen | None
             "transport": transport,
             "outcome": resp.get("outcome"),
             "reason": resp.get("reason"),
-            "stale_executed": 1 if resp.get("outcome") == "EXECUTE" else 0,
+            "gateway_released": int(released(resp)),
+            "stale_executed": int(released(resp)),
         })
     return rows
 
@@ -131,7 +135,15 @@ def main() -> int:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        time.sleep(2.0)
+        import socket
+
+        deadline = time.monotonic() + 20.0
+        while time.monotonic() < deadline and bridge_proc.poll() is None:
+            try:
+                socket.create_connection(("127.0.0.1", OPCUA_PORT), timeout=0.5).close()
+                break
+            except OSError:
+                time.sleep(0.2)
         if bridge_proc.poll() is not None:
             err = bridge_proc.stderr.read().decode() if bridge_proc.stderr else ""
             raise RuntimeError(f"OPC UA bridge failed to start: {err}")
@@ -158,7 +170,7 @@ def main() -> int:
             "stale_rate": sum(r["stale_executed"] for r in sub) / len(sub),
             "runs": len(sub),
         }
-    print(json.dumps({"transport": transport, "asyncua_version": "2.0.1" if use_opcua else None, "summary": summary, "out": str(RESULTS)}, indent=2))
+    print(json.dumps({"transport": transport, "summary": summary, "out": str(RESULTS)}, indent=2))
     return 0
 
 

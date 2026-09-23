@@ -2,22 +2,50 @@ from __future__ import annotations
 
 import json
 import os
+import threading
 from typing import Any
 
 from xair.core.deep_merge import deep_merge
 
 try:
     import redis
+    from redis.exceptions import WatchError
 except ImportError:
     redis = None
 
+    class WatchError(Exception):  # type: ignore[no-redef]
+        pass
+
+
+SNAPSHOT_KEY = "xair:snapshot"
+_MAX_TX_RETRIES = 32
+
+
+def _decode(raw: str | None) -> tuple[dict, int]:
+    if not raw:
+        return {}, 0
+    doc = json.loads(raw)
+    return dict(doc.get("context") or {}), int(doc.get("version") or 0)
+
+
+def _encode(context: dict, version: int) -> str:
+    return json.dumps({"context": context, "version": version})
+
 
 class RedisContextStore:
-    """Redis-backed or in-memory context snapshot with monotonic versioning."""
+    """Versioned context snapshot, Redis-backed or in-memory.
+
+    Context and its monotonic version live in *one* serialized document, so a
+    reader always obtains a (context, version) pair that was written together.
+    With Redis, updates are an optimistic WATCH/MULTI transaction on that key,
+    which keeps the version monotonic across processes; the in-memory fallback
+    protects the same pair with a process lock.
+    """
 
     def __init__(self, url: str | None = None) -> None:
-        self._url = url or os.environ.get("REDIS_URL", "")
+        self._url = url if url is not None else os.environ.get("REDIS_URL", "")
         self._client = None
+        self._lock = threading.Lock()
         self._memory: dict[str, Any] = {}
         self._version = 0
         self._redis_required = bool(self._url)
@@ -29,9 +57,8 @@ class RedisContextStore:
 
         A client is dropped to None on any failure and only re-created here,
         so a Redis container that is not yet accepting connections at
-        process startup (a real race on cold start, e.g. a freshly launched
-        container) does not permanently disable the store for the rest of
-        the process's life: every subsequent update/snapshot retries.
+        process startup (a real race on cold start) does not permanently
+        disable the store: every subsequent update/snapshot retries.
         """
         if self._client is not None or not self._url or redis is None:
             return
@@ -43,6 +70,10 @@ class RedisContextStore:
         except Exception:
             self._client = None
             self._redis_available = False
+
+    def _drop_client(self) -> None:
+        self._client = None
+        self._redis_available = False
 
     @property
     def enabled(self) -> bool:
@@ -60,52 +91,57 @@ class RedisContextStore:
     def redis_available(self) -> bool:
         return self._redis_available
 
-    def _bump_version(self) -> int:
-        self._version += 1
-        if self._client:
-            try:
-                self._client.set("xair:context_version", str(self._version))
-                self._redis_available = True
-            except Exception:
-                self._client = None
-                self._redis_available = False
-        return self._version
+    def update(self, patch: dict) -> int:
+        """Deep-merge ``patch`` into the snapshot and advance its version atomically."""
+        with self._lock:
+            self._ensure_client()
+            if self._client is not None:
+                try:
+                    return self._update_redis(patch)
+                except Exception:
+                    self._drop_client()
+            if self._redis_required:
+                # Never advance a private in-memory version while the shared
+                # store is unreachable: readers would observe a version that
+                # no other process can see. The caller gets the last known
+                # version; snapshot() reports the store as untrusted.
+                return self._version
+            self._memory = deep_merge(self._memory, patch)
+            self._version += 1
+            return self._version
 
-    def update(self, context: dict) -> int:
-        self._ensure_client()
-        self._memory = deep_merge(self._memory, context)
-        if self._client:
-            try:
-                raw = self._client.get("xair:context")
-                merged = json.loads(raw) if raw else {}
-                merged = deep_merge(merged, context)
-                self._client.set("xair:context", json.dumps(merged))
-                self._memory = merged
-                self._redis_available = True
-            except Exception:
-                self._client = None
-                self._redis_available = False
-        return self._bump_version()
+    def _update_redis(self, patch: dict) -> int:
+        with self._client.pipeline() as pipe:
+            for _ in range(_MAX_TX_RETRIES):
+                try:
+                    pipe.watch(SNAPSHOT_KEY)
+                    context, version = _decode(pipe.get(SNAPSHOT_KEY))
+                    context = deep_merge(context, patch)
+                    version += 1
+                    pipe.multi()
+                    pipe.set(SNAPSHOT_KEY, _encode(context, version))
+                    pipe.execute()
+                    self._memory, self._version = context, version
+                    self._redis_available = True
+                    return version
+                except WatchError:
+                    continue
+        raise RuntimeError("context update lost the optimistic race too many times")
 
     def snapshot(self) -> tuple[dict, int, bool]:
-        """Return (context, version, store_trusted).
+        """Return (context, version, store_trusted) read as one consistent pair.
 
         When Redis is configured but unreachable, store_trusted is False so
-        callers must delay or revoke rather than execute on stale memory.
+        callers must revoke rather than execute on a stale local copy.
         """
-        self._ensure_client()
-        if self._client:
-            try:
-                raw = self._client.get("xair:context")
-                ver_raw = self._client.get("xair:context_version")
-                if raw:
-                    self._memory = deep_merge(self._memory, json.loads(raw))
-                if ver_raw:
-                    self._version = int(ver_raw)
-                self._redis_available = True
-            except Exception:
-                self._client = None
-                self._redis_available = False
-
-        trusted = (not self._redis_required) or self._redis_available
-        return dict(self._memory), self._version, trusted
+        with self._lock:
+            self._ensure_client()
+            if self._client is not None:
+                try:
+                    context, version = _decode(self._client.get(SNAPSHOT_KEY))
+                    self._memory, self._version = context, version
+                    self._redis_available = True
+                except Exception:
+                    self._drop_client()
+            trusted = (not self._redis_required) or self._redis_available
+            return dict(self._memory), self._version, trusted

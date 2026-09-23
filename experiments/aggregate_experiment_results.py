@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""
-Aggregate experiment CSV/JSON into summary metrics for IEEE paper.
-Computes SER, POA, FPR, conflict violations, VL with Wilson 95% CI where applicable.
+"""Aggregate every suite into the summary that backs the paper's numbers.
+
+Rates carry Wilson 95% intervals; percentiles are nearest-rank (see common.py).
+Suites that need extra infrastructure (E6 netem, E8-Gazebo, E15 OPC UA) are
+read from ``<results>/host-a-2026-09-10/`` when present, and labelled as such.
 """
 
 from __future__ import annotations
@@ -9,352 +11,284 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import math
+import statistics
+from collections import defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-RESULTS = ROOT / "experiments" / "results"
-PAPER_FIGURES = ROOT.parent / "ResearchTrack" / "execution-gap-paper" / "figures"
+from common import RESULTS_DIR, percentile, truthy, wilson_ci
+
+LEGACY_DIR = "host-a-2026-09-10"  # optional archived campaign, not part of the paper
 
 
-def wilson_ci(successes: int, n: int, z: float = 1.96) -> tuple[float, float, float]:
-    if n == 0:
-        return 0.0, 0.0, 0.0
-    p = successes / n
-    denom = 1 + z**2 / n
-    center = (p + z**2 / (2 * n)) / denom
-    margin = z * math.sqrt((p * (1 - p) + z**2 / (4 * n)) / n) / denom
-    return p, max(0, center - margin), min(1, center + margin)
-
-
-def load_csv(path: Path) -> list[dict]:
+def load(path: Path) -> list[dict]:
     if not path.exists():
         return []
     with path.open() as f:
         return list(csv.DictReader(f))
 
 
-def summarize_e1(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    out = {}
-    for baseline in sorted(set(r["baseline"] for r in rows)):
-        sub = [r for r in rows if r["baseline"] == baseline]
-        n = len(sub)
-        unknown = sum(1 for r in sub if r.get("outcome") == "UNKNOWN")
-        stale = sum(1 for r in sub if str(r.get("stale_executed", "0")) in ("1", "True", "true"))
-        obsolete = sum(1 for r in sub if str(r.get("obsolete_intent", "0")) in ("1", "True", "true"))
-        correct = sum(1 for r in sub if str(r.get("correct_revoke", "0")) in ("1", "True", "true"))
-        lats = [float(r["validation_latency_ms"]) for r in sub if float(r.get("validation_latency_ms") or 0) > 0]
-        ser_p, ser_lo, ser_hi = wilson_ci(stale, n)
-        poa_denom = max(obsolete - unknown, 1) if obsolete else n
-        poa_correct = min(correct, poa_denom)
-        poa_p, poa_lo, poa_hi = wilson_ci(poa_correct, poa_denom)
-        out[baseline] = {
-            "attempted": n,
-            "unknown_rate": unknown / n,
-            "SER": ser_p,
-            "SER_ci95": [ser_lo, ser_hi],
-            "POA": poa_p if obsolete else 1.0,
-            "POA_ci95": [poa_lo, poa_hi],
-            "vl_p99_ms": sorted(lats)[int(len(lats) * 0.99) - 1] if lats else 0,
-            "vl_max_ms": max(lats) if lats else 0,
-            "vl_mean_ms": sum(lats) / len(lats) if lats else 0,
-        }
-    return out
+def rate(k: int, n: int) -> dict:
+    lo, hi = wilson_ci(k, n)
+    return {"k": k, "n": n, "rate": k / n if n else 0.0, "ci95": [round(lo, 4), round(hi, 4)]}
 
 
-def summarize_fpr(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    n = len(rows)
-    wrong = sum(1 for r in rows if str(r.get("wrongful_revoke", "0")) in ("1", "True", "true"))
-    p, lo, hi = wilson_ci(wrong, n)
-    return {"FPR": p, "FPR_ci95": [lo, hi], "runs": n}
-
-
-def summarize_e3(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    cv = sum(int(r.get("cv", 0)) for r in rows)
-    xr_wins = sum(int(r.get("xr_wins", 0)) for r in rows)
+def lat(values: list[float]) -> dict:
     return {
-        "conflict_violations": cv,
-        "xr_win_rate": xr_wins / len(rows),
-        "runs": len(rows),
+        "n": len(values),
+        "mean": statistics.fmean(values) if values else 0.0,
+        "p50": percentile(values, 0.50),
+        "p95": percentile(values, 0.95),
+        "p99": percentile(values, 0.99),
+        "max": max(values, default=0.0),
     }
 
 
-def summarize_e4(path: Path) -> dict:
-    rows = load_csv(path)
-    return rows[0] if rows else {}
+def fnum(row: dict, key: str) -> float | None:
+    v = row.get(key)
+    return float(v) if v not in (None, "", "None") else None
 
 
-def summarize_e8(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
+def e1(rows: list[dict]) -> dict:
     out = {}
-    for baseline in sorted(set(r["baseline"] for r in rows)):
-        sub = [r for r in rows if r["baseline"] == baseline]
-        n = len(sub)
-        unknown = sum(1 for r in sub if str(r.get("unknown", "0")) in ("1", "True", "true"))
-        stale = sum(1 for r in sub if str(r.get("stale_executed", "0")) in ("1", "True", "true"))
-        observed = sum(1 for r in sub if str(r.get("stale_observed", "0")) in ("1", "True", "true"))
-        agree = sum(1 for r in sub if str(r.get("witness_agreement", "True")) in ("1", "True", "true"))
-        has_witness = any(r.get("ros_observed") not in (None, "", "None") for r in sub)
-        sim = sum(1 for r in sub if str(r.get("sim_motion", "0")) in ("1", "True", "true"))
-        arms = [float(r.get("arm_delta") or 0) for r in sub if float(r.get("arm_delta") or 0) > 0]
-        known = n - unknown
-        ser_all_p, ser_all_lo, ser_all_hi = wilson_ci(stale, n)
-        ser_known_p, ser_known_lo, ser_known_hi = wilson_ci(stale, known) if known else (0.0, 0.0, 0.0)
-        obs_p, obs_lo, obs_hi = wilson_ci(observed, known) if known else (0.0, 0.0, 0.0)
-        out[baseline] = {
-            "runs": n,
-            "known_runs": known,
-            "unknown_rate": unknown / n if n else 0,
-            "stale_executed_rate": ser_known_p,
-            "stale_executed_ci95": [ser_known_lo, ser_known_hi],
-            "stale_observed_rate": obs_p if has_witness else None,
-            "stale_observed_ci95": [obs_lo, obs_hi] if has_witness else None,
-            "witness_agreement_rate": agree / n if (n and has_witness) else None,
-            "stale_executed_rate_all_runs": ser_all_p,
-            "stale_executed_ci95_all_runs": [ser_all_lo, ser_all_hi],
-            "sim_motion_rate": sim / n if n else 0,
-            "arm_delta_mean": sum(arms) / len(arms) if arms else 0.0,
+    for b in sorted({r["baseline"] for r in rows}):
+        sub = [r for r in rows if r["baseline"] == b]
+        out[b] = {
+            "SER": rate(sum(int(r["stale_executed"]) for r in sub), len(sub)),
+            "CRR": rate(sum(int(r["correct_revoke"]) for r in sub), len(sub)),
+            "validation_latency_ms": lat([float(r["validation_latency_ms"]) for r in sub if float(r["validation_latency_ms"]) > 0]),
+            "e2e_latency_ms": lat([float(r["e2e_latency_ms"]) for r in sub]),
+            "max_intent_age_at_submit_ms": max(float(r["intent_age_at_submit_ms"]) for r in sub),
         }
+        reasons: dict[str, int] = defaultdict(int)
+        for r in sub:
+            reasons[r.get("reason") or ""] += 1
+        out[b]["reasons"] = dict(reasons)
     return out
 
 
-def summarize_e9(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    n = len(rows)
-    local_stale = sum(1 for r in rows if str(r.get("local_stale", "0")) in ("1", "True", "true"))
-    xair_blocked = sum(1 for r in rows if str(r.get("xair_blocked", "0")) in ("1", "True", "true"))
-    obs_rows = [r for r in rows if r.get("local_ros_observed") not in (None, "", "None")]
-    local_obs = sum(1 for r in obs_rows if str(r.get("local_ros_observed", "0")) in ("1", "True", "true"))
-    xair_obs = sum(1 for r in obs_rows if str(r.get("xair_ros_observed", "0")) in ("1", "True", "true"))
-    ls_p, ls_lo, ls_hi = wilson_ci(local_stale, n)
-    xb_p, xb_lo, xb_hi = wilson_ci(xair_blocked, n)
-    out = {
-        "runs": n,
-        "local_stale_rate": ls_p,
-        "local_stale_ci95": [ls_lo, ls_hi],
-        "xair_blocked_rate": xb_p,
-        "xair_blocked_ci95": [xb_lo, xb_hi],
+def fpr(rows: list[dict]) -> dict:
+    return {b: rate(sum(int(r["wrongful_revoke"]) for r in rows if r["baseline"] == b),
+                    sum(1 for r in rows if r["baseline"] == b))
+            for b in sorted({r["baseline"] for r in rows})}
+
+
+def e10(rows: list[dict]) -> dict:
+    inj = [r for r in rows if r["inject"] == "1"]
+    ctrl = [r for r in rows if r["inject"] == "0"]
+    cells = {}
+    for off in sorted({float(r["inject_offset_ms"]) for r in inj}):
+        cell = [r for r in inj if float(r["inject_offset_ms"]) == off]
+        windows: dict[str, int] = defaultdict(int)
+        for r in cell:
+            windows[r["injection_window"]] += 1
+        cells[f"{off:g}"] = {
+            "injected": len(cell),
+            "windows": dict(windows),
+            "blocked": sum(int(r["gate_blocked"]) for r in cell),
+            "released": sum(int(r["gateway_released"]) for r in cell),
+            "stale": rate(sum(int(r["stale_publish"]) for r in cell), len(cell)),
+            "potential_stale": sum(int(r["potential_stale_publish"]) for r in cell),
+            "post_release_invalidation": sum(int(r["post_release_invalidation"]) for r in cell),
+        }
+    before = [r for r in inj if r["injection_window"] == "before_recheck"]
+    return {
+        "runs": len(rows),
+        "injected": len(inj),
+        "controls": len(ctrl),
+        "controls_released": sum(int(r["gateway_released"]) for r in ctrl),
+        "by_offset_ms": cells,
+        "stale_given_before_recheck": rate(sum(int(r["stale_publish"]) for r in before), len(before)),
+        "validation_to_gate_ms_injected": lat([float(r["validation_to_gate_ms"]) for r in inj]),
+        "validation_to_release_ms_controls": lat([v for r in ctrl if (v := fnum(r, "validation_to_publish_ms")) is not None]),
+        "residual_recheck_to_release_ms": lat([v for r in rows if (v := fnum(r, "recheck_to_publish_ms")) is not None]),
     }
-    if obs_rows:
-        lo_p, lo_lo, lo_hi = wilson_ci(local_obs, len(obs_rows))
-        xo_p, xo_lo, xo_hi = wilson_ci(xair_obs, len(obs_rows))
-        out["witnessed_runs"] = len(obs_rows)
-        out["local_stale_observed_rate"] = lo_p
-        out["local_stale_observed_ci95"] = [lo_lo, lo_hi]
-        out["xair_publish_observed_rate"] = xo_p
-        out["xair_publish_observed_ci95"] = [xo_lo, xo_hi]
-    return out
 
 
-def summarize_e6(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    by_cfg: dict[str, list[dict]] = {}
+def e11(paths: list[Path]) -> dict:
+    pooled: list[dict] = []
+    per_seed = {}
+    for p in paths:
+        rows = load(p)
+        if not rows:
+            continue
+        pooled += rows
+        drifted = [r for r in rows if r["drifted"] == "1"]
+        per_seed[rows[0]["seed"]] = {
+            "runs": len(rows), "drifted": len(drifted),
+            "correct": rate(sum(int(r["correct"]) for r in rows), len(rows)),
+            "stale_on_drifted": rate(sum(int(r["stale_executed"]) for r in drifted), len(drifted)),
+            "wrongful_on_valid": rate(sum(int(r["wrongful_revoke"]) for r in rows if r["drifted"] == "0"),
+                                      sum(1 for r in rows if r["drifted"] == "0")),
+        }
+    drifted = [r for r in pooled if r["drifted"] == "1"]
+    valid = [r for r in pooled if r["drifted"] == "0"]
+    cost = {}
+    for k in sorted({int(r["predicate_count"]) for r in valid}):
+        cost[str(k)] = lat([float(r["validation_latency_ms"]) for r in valid if int(r["predicate_count"]) == k])
+    return {
+        "per_seed": per_seed,
+        "pooled": {
+            "runs": len(pooled), "drifted": len(drifted),
+            "correct": rate(sum(int(r["correct"]) for r in pooled), len(pooled)),
+            "stale_on_drifted": rate(sum(int(r["stale_executed"]) for r in drifted), len(drifted)),
+            "wrongful_on_valid": rate(sum(int(r["wrongful_revoke"]) for r in valid), len(valid)),
+        },
+        "validation_cost_by_predicate_count_valid_only": cost,
+    }
+
+
+def e12(rows: list[dict]) -> dict:
+    cells: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
-        key = f"d{r.get('delay_ms',0)}_j{r.get('jitter_ms',0)}_l{r.get('loss_pct',0)}"
-        by_cfg.setdefault(key, []).append(r)
-    conditions = {}
-    for key, sub in sorted(by_cfg.items()):
-        n = len(sub)
-        rev = sum(1 for r in sub if r.get("outcome") == "REVOKE")
-        unk = sum(1 for r in sub if r.get("outcome") in (None, "", "UNKNOWN"))
-        p, lo, hi = wilson_ci(rev, n)
-        conditions[key] = {
-            "runs": n,
-            "revoke_rate": p,
-            "revoke_ci95": [lo, hi],
-            "unknown_rate": unk / n if n else 0,
+        cells[f"{r['mode']}|{r['producers']}|{r['context_kb']}"].append(r)
+    out = {}
+    for key, sub in sorted(cells.items()):
+        out[key] = {
+            "repetitions": len(sub),
+            "released": sum(int(r["released"]) for r in sub),
+            "trials": sum(int(r["trials"]) for r in sub),
+            "connection_retries": sum(int(r.get("connection_retries") or 0) for r in sub),
+            "median_throughput_ips": statistics.median(float(r["throughput_ips"]) for r in sub),
+            "median_p50_ms": statistics.median(float(r["e2e_p50_ms"]) for r in sub),
+            "median_p99_ms": statistics.median(float(r["e2e_p99_ms"]) for r in sub),
+            "max_p99_ms": max(float(r["e2e_p99_ms"]) for r in sub),
         }
-    return {"conditions": conditions, "rows": len(rows)}
-
-
-def summarize_e9_sweep(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    out: dict[str, dict] = {}
-    for policy in sorted(set(r["policy"] for r in rows)):
-        sub = [r for r in rows if r["policy"] == policy]
-        stale = sum(int(r.get("stale_executed", 0)) for r in sub)
-        p, lo, hi = wilson_ci(stale, len(sub))
-        out[policy] = {"runs": len(sub), "stale_rate": p, "stale_ci95": [lo, hi]}
     return out
 
 
-def summarize_e10(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-
-    def pct(vals: list[float], q: float) -> float:
-        s = sorted(vals)
-        if not s:
-            return 0.0
-        idx = min(len(s) - 1, max(0, int(len(s) * q) - (1 if q >= 1 else 0)))
-        return s[idx]
-
-    gate_lat = [float(r["validation_to_gate_ms"]) for r in rows if r.get("validation_to_gate_ms")]
-    release_lat = [float(r["validation_to_publish_ms"]) for r in rows if r.get("validation_to_publish_ms")]
-    injected = [r for r in rows if int(r.get("inject", 0))]
-    blocked = sum(int(r.get("toctou_blocked", 0)) for r in injected)
-    stale = sum(int(r.get("stale_publish", 0)) for r in injected)
-    n_inj = len(injected)
-    _, lo, hi = wilson_ci(blocked, n_inj) if n_inj else (0.0, 0.0, 0.0)
-    return {
-        "runs": len(rows),
-        "injected_runs": n_inj,
-        "timing_valid_injections": sum(1 for r in injected if r.get("timing_valid") == "1"),
-        "toctou_blocked": blocked,
-        "toctou_blocked_rate": blocked / n_inj if n_inj else 0,
-        "blocked_ci95": [lo, hi],
-        "stale_publish": stale,
-        "stale_publish_rate": stale / n_inj if n_inj else 0,
-        "validation_to_gate_p50_ms": pct(gate_lat, 0.5),
-        "validation_to_gate_p95_ms": pct(gate_lat, 0.95),
-        "validation_to_gate_p99_ms": pct(gate_lat, 0.99),
-        "validation_to_release_p50_ms": pct(release_lat, 0.5),
-        "validation_to_release_p95_ms": pct(release_lat, 0.95),
-        "validation_to_release_p99_ms": pct(release_lat, 0.99),
-    }
-
-
-def summarize_e11(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    drifted = [r for r in rows if int(r.get("drifted", 0) or 0) == 1]
-    correct = sum(int(r.get("correct", 0) or 0) for r in rows)
-    stale = sum(int(r.get("stale_executed", 0) or 0) for r in drifted)
-    p, lo, hi = wilson_ci(stale, len(drifted)) if drifted else (0.0, 0.0, 0.0)
-    cp, clo, chi = wilson_ci(correct, len(rows))
-    return {
-        "runs": len(rows),
-        "drifted_runs": len(drifted),
-        "correct_rate": cp,
-        "correct_ci95": [clo, chi],
-        "rate": p,
-        "ci95": [lo, hi],
-    }
-
-
-def summarize_generic_rate(path: Path, field: str) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    stale = sum(int(r.get(field, 0)) for r in rows)
-    p, lo, hi = wilson_ci(stale, len(rows))
-    return {"runs": len(rows), "rate": p, "ci95": [lo, hi]}
-
-
-def summarize_e13(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    by_fault: dict[str, list] = {}
+def grouped_rate(rows: list[dict], keys: tuple[str, ...], field: str) -> dict:
+    groups: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
-        by_fault.setdefault(r.get("fault", "unknown"), []).append(r)
+        groups["|".join(r[k] for k in keys)].append(r)
+    return {k: rate(sum(int(truthy(r[field])) for r in v), len(v)) for k, v in sorted(groups.items())}
+
+
+def e6(rows: list[dict]) -> dict:
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        groups[f"d{r['delay_ms']}_j{r['jitter_ms']}_l{r['loss_pct']}"].append(r)
     out = {}
-    for fault, sub in sorted(by_fault.items()):
-        passed = sum(1 for r in sub if str(r.get("pass", "")).lower() in ("true", "1"))
-        out[fault] = {"runs": len(sub), "pass_rate": passed / len(sub)}
-    return out
-
-
-def summarize_e14(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    out: dict[str, dict] = {}
-    for scenario in sorted(set(r["scenario"] for r in rows)):
-        for baseline in sorted(set(r["baseline"] for r in rows if r["scenario"] == scenario)):
-            sub = [r for r in rows if r["scenario"] == scenario and r["baseline"] == baseline]
-            stale = sum(int(r.get("stale_executed", 0)) for r in sub)
-            p, lo, hi = wilson_ci(stale, len(sub))
-            out.setdefault(scenario, {})[baseline] = {"runs": len(sub), "stale_rate": p, "stale_ci95": [lo, hi]}
-    return out
-
-
-def summarize_a1(path: Path) -> dict:
-    rows = load_csv(path)
-    if not rows:
-        return {}
-    out = {}
-    for arm in sorted(set(r.get("arm", r.get("baseline", "")) for r in rows)):
-        sub = [r for r in rows if r.get("arm", r.get("baseline")) == arm]
-        n = len(sub)
-        stale = sum(1 for r in sub if str(r.get("stale_executed", "0")) in ("1", "True", "true"))
-        valid = sum(1 for r in sub if str(r.get("schema_valid", "1")) in ("1", "True", "true"))
-        ser_p, ser_lo, ser_hi = wilson_ci(stale, n)
-        out[arm] = {
-            "attempted": n,
-            "SER": ser_p,
-            "SER_ci95": [ser_lo, ser_hi],
-            "schema_validity_rate": valid / n if n else 0,
+    for key, v in groups.items():
+        drifted = [r for r in v if r["drifted"] == "1"]
+        valid = [r for r in v if r["drifted"] == "0"]
+        reasons: dict[str, int] = defaultdict(int)
+        for r in drifted:
+            if r["gateway_released"] == "0":
+                reason = r.get("reason") or ""
+                kind = "context" if "precondition" in reason else "temporal" if ("obsolete" in reason or "deadline" in reason) else reason
+                reasons[kind] += 1
+        out[key] = {
+            "netem_applied": all(r["netem_applied"] == "1" for r in v),
+            "stale_on_drifted": rate(sum(int(r["gateway_released"]) for r in drifted), len(drifted)),
+            "revoke_reasons_drifted": dict(reasons),
+            "wrongful_on_valid": rate(sum(1 - int(r["gateway_released"]) for r in valid), len(valid)),
+            "e2e_ms": lat([float(r["e2e_latency_ms"]) for r in v]),
         }
     return out
 
 
-def main():
+def e8(paths: list[Path]) -> dict:
+    out = {}
+    for p in paths:
+        rows = load(p)
+        if not rows:
+            continue
+        camp = {}
+        for b in sorted({r["baseline"] for r in rows}):
+            sub = [r for r in rows if r["baseline"] == b]
+            camp[b] = {
+                "released": rate(sum(int(r["gateway_released"]) for r in sub), len(sub)),
+                "ros_observed": sum(r["ros_observed"] == "1" for r in sub),
+                "ros_witness_agrees": rate(sum(r["ros_witness_agrees"] == "1" for r in sub), len(sub)),
+                "sim_motion": rate(sum(int(r["sim_motion"]) for r in sub), len(sub)),
+                "max_intent_age_at_submit_ms": max(float(r["intent_age_at_submit_ms"]) for r in sub),
+            }
+        out[rows[0]["campaign"]] = camp
+    return out
+
+
+def legacy(base: Path) -> dict:
+    out: dict = {"host": LEGACY_DIR}
+    e6 = load(base / "e6_network.csv")
+    if e6:
+        groups: dict[str, list[dict]] = defaultdict(list)
+        for r in e6:
+            groups[f"d{r['delay_ms']}_j{r['jitter_ms']}_l{r['loss_pct']}"].append(r)
+        out["e6_network"] = {
+            k: {"revoke": rate(sum(r["outcome"] == "REVOKE" for r in v), len(v)),
+                "median_e2e_ms": statistics.median(float(r["e2e_latency_ms"]) for r in v),
+                "reason_logged": "reason" in v[0], "valid_controls": sum(1 for r in v if r.get("drifted") == "0")}
+            for k, v in groups.items()
+        }
+    e8 = load(base / "e8_gazebo_cell_sim.csv")
+    if e8:
+        out["e8_gazebo_campaign2"] = {
+            b: {"released": rate(sum(truthy(r["stale_executed"]) for r in e8 if r["baseline"] == b), sum(1 for r in e8 if r["baseline"] == b)),
+                "ros_witness_agrees": rate(sum(truthy(r["witness_agreement"]) for r in e8 if r["baseline"] == b), sum(1 for r in e8 if r["baseline"] == b)),
+                "sim_motion": rate(sum(truthy(r["sim_motion"]) for r in e8 if r["baseline"] == b), sum(1 for r in e8 if r["baseline"] == b))}
+            for b in sorted({r["baseline"] for r in e8})
+        }
+    pooled = base / "e8_gazebo_pooled_summary.json"
+    if pooled.exists():
+        out["e8_gazebo_pooled_summary"] = json.loads(pooled.read_text())
+    e15 = load(base / "e15_opcua_hil.csv")
+    if e15:
+        out["e15_opcua"] = grouped_rate(e15, ("mode",), "stale_executed")
+        out["e15_transport"] = sorted({r["transport"] for r in e15})
+    return out
+
+
+def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out", type=Path, default=RESULTS / "paper_metrics_summary.json")
+    parser.add_argument("--results", type=Path, default=RESULTS_DIR)
+    parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
+    R = args.results
+    out_path = args.out or R / "paper_metrics_summary.json"
 
-    summary = {
-        "e1_baselines": summarize_e1(RESULTS / "e1_baselines.csv"),
-        "fpr": summarize_fpr(RESULTS / "e1_fpr.csv"),
-        "e3": summarize_e3(RESULTS / "e3_conflict_http.csv"),
-        "e4_http": summarize_e4(RESULTS / "e4_load_http.csv"),
-        "e6_network": summarize_e6(RESULTS / "e6_network.csv"),
-        "e8_cell": summarize_e8(RESULTS / "e8_gazebo_cell.csv"),
-        "e8_gazebo_sim": summarize_e8(RESULTS / "e8_gazebo_cell_sim.csv")
-        if (RESULTS / "e8_gazebo_cell_sim.csv").exists()
-        else None,
-        "e9_shared_context": summarize_e9(RESULTS / "e9_shared_context.csv"),
-    }
-    for path, key, fn in (
-        (RESULTS / "e9_consistency_sweep.csv", "e9_consistency_sweep", summarize_e9_sweep),
-        (RESULTS / "e10_toctou.csv", "e10_toctou", summarize_e10),
-        (RESULTS / "e11_stratified.csv", "e11_stratified", summarize_e11),
-        (RESULTS / "e15_opcua_hil.csv", "e15_opcua_hil", lambda p: summarize_generic_rate(p, "stale_executed")),
-    ):
-        if path.exists():
-            summary[key] = fn(path)
-    if (RESULTS / "e12_scaling.csv").exists():
-        summary["e12_scaling"] = load_csv(RESULTS / "e12_scaling.csv")
-    if (RESULTS / "e13_faults.csv").exists():
-        summary["e13_faults"] = summarize_e13(RESULTS / "e13_faults.csv")
-    if (RESULTS / "e14_variants.csv").exists():
-        summary["e14_variants"] = summarize_e14(RESULTS / "e14_variants.csv")
-    e7 = RESULTS / "e7_faults.json"
-    if e7.exists():
-        summary["e7_faults"] = json.loads(e7.read_text())
-    e0 = RESULTS / "e0_lifecycle.json"
-    if e0.exists():
-        summary["e0_lifecycle"] = json.loads(e0.read_text())
-    if (RESULTS / "a1_baselines.csv").exists():
-        summary["a1_baselines"] = summarize_a1(RESULTS / "a1_baselines.csv")
-    if (RESULTS / "a2_latency_sweep.csv").exists():
-        summary["a2_latency"] = load_csv(RESULTS / "a2_latency_sweep.csv")
-    if (RESULTS / "a3_agent_loop.csv").exists():
-        summary["a3_agent"] = load_csv(RESULTS / "a3_agent_loop.csv")
-    a4 = RESULTS / "a4_evidence_audit.json"
-    if a4.exists():
-        summary["a4_audit"] = json.loads(a4.read_text())
-    args.out.write_text(json.dumps(summary, indent=2))
+    summary: dict = {"results_dir": str(R)}
+    if (R / "e0_lifecycle.json").exists():
+        e0 = json.loads((R / "e0_lifecycle.json").read_text())
+        summary["e0"] = {"passed": e0["passed"], "total": e0["total"]}
+    if rows := load(R / "e1_baselines.csv"):
+        summary["e1"] = e1(rows)
+    if rows := load(R / "e1_fpr.csv"):
+        summary["e1_fpr"] = fpr(rows)
+    if rows := load(R / "e3_conflict_http.csv"):
+        summary["e3"] = {"runs": len(rows), "xr_wins": sum(int(r["xr_wins"]) for r in rows),
+                         "conflict_violations": sum(int(r["cv"]) for r in rows)}
+    if rows := load(R / "e4_load_http.csv"):
+        summary["e4"] = {k: float(v) for k, v in rows[0].items()}
+    if rows := load(R / "e9_consistency_sweep.csv"):
+        summary["e9"] = {"by_policy": grouped_rate(rows, ("policy",), "stale_executed"),
+                         "by_policy_delay": grouped_rate(rows, ("policy", "delay_ms"), "stale_executed")}
+    if rows := load(R / "e10_toctou.csv"):
+        summary["e10"] = e10(rows)
+    if rows := load(R / "e10_toctou_boundary.csv"):
+        summary["e10_boundary"] = e10(rows)
+    e11_paths = sorted(R.glob("e11_stratified_seed*.csv"))
+    if e11_paths:
+        summary["e11"] = e11(e11_paths)
+    if rows := load(R / "e12_scaling.csv"):
+        summary["e12"] = e12(rows)
+    if rows := load(R / "e13_faults.csv"):
+        summary["e13"] = {"by_fault": grouped_rate(rows, ("fault",), "pass"),
+                          "passed": sum(truthy(r["pass"]) for r in rows), "total": len(rows)}
+    if rows := load(R / "e14_variants.csv"):
+        summary["e14"] = grouped_rate(rows, ("scenario", "baseline"), "stale_executed")
+    e6_runs = {p.stem: e6(load(p)) for p in sorted(R.glob("e6_network*.csv")) if load(p)}
+    if e6_runs:
+        summary["e6"] = e6_runs
+    e8_paths = sorted(R.glob("e8_gazebo_campaign*.csv"))
+    if e8_paths:
+        summary["e8_gazebo"] = e8(e8_paths)
+    if rows := load(R / "e15_opcua_hil.csv"):
+        summary["e15"] = {"by_mode": grouped_rate(rows, ("mode",), "stale_executed"),
+                          "transport": sorted({r["transport"] for r in rows})}
+    if (R / LEGACY_DIR).is_dir():
+        summary["legacy_host_a"] = legacy(R / LEGACY_DIR)
+
+    out_path.write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
     return 0
 

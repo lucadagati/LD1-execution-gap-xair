@@ -1,27 +1,20 @@
 #!/usr/bin/env bash
-# Canonical IEEE TII paper experiment campaign — writes to XAIR experiments/results/.
+# Canonical HTTP campaign behind the paper's tables (~25 min on an idle host).
+# E6 (tc netem), E8-Gazebo and E15 need extra infrastructure and are run
+# separately (see experiments/EVALUATION.md).
 set -euo pipefail
 
 # shellcheck source=/dev/null
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_resolve_layout.sh"
-XAIR="$XAIR_ROOT"
-export XAIR_URL="${XAIR_URL:-http://127.0.0.1:8080}"
+[ -x "$REPO_ROOT/.venv/bin/python" ] || "$SCRIPTS/ensure_venv.sh"
+source "$SCRIPTS/_resolve_layout.sh"
+X="$REPO_ROOT/experiments"
+export XAIR_URL ADAPTER_URL XAIR_RESULTS_DIR
 
-echo "=== Paper campaign (canonical CSV, AIS/XAIR v0.2) ==="
-
-if [ ! -x "$XAIR/.venv/bin/python" ]; then
-  echo "[preflight] Creating XAIR venv (required by start_full_stack.sh before it can launch uvicorn)..."
-  python3 -m venv "$XAIR/.venv"
-  "$XAIR/.venv/bin/pip" install -e "$XAIR[dev]" -q
-fi
-PY="$XAIR/.venv/bin/python"
-
+echo "=== Paper campaign -> $XAIR_RESULTS_DIR ==="
 "$SCRIPTS/start_full_stack.sh"
-
-mkdir -p "$XAIR/experiments/results"
-
-echo "[preflight] Clearing stale experiment outputs..."
-find "$XAIR/experiments/results" -maxdepth 1 -type f \( -name '*.csv' -o -name '*.json' \) ! -name 'environment.txt' -delete
+mkdir -p "$XAIR_RESULTS_DIR"
+find "$XAIR_RESULTS_DIR" -maxdepth 1 -type f \( -name '*.csv' -o -name '*.json' -o -name '*.txt' \) -delete
 
 {
   date -u +"utc=%Y-%m-%dT%H:%M:%SZ"
@@ -29,60 +22,31 @@ find "$XAIR/experiments/results" -maxdepth 1 -type f \( -name '*.csv' -o -name '
   command -v lscpu >/dev/null && lscpu
   command -v free >/dev/null && free -h
   "$PY" --version
-  command -v ros2 >/dev/null && ros2 doctor --report || true
-} > "$XAIR/experiments/results/environment.txt"
+  "$PY" -c "import importlib.metadata as m; print(' '.join(f'{p}=={m.version(p)}' for p in ['fastapi','uvicorn','pydantic','jsonschema','redis']))"
+  echo "redis_url=${REDIS_URL-redis://127.0.0.1:6379/0}"
+  command -v ros2 >/dev/null && ros2 doctor --report || echo "ros2=absent"
+} > "$XAIR_RESULTS_DIR/environment.txt"
 
-curl -sf "$XAIR_URL/v1/metrics" >/dev/null
-curl -sf http://127.0.0.1:9092/health >/dev/null
+echo "[preflight] unit tests"
+(cd "$REPO_ROOT" && "$PY" -m pytest -q tests)
 
-echo "[preflight] Contract/runtime unit tests..."
-PYTHONPATH="$XAIR" $PY -m unittest discover -s "$XAIR/tests" -p 'test_contract*.py' -v
+step() { echo "[$1] $2"; }
+step 1/14 "E0 lifecycle";               "$PY" "$X/run_e0_lifecycle.py" >/dev/null
+step 2/14 "E1 baselines";               "$PY" "$X/run_e1_baselines.py" --runs 100 --seed 42
+step 3/14 "E1 valid-intent FPR";        "$PY" "$X/run_e1_fpr.py" --runs 100
+step 4/14 "E3 conflict";                "$PY" "$X/run_e3_http_stack.py" --runs 100
+step 5/14 "E4 HTTP load";               "$PY" "$X/run_e4_http_load.py" --intents 10000
+step 6/14 "E9 consistency sweep";       "$PY" "$X/run_e9_consistency_sweep.py" --runs 10
+step 7/14 "E10 TOCTOU (0-30 ms)";       "$PY" "$X/run_e10_toctou.py" --runs-per-delay 40 --seed 42
+step 8/14 "E10 boundary (30-100 ms)";   "$PY" "$X/run_e10_toctou.py" --runs-per-delay 40 --seed 43 \
+                                          --offsets-ms 30 40 45 50 55 60 100 --out "$XAIR_RESULTS_DIR/e10_toctou_boundary.csv"
+for s in 42 7 123; do
+  step 9/14 "E11 stratified seed $s";   "$PY" "$X/run_e11_stratified.py" --runs 100 --seed "$s"
+done
+step 10/14 "E12 scaling";               "$PY" "$X/run_e12_scaling.py" --trials 100 --warmup 20 --repetitions 5 --producers 1 10 50 --context-kb 1 64
+step 11/14 "E13 faults";                "$PY" "$X/run_e13_faults.py"
+step 12/14 "E14 action classes";        "$PY" "$X/run_e14_variants.py" --runs 100
+step 13/14 "aggregate";                 "$PY" "$X/aggregate_experiment_results.py" >/dev/null
+step 14/14 "figures";                   "$PY" "$X/plot_results.py"
 
-echo "[1/13] E0 lifecycle..."
-$PY "$XAIR/experiments/run_e0_lifecycle.py"
-
-echo "[2/13] E1 baselines (100 runs)..."
-$PY "$XAIR/experiments/run_e1_baselines.py" --runs 100 --seed 42 \
-  --baselines direct naive local local_stale xair
-
-echo "[3/13] E1 valid-intent FPR (100 completed runs)..."
-$PY "$XAIR/experiments/run_e1_fpr.py" --runs 100
-
-echo "[4/13] E4 HTTP load (10000 intents)..."
-$PY "$XAIR/experiments/run_e4_http_load.py" --intents 10000
-
-echo "[5/13] E8 gazebo cell (30 runs)..."
-$PY "$XAIR/experiments/run_e8_gazebo_cell.py" --runs 30
-
-echo "[6/13] E9 shared context (30 runs)..."
-$PY "$XAIR/experiments/run_e9_shared_context.py" --runs 30
-
-echo "[7/13] E9 consistency sweep (10 runs/cell)..."
-$PY "$XAIR/experiments/run_e9_consistency_sweep.py" --runs 10 --seed 42
-
-echo "[8/13] E10 TOCTOU (200 runs, delay grid 0/1/3/10/30 ms)..."
-$PY "$XAIR/experiments/run_e10_toctou.py" --runs-per-delay 40 --seed 42
-
-echo "[9/13] E11 stratified (100 runs)..."
-$PY "$XAIR/experiments/run_e11_stratified.py" --runs 100 --seed 42
-
-echo "[10/13] E12 scaling (100 scored trials/config + warm-up)..."
-$PY "$XAIR/experiments/run_e12_scaling.py" --trials 100 --warmup 20 --repetitions 5 --producers 1 10 50 --context-kb 1 64
-
-echo "[11/13] E13 faults..."
-$PY "$XAIR/experiments/run_e13_faults.py"
-
-echo "[12/13] E14 variants (100 runs per scenario/baseline)..."
-$PY "$XAIR/experiments/run_e14_variants.py" --runs 100 --baselines direct xair local
-
-echo "[13/13] E15 OPC UA HIL (30 runs)..."
-$PY "$XAIR/experiments/run_e15_opcua_hil.py" --runs 30
-
-echo "Aggregating metrics and figures..."
-$PY "$XAIR/experiments/aggregate_experiment_results.py"
-$PY "$XAIR/experiments/plot_results.py"
-"$SCRIPTS/sync_paper_outputs.sh"
-"$SCRIPTS/clean_runtime.sh"
-"$SCRIPTS/verify_artifact.sh"
-
-echo "=== Paper campaign complete ==="
+echo "=== Campaign complete. Freeze it with scripts/sync_paper_outputs.sh ==="

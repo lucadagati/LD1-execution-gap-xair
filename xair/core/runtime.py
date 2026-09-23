@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import math
+import threading
 import time
+from collections import OrderedDict
 from datetime import datetime, timezone
 from typing import Callable
 
@@ -8,21 +11,41 @@ from xair.core.context_validator import ContextValidator
 from xair.core.coordinator import DistributedCoordinator
 from xair.core.execution_decision import ExecutionDecisionEngine
 from xair.core.intent_receiver import IntentReceiver
-from xair.core.lifecycle import LifecycleTracker
-from xair.core.models import ActionIntent, DecisionOutcome, IntentState, IntentRecord
+from xair.core.lifecycle import TERMINAL_STATES, InvalidTransition, LifecycleTracker
+from xair.core.models import ActionIntent, DecisionOutcome, IntentRecord, IntentState
 from xair.core.temporal_validator import TemporalValidator
-
 
 ActuationCallback = Callable[[ActionIntent, DecisionOutcome], None]
 
+DEFAULT_IDEMPOTENCY_RETENTION_S = 3600.0
+_VALIDATABLE_STATES = frozenset({IntentState.CREATED, IntentState.DELAYED, IntentState.DEGRADED})
+
+
+def percentile(values: list[float], q: float) -> float:
+    """Nearest-rank percentile (the definition used for every reported figure)."""
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    rank = max(1, math.ceil(q * len(ordered) - 1e-9))
+    return ordered[min(rank, len(ordered)) - 1]
+
 
 class XAIRRuntime:
-    """Orchestrates intent reception, validation, decision, and lifecycle."""
+    """Orchestrates intent reception, validation, decision, and lifecycle.
+
+    All mutations of shared state (lifecycle records, idempotency table,
+    resource locks, queue) happen under one re-entrant lock, so concurrent
+    HTTP workers observe a serializable sequence of admissions and decisions.
+    Predicate evaluation itself is stateless and runs on the snapshot the
+    caller passes in.
+    """
 
     def __init__(
         self,
         context: dict | None = None,
         on_actuation: ActuationCallback | None = None,
+        *,
+        idempotency_retention_s: float = DEFAULT_IDEMPOTENCY_RETENTION_S,
     ) -> None:
         self.receiver = IntentReceiver()
         self.temporal = TemporalValidator()
@@ -31,6 +54,8 @@ class XAIRRuntime:
         self.coordinator = DistributedCoordinator()
         self.lifecycle = LifecycleTracker()
         self.on_actuation = on_actuation
+        self.idempotency_retention_s = idempotency_retention_s
+        self._lock = threading.RLock()
         self._context_version = 0
         self._metrics = {
             "intents_received": 0,
@@ -40,24 +65,64 @@ class XAIRRuntime:
             "degraded": 0,
             "validation_latencies_ms": [],
         }
-        self._seen_ids: set[str] = set()
+        # intent id -> monotonic admission time, oldest first.
+        self._seen: OrderedDict[str, float] = OrderedDict()
 
-    def install_context_snapshot(self, snapshot: dict, version: int) -> int:
-        if version < self._context_version:
+    # ------------------------------------------------------------------ context
+
+    def install_context_snapshot(self, snapshot: dict, version: int, *, replace: bool = False) -> int:
+        """Install a snapshot unless it is older than the one already installed."""
+        with self._lock:
+            if version < self._context_version:
+                return self._context_version
+            self._context_version = version
+            if replace:
+                self.context.replace_context(snapshot)
+            else:
+                self.context.update_context(snapshot)
             return self._context_version
-        self._context_version = max(self._context_version, version)
-        self.context.update_context(snapshot)
-        return self._context_version
+
+    def update_context(self, context: dict) -> None:
+        with self._lock:
+            self.context.update_context(context)
+
+    # -------------------------------------------------------------- admission
+
+    def _expire_seen(self) -> None:
+        horizon = time.monotonic() - self.idempotency_retention_s
+        while self._seen:
+            intent_id, admitted_at = next(iter(self._seen.items()))
+            if admitted_at >= horizon:
+                break
+            self._seen.popitem(last=False)
+            record = self.lifecycle.get(intent_id)
+            if record is not None and record.state in TERMINAL_STATES:
+                self.lifecycle.forget(intent_id)
+
+    def is_duplicate(self, intent_id: str) -> bool:
+        with self._lock:
+            self._expire_seen()
+            return intent_id in self._seen
+
+    def admit(self, intent: ActionIntent, *, enqueue: bool = False) -> tuple[IntentRecord, bool]:
+        """Register an intent once per retention window; return (record, duplicate)."""
+        with self._lock:
+            self._expire_seen()
+            if intent.id in self._seen:
+                record = self.lifecycle.get(intent.id)
+                if record is not None:
+                    return record, True
+            self._seen[intent.id] = time.monotonic()
+            self._metrics["intents_received"] += 1
+            record = self.lifecycle.register(intent)
+            if enqueue:
+                self.receiver.submit(intent)
+            return record, False
 
     def submit_intent(self, intent: ActionIntent) -> IntentRecord:
-        if intent.id in self._seen_ids:
-            record = self.lifecycle.get(intent.id)
-            if record:
-                return record
-        self._seen_ids.add(intent.id)
-        self.receiver.submit(intent)
-        self._metrics["intents_received"] += 1
-        return self.lifecycle.register(intent)
+        """Admit and enqueue for a later process_next() pass."""
+        record, _ = self.admit(intent, enqueue=True)
+        return record
 
     def submit_and_process(
         self,
@@ -67,104 +132,102 @@ class XAIRRuntime:
         context_version: int | None = None,
         now: datetime | None = None,
     ) -> tuple[IntentRecord, bool]:
-        duplicate = intent.id in self._seen_ids
-        if context_snapshot is not None and context_version is not None:
-            self.install_context_snapshot(context_snapshot, context_version)
-        if duplicate:
-            return self.lifecycle.get(intent.id), True  # type: ignore[return-value]
-        self.submit_intent(intent)
-        record = self.process_intent(intent, now=now, context_version=context_version)
-        return record, False
+        with self._lock:
+            if context_snapshot is not None and context_version is not None:
+                self.install_context_snapshot(context_snapshot, context_version)
+            record, duplicate = self.admit(intent)
+            if duplicate:
+                return record, True
+            return self.process_intent(intent, now=now, context_version=context_version), False
 
-    def update_context(self, context: dict) -> None:
-        self.context.update_context(context)
+    # ------------------------------------------------------------- validation
 
     def process_next(self, now: datetime | None = None) -> IntentRecord | None:
-        intent = self.receiver.pop()
-        if intent is None:
-            return None
-        return self.process_intent(intent, now=now)
+        with self._lock:
+            intent = self.receiver.pop()
+            if intent is None:
+                return None
+            return self.process_intent(intent, now=now)
 
     def process_intent(
         self,
         intent: ActionIntent,
         now: datetime | None = None,
         *,
+        context: dict | None = None,
         context_version: int | None = None,
     ) -> IntentRecord:
-        now = now or datetime.now(timezone.utc)
-        t0 = time.perf_counter()
-        effective_version = self._context_version
-        if context_version is not None and context_version < effective_version:
+        """Validate one intent at t_v.
+
+        ``context``/``context_version`` are the snapshot the caller read
+        atomically from the store; when omitted, the installed snapshot is
+        used. A snapshot older than the installed one is rejected as stale.
+        """
+        with self._lock:
             record = self.lifecycle.get(intent.id) or self.lifecycle.register(intent)
+            if record.state not in _VALIDATABLE_STATES:
+                # Terminal, or already authorized and awaiting its t_p report:
+                # a second validation pass must not re-acquire the target.
+                return record
+            now = now or datetime.now(timezone.utc)
+            t0 = time.perf_counter()
+            installed = self._context_version
+            if context is None:
+                snapshot, version = self.context.context, installed
+            else:
+                snapshot, version = context, (installed if context_version is None else context_version)
+
             self.lifecycle.transition(intent.id, IntentState.PENDING)
             self.lifecycle.transition(intent.id, IntentState.VALIDATING)
-            record.context_version = effective_version
-            self.lifecycle.transition(
-                intent.id,
-                IntentState.REVOKED,
-                DecisionOutcome.REVOKE,
-                "stale_context_snapshot",
+            if context_version is not None and context_version < installed:
+                record.context_version = installed
+                self.lifecycle.transition(
+                    intent.id, IntentState.REVOKED, DecisionOutcome.REVOKE, "stale_context_snapshot"
+                )
+                self._metrics["revoked"] += 1
+                return record
+
+            conflict, _ = self.coordinator.check_conflict(intent)
+            temporal_ok, temporal_reason = self.temporal.validate(intent, now)
+            context_ok, context_reason = self.context.validate(intent, snapshot)
+            outcome, reason = self.decision_engine.decide(
+                intent, temporal_ok, temporal_reason, context_ok, context_reason, resource_busy=conflict
             )
-            self._metrics["revoked"] += 1
-            return self.lifecycle.get(intent.id)  # type: ignore[return-value]
 
-        working = intent
-        record = self.lifecycle.get(intent.id) or self.lifecycle.register(intent)
-        self.lifecycle.transition(intent.id, IntentState.PENDING)
-        self.lifecycle.transition(intent.id, IntentState.VALIDATING)
+            latency_ms = (time.perf_counter() - t0) * 1000.0
+            self._metrics["validation_latencies_ms"].append(latency_ms)
+            record.context_version = version
+            record.validation_latency_ms = latency_ms
 
-        conflict, _conflict_reason = self.coordinator.check_conflict(working)
-        temporal_ok, temporal_reason = self.temporal.validate(working, now)
-        context_ok, context_reason = self.context.validate(working)
-        outcome, reason = self.decision_engine.decide(
-            working,
-            temporal_ok,
-            temporal_reason,
-            context_ok,
-            context_reason,
-            resource_busy=conflict,
-        )
+            if outcome == DecisionOutcome.DEGRADE:
+                # Transform the payload, clear the degradation policy, and return
+                # the *same* identifier to the pending queue for a fresh pass.
+                record.intent = self._apply_degradation(intent)
+                self.lifecycle.transition(intent.id, IntentState.DEGRADED, outcome, reason, latency_ms)
+                self._metrics["degraded"] += 1
+                self.receiver.submit(record.intent)
+            elif outcome == DecisionOutcome.EXECUTE:
+                self.coordinator.acquire(intent)
+                record.intent = intent
+                self.lifecycle.transition(intent.id, IntentState.AUTHORIZED, outcome, reason, latency_ms)
+                self._metrics["executed"] += 1
+            elif outcome == DecisionOutcome.DELAY:
+                self.lifecycle.transition(intent.id, IntentState.DELAYED, outcome, reason, latency_ms)
+                self._metrics["delayed"] += 1
+                self.receiver.submit(intent)
+            else:
+                state = IntentState.EXPIRED if reason.startswith("deadline") else IntentState.REVOKED
+                self.lifecycle.transition(intent.id, state, outcome, reason, latency_ms)
+                self._metrics["revoked"] += 1
+            return record
 
-        latency_ms = (time.perf_counter() - t0) * 1000.0
-        self._metrics["validation_latencies_ms"].append(latency_ms)
-        record = self.lifecycle.get(intent.id)  # type: ignore[assignment]
-        record.context_version = effective_version
-        record.validation_latency_ms = latency_ms
+    def process_all(self, now: datetime | None = None) -> list[IntentRecord]:
+        results = []
+        while (r := self.process_next(now=now)) is not None:
+            results.append(r)
+        return results
 
-        if outcome == DecisionOutcome.DEGRADE:
-            # Transform the payload, clear the degradation policy, and return the
-            # *same* identifier to the pending queue for a fresh validation pass
-            # (Reference Model: DEGRADE re-enters VALIDATING rather than resolving
-            # to EXECUTE within one call).
-            working = self._apply_degradation(working)
-            record.intent = working
-            self.lifecycle.transition(
-                working.id, IntentState.DEGRADED, outcome, reason, latency_ms
-            )
-            self._metrics["degraded"] += 1
-            self.receiver.submit(working)
-            return self.lifecycle.get(intent.id)  # type: ignore[return-value]
-
-        if outcome == DecisionOutcome.EXECUTE:
-            self.coordinator.acquire(working)
-            record.intent = working
-            self.lifecycle.transition(
-                working.id, IntentState.AUTHORIZED, DecisionOutcome.EXECUTE, reason, latency_ms
-            )
-            self._metrics["executed"] += 1
-        elif outcome == DecisionOutcome.DELAY:
-            self.lifecycle.transition(
-                working.id, IntentState.DELAYED, outcome, reason, latency_ms
-            )
-            self._metrics["delayed"] += 1
-            self.receiver.submit(working)
-        else:
-            state = IntentState.EXPIRED if "deadline" in reason else IntentState.REVOKED
-            self.lifecycle.transition(working.id, state, outcome, reason, latency_ms)
-            self._metrics["revoked"] += 1
-
-        return self.lifecycle.get(intent.id)  # type: ignore[return-value]
+    # ------------------------------------------------------------ publication
 
     def confirm_publication(
         self,
@@ -174,40 +237,47 @@ class XAIRRuntime:
         *,
         context_version: int | None = None,
     ) -> IntentRecord:
-        record = self.lifecycle.get(intent_id)
-        if record is None:
-            raise KeyError(intent_id)
-        if record.publication_decision == "PUBLISH":
-            return record
-        if not publish:
-            self.coordinator.release(record.intent)
-            self.lifecycle.transition(
-                intent_id, IntentState.REVOKED, DecisionOutcome.REVOKE, reason
-            )
-            record.publication_decision = "BLOCK"
-            return record
-        if context_version is not None and context_version < record.context_version:
-            self.coordinator.release(record.intent)
-            self.lifecycle.transition(
-                intent_id, IntentState.REVOKED, DecisionOutcome.REVOKE, "context_version_changed_at_publish"
-            )
-            record.publication_decision = "BLOCK"
-            return record
-        record.publication_decision = "PUBLISH"
-        self.lifecycle.transition(intent_id, IntentState.EXECUTED, DecisionOutcome.EXECUTE, reason)
-        if self.on_actuation:
-            self.on_actuation(record.intent, DecisionOutcome.EXECUTE)
-        self.coordinator.release(record.intent)
-        return record
+        """Close the t_p gate reported by the actuator gateway.
 
-    def process_all(self, now: datetime | None = None) -> list[IntentRecord]:
-        results = []
-        while True:
-            r = self.process_next(now=now)
-            if r is None:
-                break
-            results.append(r)
-        return results
+        Only an AUTHORIZED intent can be published. A report whose context
+        version differs from the one validated at t_v is converted into a
+        suppression (v' = v is required, paper Eq. 2). Replays of an already
+        published intent are idempotent.
+        """
+        with self._lock:
+            record = self.lifecycle.get(intent_id)
+            if record is None:
+                raise KeyError(intent_id)
+            if record.publication_decision == "PUBLISH":
+                return record
+            if record.state != IntentState.AUTHORIZED:
+                raise InvalidTransition(
+                    intent_id, record.state, IntentState.EXECUTED if publish else IntentState.REVOKED
+                )
+            if publish and context_version is not None and context_version != record.context_version:
+                publish, reason = False, "context_version_changed_at_publish"
+            self.coordinator.release(record.intent)
+            if not publish:
+                self.lifecycle.transition(intent_id, IntentState.REVOKED, DecisionOutcome.REVOKE, reason)
+                record.publication_decision = "BLOCK"
+                return record
+            record.publication_decision = "PUBLISH"
+            self.lifecycle.transition(intent_id, IntentState.EXECUTED, DecisionOutcome.EXECUTE, reason)
+            if self.on_actuation:
+                self.on_actuation(record.intent, DecisionOutcome.EXECUTE)
+            return record
+
+    def supervisory_revoke(self, intent_id: str, reason: str = "human_supervisory_revoke") -> IntentRecord:
+        """Revoke a non-terminal intent; an executed intent cannot be rolled back."""
+        with self._lock:
+            record = self.lifecycle.get(intent_id)
+            if record is None:
+                raise KeyError(intent_id)
+            self.lifecycle.transition(intent_id, IntentState.REVOKED, DecisionOutcome.REVOKE, reason)
+            self.coordinator.release(record.intent)
+            return record
+
+    # ---------------------------------------------------------------- helpers
 
     def _apply_degradation(self, intent: ActionIntent) -> ActionIntent:
         """Transform payload and clear degradation policy for same-intent revalidation."""
@@ -220,15 +290,14 @@ class XAIRRuntime:
         return intent
 
     def get_metrics(self) -> dict:
-        lat = self._metrics["validation_latencies_ms"]
-        p99 = sorted(lat)[int(len(lat) * 0.99)] if lat else 0.0
-        p50 = sorted(lat)[len(lat) // 2] if lat else 0.0
-        total_exec = self._metrics["executed"] + self._metrics["degraded"]
-        stale = self._metrics["revoked"]
-        ser = stale / max(total_exec + stale, 1) if stale else 0.0
-        return {
-            **self._metrics,
-            "validation_latency_p50_ms": p50,
-            "validation_latency_p99_ms": p99,
-            "ser_proxy": ser,
-        }
+        with self._lock:
+            lat = list(self._metrics["validation_latencies_ms"])
+            decided = self._metrics["executed"] + self._metrics["degraded"] + self._metrics["revoked"]
+            return {
+                **{k: v for k, v in self._metrics.items() if k != "validation_latencies_ms"},
+                "validation_latency_p50_ms": percentile(lat, 0.50),
+                "validation_latency_p99_ms": percentile(lat, 0.99),
+                # Share of decided intents that were revoked at t_v. This is an
+                # operational counter, not SER: SER needs ground-truth labels.
+                "revoke_fraction": self._metrics["revoked"] / decided if decided else 0.0,
+            }

@@ -13,8 +13,10 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-XAIR = "http://127.0.0.1:8080"
-LOG = ROOT / "experiments" / "results" / "e15_transport.log"
+import os
+
+XAIR = os.environ.get("XAIR_URL", "http://127.0.0.1:8080").rstrip("/")
+LOG = Path(os.environ.get("XAIR_RESULTS_DIR", ROOT / "experiments" / "results")) / "e15_transport.log"
 
 
 def _post_snapshot(state: str, transport: str = "opcua") -> None:

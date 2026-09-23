@@ -1,9 +1,36 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Callable
 
 from xair.core.models import ActionIntent, DecisionOutcome, IntentRecord, IntentState
+
+S = IntentState
+
+# Admissible lifecycle transitions (paper Fig. 3). DELAYED and DEGRADED
+# re-enter PENDING because the same identifier is requeued for a later
+# validation pass; EXECUTED, REVOKED and EXPIRED are terminal.
+ALLOWED_TRANSITIONS: dict[IntentState, frozenset[IntentState]] = {
+    S.CREATED: frozenset({S.PENDING, S.REVOKED}),
+    S.PENDING: frozenset({S.VALIDATING, S.REVOKED}),
+    S.VALIDATING: frozenset({S.AUTHORIZED, S.DELAYED, S.DEGRADED, S.REVOKED, S.EXPIRED}),
+    S.DELAYED: frozenset({S.PENDING, S.REVOKED, S.EXPIRED}),
+    S.DEGRADED: frozenset({S.PENDING, S.REVOKED, S.EXPIRED}),
+    S.AUTHORIZED: frozenset({S.EXECUTED, S.REVOKED}),
+    S.EXECUTED: frozenset(),
+    S.REVOKED: frozenset(),
+    S.EXPIRED: frozenset(),
+}
+TERMINAL_STATES = frozenset(s for s, nxt in ALLOWED_TRANSITIONS.items() if not nxt)
+
+
+class InvalidTransition(RuntimeError):
+    """Raised when a caller requests a lifecycle transition the FSM forbids."""
+
+    def __init__(self, intent_id: str, current: IntentState, requested: IntentState) -> None:
+        super().__init__(f"{intent_id}: {current.value} -> {requested.value} not allowed")
+        self.intent_id = intent_id
+        self.current = current
+        self.requested = requested
 
 
 class LifecycleTracker:
@@ -22,20 +49,26 @@ class LifecycleTracker:
     def get(self, intent_id: str) -> IntentRecord | None:
         return self._records.get(intent_id)
 
+    def forget(self, intent_id: str) -> None:
+        self._records.pop(intent_id, None)
+
     def transition(
         self,
         intent_id: str,
         new_state: IntentState,
         outcome: DecisionOutcome | None = None,
         reason: str = "",
-        latency_ms: float = 0.0,
+        latency_ms: float | None = None,
     ) -> IntentRecord:
         record = self._records[intent_id]
+        if new_state not in ALLOWED_TRANSITIONS[record.state]:
+            raise InvalidTransition(intent_id, record.state, new_state)
         record.state = new_state
         if outcome is not None:
             record.outcome = outcome
         record.reason = reason
-        record.validation_latency_ms = latency_ms
+        if latency_ms is not None:
+            record.validation_latency_ms = latency_ms
         self._log(intent_id, new_state, reason, outcome)
         return record
 

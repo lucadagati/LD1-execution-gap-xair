@@ -1,18 +1,23 @@
 cff-version: 1.2.0
-title: "XAIR Runtime: Execution Layer for AI-Driven Cyber-Physical Systems"
+title: "XAIR: eXecution-time Action Intent Runtime"
 message: "If you use this software, please cite it as below."
+type: software
 authors:
   - family-names: "D'Agati"
     given-names: "Luca"
+    affiliation: "University of Messina"
   - family-names: "Tricomi"
     given-names: "Giuseppe"
+    affiliation: "University of Messina"
   - family-names: "Mirto"
     given-names: "Fabio Orazio"
+    affiliation: "University of Messina"
   - family-names: "Merlino"
     given-names: "Giovanni"
+    affiliation: "University of Messina"
 license: Apache-2.0
-repository-code: "https://github.com/lucadagati/XAIR_eXecution-time_Action_Intent_Runtime"
-version: "0.1.1a1"
+repository-code: "https://github.com/lucadagati/LD1-execution-gap-xair"
+version: "0.3.0"
 keywords:
   - runtime assurance
   - execution-time validation

@@ -1,6 +1,8 @@
-"""XAIR reference runtime — execution layer for AI/XR-driven CPS."""
+"""XAIR reference runtime — execution-time validation of AIS action intents."""
 
-from xair.core.models import ActionIntent, DecisionOutcome, IntentState
-from xair.core.runtime import XAIRRuntime
+__version__ = "0.3.0"
 
-__all__ = ["ActionIntent", "DecisionOutcome", "IntentState", "XAIRRuntime"]
+from xair.core.models import ActionIntent, DecisionOutcome, IntentState  # noqa: E402
+from xair.core.runtime import XAIRRuntime  # noqa: E402
+
+__all__ = ["ActionIntent", "DecisionOutcome", "IntentState", "XAIRRuntime", "__version__"]

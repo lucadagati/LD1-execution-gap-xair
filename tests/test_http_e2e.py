@@ -18,7 +18,7 @@ pytestmark = pytest.mark.skipif(
 def test_metrics_endpoint():
     import urllib.request
 
-    with urllib.request.urlopen("http://127.0.0.1:8080/v1/metrics", timeout=3) as r:
+    with urllib.request.urlopen(os.environ.get("XAIR_URL", "http://127.0.0.1:8080") + "/v1/metrics", timeout=3) as r:
         data = json.loads(r.read())
     assert "intents_received" in data
 
@@ -28,7 +28,7 @@ def test_revoke_on_paused_line():
 
     def post(path, body):
         req = urllib.request.Request(
-            f"http://127.0.0.1:9092/{path}",
+            os.environ.get("ADAPTER_URL", "http://127.0.0.1:9092") + f"/{path}",
             data=json.dumps(body).encode(),
             headers={"Content-Type": "application/json"},
             method="POST",
@@ -49,4 +49,4 @@ def test_revoke_on_paused_line():
             "payload": {"action_type": "STOP", "target_entity": "robot_3", "parameters": {}},
         },
     )
-    assert out.get("outcome") == "REVOKE"
+    assert out.get("outcome") == "REVOKE" and not out.get("gateway_released")

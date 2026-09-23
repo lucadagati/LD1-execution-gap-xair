@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -13,75 +13,40 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install dependencies
+      - name: Install
         run: pip install -e ".[dev]"
-      - name: Unit tests + E0 lifecycle
+      - name: Unit tests + E0 lifecycle regressions
         run: |
-          pytest tests/ -v
-          python experiments/run_e0_lifecycle.py
+          python -m pytest -q tests
+          python experiments/run_e0_lifecycle.py > /dev/null
 
   integration:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+    env:
+      REDIS_URL: redis://127.0.0.1:6379/0
+      XAIR_RESULTS_DIR: ${{ github.workspace }}/ci-results
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install XAIR deps
+      - name: Install
         run: pip install -e ".[dev]"
-      - name: Start XAIR + HTTP adapter
-        env:
-          XAIR_URL: http://127.0.0.1:8080
-          XAIR_ADAPTER_WEBSOCKET: "0"
+      - name: Start stack (HTTP-only, no ROS)
+        run: ./scripts/start_full_stack.sh
+      - name: End-to-end checks
         run: |
-          uvicorn xair.adapters.http_server:app --host 127.0.0.1 --port 8080 &
-          echo $! > /tmp/xair.pid
-          for i in $(seq 1 20); do
-            curl -sf http://127.0.0.1:8080/v1/metrics && break
-            sleep 1
-          done
-          python scripts/adaptix_quest_adapter.py 9091 9092 &
-          echo $! > /tmp/adapter.pid
-          for i in $(seq 1 20); do
-            curl -sf http://127.0.0.1:9092/health && break
-            sleep 1
-          done
-          curl -sf http://127.0.0.1:8080/v1/metrics
-          curl -sf http://127.0.0.1:9092/health
-      - name: Quick experiments
-        env:
-          XAIR_URL: http://127.0.0.1:8080
-        run: |
-          python experiments/run_e1_baselines.py --runs 5 --baselines xair direct --seed 1
-          python experiments/run_e9_consistency_sweep.py --runs 2 --seed 1
-          python experiments/run_e10_toctou.py --runs-per-delay 5 --seed 1
-          python experiments/aggregate_experiment_results.py
-          python experiments/plot_results.py --out experiments/plots
-      - name: Upload artifacts
+          ./scripts/verify_e2e.sh
+          XAIR_INTEGRATION=1 python -m pytest -q tests/test_http_e2e.py
+      - name: Smoke reproduction
+        run: VERIFY_RESULTS_DIR="$XAIR_RESULTS_DIR" ./scripts/verify_reproduction.sh
+      - name: Upload smoke results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: experiment-csv
-          path: |
-            experiments/results/*.csv
-            experiments/results/paper_metrics_summary.json
-            experiments/plots/*
-      - name: Stop background services
-        if: always()
-        run: |
-          kill "$(cat /tmp/adapter.pid)" 2>/dev/null || true
-          kill "$(cat /tmp/xair.pid)" 2>/dev/null || true
-
-  clean-clone-audit:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Clean-clone audit
-        env:
-          REPO_URL: https://github.com/${{ github.repository }}.git
-        run: bash scripts/clean_clone_audit.sh /tmp/xair-audit-ci
+          name: smoke-results
+          path: ci-results/

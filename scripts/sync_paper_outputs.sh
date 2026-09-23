@@ -1,61 +1,50 @@
 #!/usr/bin/env bash
-# Sync frozen campaign data to data/execution-gap/, metrics, paper figures, and COMMIT.txt (repo root).
+# Freeze the latest campaign into data/execution-gap/, recompute the summary, and
+# regenerate the paper figures (journal/figures/, local only).
 set -euo pipefail
 
 # shellcheck source=/dev/null
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_resolve_layout.sh"
-
-PAPER="$REPO_ROOT/ResearchTrack/execution-gap-paper"
 DATA="$REPO_ROOT/data/execution-gap"
-SRC="$XAIR_ROOT/experiments/results"
-PY="${XAIR_ROOT}/.venv/bin/python"
-[ -x "$PY" ] || PY=python3
+SRC="$XAIR_RESULTS_DIR"
 
 CAMPAIGN_FILES=(
-  environment.txt
-  e0_lifecycle.json
-  e1_baselines.csv
-  e1_fpr.csv
-  e4_load_http.csv
-  e4_load_http_detail.csv
-  e8_gazebo_cell.csv
-  e9_shared_context.csv
-  e9_consistency_sweep.csv
-  e10_toctou.csv
-  e11_stratified.csv
-  e12_scaling.csv
-  e13_faults.csv
-  e14_variants.csv
-  e15_opcua_hil.csv
-  ros_audit_state.json
+  environment.txt e0_lifecycle.json e1_baselines.csv e1_fpr.csv e3_conflict_http.csv
+  e4_load_http.csv e9_consistency_sweep.csv e10_toctou.csv e10_toctou_boundary.csv
+  e11_stratified_seed42.csv e11_stratified_seed7.csv e11_stratified_seed123.csv
+  e12_scaling.csv e13_faults.csv e14_variants.csv
 )
 
-mkdir -p "$DATA" "$PAPER/figures"
-rm -f "$DATA"/*
+missing=0
 for name in "${CAMPAIGN_FILES[@]}"; do
-  if [ -f "$SRC/$name" ]; then
-    cp -f "$SRC/$name" "$DATA/$name"
-  fi
+  [ -f "$SRC/$name" ] || { echo "MISSING: $SRC/$name" >&2; missing=1; }
 done
+[ "$missing" -eq 0 ] || { echo "Refusing to freeze an incomplete campaign." >&2; exit 1; }
 
-"$PY" "$XAIR_ROOT/experiments/aggregate_experiment_results.py" \
-  --out "$DATA/paper_metrics_summary.json"
-"$PY" "$XAIR_ROOT/experiments/plot_results.py" --out "$PAPER/figures"
+# Suites that need extra infrastructure (netns/netem, ROS 2 + Gazebo, OPC UA);
+# frozen when present.
+OPTIONAL_GLOBS=(e6_network*.csv e8_gazebo_campaign*.csv e15_opcua_hil.csv)
 
-# $REPO_ROOT (the adaptix monorepo layout) is not itself a git checkout;
-# the pushed, git-tracked repository is the flat-layout sibling directory
-# xair-github-repo/. Read its HEAD/tag rather than guessing a fixed name.
-GIT_REPO="$REPO_ROOT/xair-github-repo"
-if git -C "$GIT_REPO" rev-parse HEAD >/dev/null 2>&1; then
-  {
-    echo "commit=$(git -C "$GIT_REPO" rev-parse HEAD)"
-    echo "describe=$(git -C "$GIT_REPO" describe --tags --always 2>/dev/null || echo none)"
-    echo "tag=$(git -C "$GIT_REPO" describe --tags --exact-match 2>/dev/null || echo none)"
-    echo "repository=https://github.com/lucadagati/XAIR_eXecution-time_Action_Intent_Runtime"
-  } > "$REPO_ROOT/COMMIT.txt"
-else
-  echo "no-git" > "$REPO_ROOT/COMMIT.txt"
+mkdir -p "$DATA"
+find "$DATA" -maxdepth 1 -type f -delete   # sub-directories (legacy host data) are kept
+for name in "${CAMPAIGN_FILES[@]}"; do cp -f "$SRC/$name" "$DATA/$name"; done
+shopt -s nullglob
+for pattern in "${OPTIONAL_GLOBS[@]}"; do
+  for f in "$SRC"/$pattern; do cp -f "$f" "$DATA/"; done
+done
+shopt -u nullglob
+
+"$PY" "$REPO_ROOT/experiments/aggregate_experiment_results.py" --results "$DATA" \
+  --out "$DATA/paper_metrics_summary.json" >/dev/null
+if [ -d "$REPO_ROOT/journal" ]; then
+  "$PY" "$REPO_ROOT/experiments/plot_results.py" --results "$DATA" --out "$REPO_ROOT/journal/figures"
 fi
-date -u +"%Y-%m-%dT%H:%M:%SZ" > "$REPO_ROOT/SYNC_TIMESTAMP.txt"
 
-echo "Synced data/execution-gap/, figures/, and COMMIT.txt (repo root)"
+if git -C "$REPO_ROOT" rev-parse HEAD >/dev/null 2>&1; then
+  {
+    echo "commit=$(git -C "$REPO_ROOT" rev-parse HEAD)"
+    echo "describe=$(git -C "$REPO_ROOT" describe --tags --always --dirty 2>/dev/null || echo none)"
+    echo "repository=https://github.com/lucadagati/LD1-execution-gap-xair"
+  } > "$DATA/COMMIT.txt"
+fi
+echo "Frozen campaign in $DATA"

@@ -1,94 +1,79 @@
 #!/usr/bin/env python3
-"""E14: heterogeneous action scenarios beyond RESUME."""
+"""E14: the E1b drift pattern applied to four action classes.
+
+Each scenario seeds a context under which the intent is admissible at t_d,
+then applies a scenario-specific invalidation before submission.
+STOP is included only as a further predicate shape ("stop if still
+moving"); safety-reducing commands belong to the reflex layer and should not
+be gated by preconditions that can revoke them (paper Sec. X).
+"""
 
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import time
 import uuid
-from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-ADAPTER = "http://127.0.0.1:9092"
-RESULTS = ROOT / "experiments" / "results" / "e14_variants.csv"
+from common import RESULTS_DIR, adapter, now_iso, released, wilson_ci, write_csv
 
 SCENARIOS = {
     "RESUME": {
         "init": {"line": {"state": "RUN"}, "gripper": {"state": "OPEN"}},
         "invalidate": {"line": {"state": "PAUSED"}, "gripper": {"state": "CLOSED"}},
         "preconditions": [{"expr": "line.state == 'RUN'"}, {"expr": "gripper.state == 'OPEN'"}],
-        "action_type": "RESUME",
     },
     "STOP": {
         "init": {"line": {"state": "RUN"}, "robot": {"moving": True}},
-        "invalidate": {"line": {"state": "RUN"}, "robot": {"moving": False}},
-        "preconditions": [{"expr": "robot.moving == True"}],
-        "action_type": "STOP",
+        "invalidate": {"robot": {"moving": False}},
+        "preconditions": [{"expr": "robot.moving == true"}],
     },
     "GRASP": {
         "init": {"line": {"state": "RUN"}, "gripper": {"state": "OPEN"}},
-        "invalidate": {"line": {"state": "RUN"}, "gripper": {"state": "CLOSED"}},
+        "invalidate": {"gripper": {"state": "CLOSED"}},
         "preconditions": [{"expr": "gripper.state == 'OPEN'"}],
-        "action_type": "GRASP",
     },
     "SET_SPEED": {
         "init": {"line": {"state": "RUN"}, "robot": {"speed": 1.0}},
         "invalidate": {"line": {"state": "PAUSED"}, "robot": {"speed": 0.0}},
         "preconditions": [{"expr": "line.state == 'RUN'"}],
-        "action_type": "SET_SPEED",
     },
 }
 
 
-def _post(url: str, body: dict) -> dict:
-    import urllib.request
-
-    req = urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type": "application/json"}, method="POST")
-    with urllib.request.urlopen(req, timeout=15) as r:
-        return json.loads(r.read().decode())
-
-
-def run_scenario(name: str, cfg: dict, baseline: str, run_idx: int) -> dict:
-    _post(f"{ADAPTER}/context", cfg["init"])
+def run_scenario(name: str, cfg: dict, baseline: str, run_idx: int, pause_ms: float) -> dict:
+    adapter("context", cfg["init"])
     intent = {
         "id": str(uuid.uuid4()),
         "source": "ai",
-        "timestamp_decision": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
-        "freshness_window_ms": 500,
+        "timestamp_decision": now_iso(),
+        "freshness_window_ms": 1000,
         "preconditions": cfg["preconditions"],
-        "payload": {"action_type": cfg["action_type"], "target_entity": "robot_3", "run": run_idx},
+        "payload": {"action_type": name, "target_entity": "robot_3", "parameters": {"run": run_idx}},
     }
-    time.sleep(0.4)
-    _post(f"{ADAPTER}/context", cfg["invalidate"])
-    resp = _post(f"{ADAPTER}/intent?mode={baseline}", intent)
-    return {
-        "scenario": name,
-        "baseline": baseline,
-        "run": run_idx,
-        "stale_executed": 1 if resp.get("outcome") == "EXECUTE" else 0,
-        "outcome": resp.get("outcome"),
-    }
+    time.sleep(pause_ms / 1000.0)
+    adapter("context", cfg["invalidate"])
+    resp = adapter("intent", intent, mode=baseline)
+    rel = released(resp)
+    return {"scenario": name, "baseline": baseline, "run": run_idx, "outcome": resp.get("outcome"),
+            "reason": resp.get("reason"), "gateway_released": int(rel), "stale_executed": int(rel)}
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--runs", type=int, default=30)
-    parser.add_argument("--baselines", nargs="+", default=["direct", "xair", "local"])
+    parser.add_argument("--runs", type=int, default=100)
+    parser.add_argument("--pause-ms", type=float, default=200)
+    parser.add_argument("--baselines", nargs="+", default=["direct", "local", "xair"])
+    parser.add_argument("--out", default=str(RESULTS_DIR / "e14_variants.csv"))
     args = parser.parse_args()
-    rows = []
-    for name, cfg in SCENARIOS.items():
-        for baseline in args.baselines:
-            for i in range(args.runs):
-                rows.append(run_scenario(name, cfg, baseline, i))
-    RESULTS.parent.mkdir(parents=True, exist_ok=True)
-    with RESULTS.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
-        w.writeheader()
-        w.writerows(rows)
-    print(f"Wrote {len(rows)} rows to {RESULTS}")
+    rows = [run_scenario(n, c, b, i, args.pause_ms) for n, c in SCENARIOS.items() for b in args.baselines for i in range(args.runs)]
+    out = write_csv(Path(args.out), rows)
+    summary = {}
+    for r in rows:
+        summary.setdefault(f"{r['scenario']}/{r['baseline']}", []).append(r["stale_executed"])
+    print(json.dumps({k: {"stale": sum(v), "n": len(v), "ci95": wilson_ci(sum(v), len(v))} for k, v in summary.items()}, indent=2))
+    print(f"Wrote {len(rows)} rows to {out}")
     return 0
 
 

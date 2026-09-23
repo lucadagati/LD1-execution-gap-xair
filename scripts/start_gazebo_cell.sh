@@ -2,9 +2,10 @@
 # Start Gazebo Harmonic industrial cell (headless) for E8
 set -e
 
-ADAPTIX_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SIM_LAUNCH="$ADAPTIX_ROOT/XAIR_Runtime/simulation/industrial_cell/launch/cell_headless.launch.py"
-PID_DIR="$ADAPTIX_ROOT/.run"
+# shellcheck source=/dev/null
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_resolve_layout.sh"
+SIM_LAUNCH="$REPO_ROOT/simulation/industrial_cell/launch/cell_headless.launch.py"
+PID_DIR="$RUN_DIR"
 mkdir -p "$PID_DIR"
 
 if [ ! -f /opt/ros/jazzy/setup.bash ]; then

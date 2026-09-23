@@ -1,13 +1,36 @@
-.venv/
-venv/
+# --- Manuscript (kept locally, never published on GitHub) ---
+journal/
+
+# --- Python ---
 __pycache__/
 *.py[cod]
 *.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
+
+# --- Local secrets / environment ---
+.env
+*.env
+!*.env.example
+GPU_NVIDIA*
+
+# --- Runtime state (PID files, logs, ROS witness state) ---
 .run/
 *.log
-.DS_Store
+*.pid
+SYNC_TIMESTAMP.txt
+
+# --- Scratch experiment outputs ---
+# experiments/results/ is the working directory written by every run;
+# the frozen, paper-backing dataset lives in data/execution-gap/.
+experiments/results/
+
+# --- Editors / OS ---
 .idea/
 .vscode/
+*.swp
+.DS_Store

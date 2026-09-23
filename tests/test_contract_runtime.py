@@ -108,8 +108,9 @@ class ContractRuntimeTests(unittest.TestCase):
         self.assertFalse(duplicate)
         self.assertEqual(record.state, IntentState.AUTHORIZED)
 
-        final = runtime.confirm_publication(intent.id, True, "gate_passed", context_version=4)
-        replay = runtime.confirm_publication(intent.id, True, "gate_passed", context_version=4)
+        v = record.context_version
+        final = runtime.confirm_publication(intent.id, True, "gate_passed", context_version=v)
+        replay = runtime.confirm_publication(intent.id, True, "gate_passed", context_version=v)
         self.assertEqual(final.state, IntentState.EXECUTED)
         self.assertEqual(replay.publication_decision, "PUBLISH")
         self.assertEqual(actuations, [intent.id])

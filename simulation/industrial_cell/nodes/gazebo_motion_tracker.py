@@ -9,6 +9,7 @@ Writes experiments/results/e8_motion_state.json (source=gazebo).
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import rclpy
@@ -16,7 +17,7 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import JointState
 
-MOTION_FILE = Path(__file__).resolve().parents[3] / "experiments" / "results" / "e8_motion_state.json"
+MOTION_FILE = Path(os.environ.get("XAIR_RESULTS_DIR", Path(__file__).resolve().parents[3] / "experiments" / "results")) / "e8_motion_state.json"
 JOINT_STATE_TOPIC = "/world/conveyor_cell/model/industrial_cell/joint_state"
 TRACKED = ("arm_slide_joint", "conveyor_joint")
 THRESHOLD = 0.02

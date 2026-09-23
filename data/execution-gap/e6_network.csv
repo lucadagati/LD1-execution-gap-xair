@@ -1,0 +1,281 @@
+delay_ms,jitter_ms,loss_pct,run,drifted,outcome,reason,gateway_released,e2e_latency_ms,netem_applied
+0,0,0,0,1,REVOKE,precondition_failed: line.state == 'RUN',0,3.670262871310115,1
+0,0,0,1,1,REVOKE,precondition_failed: line.state == 'RUN',0,3.2155599910765886,1
+0,0,0,2,1,REVOKE,precondition_failed: line.state == 'RUN',0,4.467106889933348,1
+0,0,0,3,1,REVOKE,precondition_failed: line.state == 'RUN',0,6.667394191026688,1
+0,0,0,4,1,REVOKE,precondition_failed: line.state == 'RUN',0,5.847665946930647,1
+0,0,0,5,1,REVOKE,precondition_failed: line.state == 'RUN',0,4.394921939820051,1
+0,0,0,6,1,REVOKE,precondition_failed: line.state == 'RUN',0,2.511420054361224,1
+0,0,0,7,1,REVOKE,precondition_failed: line.state == 'RUN',0,6.760056829079986,1
+0,0,0,8,1,REVOKE,precondition_failed: line.state == 'RUN',0,2.7156530413776636,1
+0,0,0,9,1,REVOKE,precondition_failed: line.state == 'RUN',0,5.943085066974163,1
+0,0,0,10,1,REVOKE,precondition_failed: line.state == 'RUN',0,7.220430998131633,1
+0,0,0,11,1,REVOKE,precondition_failed: line.state == 'RUN',0,2.0637111738324165,1
+0,0,0,12,1,REVOKE,precondition_failed: line.state == 'RUN',0,7.062124088406563,1
+0,0,0,13,1,REVOKE,precondition_failed: line.state == 'RUN',0,8.96707596257329,1
+0,0,0,14,1,REVOKE,precondition_failed: line.state == 'RUN',0,5.78413694165647,1
+0,0,0,15,1,REVOKE,precondition_failed: line.state == 'RUN',0,6.802445976063609,1
+0,0,0,16,1,REVOKE,precondition_failed: line.state == 'RUN',0,7.9402311239391565,1
+0,0,0,17,1,REVOKE,precondition_failed: line.state == 'RUN',0,6.3825491815805435,1
+0,0,0,18,1,REVOKE,precondition_failed: line.state == 'RUN',0,4.886813927441835,1
+0,0,0,19,1,REVOKE,precondition_failed: line.state == 'RUN',0,3.678318113088608,1
+0,0,0,20,1,REVOKE,precondition_failed: line.state == 'RUN',0,6.592172896489501,1
+0,0,0,21,1,REVOKE,precondition_failed: line.state == 'RUN',0,6.343545857816935,1
+0,0,0,22,1,REVOKE,precondition_failed: line.state == 'RUN',0,3.586405888199806,1
+0,0,0,23,1,REVOKE,precondition_failed: line.state == 'RUN',0,6.628941977396607,1
+0,0,0,24,1,REVOKE,precondition_failed: line.state == 'RUN',0,4.295556107535958,1
+0,0,0,25,1,REVOKE,precondition_failed: line.state == 'RUN',0,7.93516100384295,1
+0,0,0,26,1,REVOKE,precondition_failed: line.state == 'RUN',0,4.090029979124665,1
+0,0,0,27,1,REVOKE,precondition_failed: line.state == 'RUN',0,9.52923996374011,1
+0,0,0,28,1,REVOKE,precondition_failed: line.state == 'RUN',0,8.955775061622262,1
+0,0,0,29,1,REVOKE,precondition_failed: line.state == 'RUN',0,7.166197989135981,1
+0,0,0,30,0,EXECUTE,published_after_gate_recheck,1,11.57935499213636,1
+0,0,0,31,0,EXECUTE,published_after_gate_recheck,1,8.52863397449255,1
+0,0,0,32,0,EXECUTE,published_after_gate_recheck,1,8.451038040220737,1
+0,0,0,33,0,EXECUTE,published_after_gate_recheck,1,15.356759075075388,1
+0,0,0,34,0,EXECUTE,published_after_gate_recheck,1,7.207936840131879,1
+0,0,0,35,0,EXECUTE,published_after_gate_recheck,1,10.463853133842349,1
+0,0,0,36,0,EXECUTE,published_after_gate_recheck,1,13.57690105214715,1
+0,0,0,37,0,EXECUTE,published_after_gate_recheck,1,18.214036943390965,1
+0,0,0,38,0,EXECUTE,published_after_gate_recheck,1,6.718629039824009,1
+0,0,0,39,0,EXECUTE,published_after_gate_recheck,1,13.240791158750653,1
+10,0,0,0,1,REVOKE,precondition_failed: line.state == 'RUN',0,93.05497794412076,1
+10,0,0,1,1,REVOKE,precondition_failed: line.state == 'RUN',0,94.41362600773573,1
+10,0,0,2,1,REVOKE,precondition_failed: line.state == 'RUN',0,87.38533477298915,1
+10,0,0,3,1,REVOKE,precondition_failed: line.state == 'RUN',0,86.36086410842836,1
+10,0,0,4,1,REVOKE,precondition_failed: line.state == 'RUN',0,85.97839716821909,1
+10,0,0,5,1,REVOKE,precondition_failed: line.state == 'RUN',0,85.01936891116202,1
+10,0,0,6,1,REVOKE,precondition_failed: line.state == 'RUN',0,84.83490301296115,1
+10,0,0,7,1,REVOKE,precondition_failed: line.state == 'RUN',0,89.34346702881157,1
+10,0,0,8,1,REVOKE,precondition_failed: line.state == 'RUN',0,91.04691189713776,1
+10,0,0,9,1,REVOKE,precondition_failed: line.state == 'RUN',0,85.78102686442435,1
+10,0,0,10,1,REVOKE,precondition_failed: line.state == 'RUN',0,89.96451296843588,1
+10,0,0,11,1,REVOKE,precondition_failed: line.state == 'RUN',0,87.39644708111882,1
+10,0,0,12,1,REVOKE,precondition_failed: line.state == 'RUN',0,90.23343701846898,1
+10,0,0,13,1,REVOKE,precondition_failed: line.state == 'RUN',0,88.78547116182745,1
+10,0,0,14,1,REVOKE,precondition_failed: line.state == 'RUN',0,86.55258407816291,1
+10,0,0,15,1,REVOKE,precondition_failed: line.state == 'RUN',0,89.95255990885198,1
+10,0,0,16,1,REVOKE,precondition_failed: line.state == 'RUN',0,87.12695096619427,1
+10,0,0,17,1,REVOKE,precondition_failed: line.state == 'RUN',0,91.56669699586928,1
+10,0,0,18,1,REVOKE,precondition_failed: line.state == 'RUN',0,94.99477595090866,1
+10,0,0,19,1,REVOKE,precondition_failed: line.state == 'RUN',0,86.30824508145452,1
+10,0,0,20,1,REVOKE,precondition_failed: line.state == 'RUN',0,90.48877493478358,1
+10,0,0,21,1,REVOKE,precondition_failed: line.state == 'RUN',0,96.54012299142778,1
+10,0,0,22,1,REVOKE,precondition_failed: line.state == 'RUN',0,93.98147603496909,1
+10,0,0,23,1,REVOKE,precondition_failed: line.state == 'RUN',0,83.2661809399724,1
+10,0,0,24,1,REVOKE,precondition_failed: line.state == 'RUN',0,86.09578688628972,1
+10,0,0,25,1,REVOKE,precondition_failed: line.state == 'RUN',0,84.2535721603781,1
+10,0,0,26,1,REVOKE,precondition_failed: line.state == 'RUN',0,83.50721304304898,1
+10,0,0,27,1,REVOKE,precondition_failed: line.state == 'RUN',0,83.75880401581526,1
+10,0,0,28,1,REVOKE,precondition_failed: line.state == 'RUN',0,83.23220699094236,1
+10,0,0,29,1,REVOKE,precondition_failed: line.state == 'RUN',0,83.0656650941819,1
+10,0,0,30,0,EXECUTE,published_after_gate_recheck,1,165.41323298588395,1
+10,0,0,31,0,EXECUTE,published_after_gate_recheck,1,165.97912390716374,1
+10,0,0,32,0,EXECUTE,published_after_gate_recheck,1,165.9054660703987,1
+10,0,0,33,0,EXECUTE,published_after_gate_recheck,1,165.90514592826366,1
+10,0,0,34,0,EXECUTE,published_after_gate_recheck,1,165.82496487535536,1
+10,0,0,35,0,EXECUTE,published_after_gate_recheck,1,165.63455807045102,1
+10,0,0,36,0,EXECUTE,published_after_gate_recheck,1,166.43601097166538,1
+10,0,0,37,0,EXECUTE,published_after_gate_recheck,1,166.04004800319672,1
+10,0,0,38,0,EXECUTE,published_after_gate_recheck,1,165.1126688811928,1
+10,0,0,39,0,EXECUTE,published_after_gate_recheck,1,166.82282695546746,1
+50,10,0,0,1,REVOKE,obsolete: elapsed 739.3ms > freshness 500ms,0,428.7778749130666,1
+50,10,0,1,1,REVOKE,obsolete: elapsed 693.8ms > freshness 500ms,0,404.1039540898055,1
+50,10,0,2,1,REVOKE,obsolete: elapsed 720.3ms > freshness 500ms,0,386.23259006999433,1
+50,10,0,3,1,REVOKE,obsolete: elapsed 698.5ms > freshness 500ms,0,399.0020069759339,1
+50,10,0,4,1,REVOKE,obsolete: elapsed 716.4ms > freshness 500ms,0,421.2950530927628,1
+50,10,0,5,1,REVOKE,obsolete: elapsed 724.9ms > freshness 500ms,0,421.4339239988476,1
+50,10,0,6,1,REVOKE,obsolete: elapsed 702.1ms > freshness 500ms,0,408.5419869516045,1
+50,10,0,7,1,REVOKE,obsolete: elapsed 727.7ms > freshness 500ms,0,404.0394430048764,1
+50,10,0,8,1,REVOKE,obsolete: elapsed 726.5ms > freshness 500ms,0,407.2967611718923,1
+50,10,0,9,1,REVOKE,obsolete: elapsed 722.2ms > freshness 500ms,0,402.11192797869444,1
+50,10,0,10,1,REVOKE,obsolete: elapsed 733.9ms > freshness 500ms,0,415.8082730136812,1
+50,10,0,11,1,REVOKE,obsolete: elapsed 779.6ms > freshness 500ms,0,458.9366230648011,1
+50,10,0,12,1,REVOKE,obsolete: elapsed 694.8ms > freshness 500ms,0,407.674569869414,1
+50,10,0,13,1,REVOKE,obsolete: elapsed 729.6ms > freshness 500ms,0,396.84732584282756,1
+50,10,0,14,1,REVOKE,obsolete: elapsed 739.0ms > freshness 500ms,0,423.25430805794895,1
+50,10,0,15,1,REVOKE,obsolete: elapsed 703.9ms > freshness 500ms,0,404.8375100828707,1
+50,10,0,16,1,REVOKE,obsolete: elapsed 748.2ms > freshness 500ms,0,435.4447692167014,1
+50,10,0,17,1,REVOKE,obsolete: elapsed 741.0ms > freshness 500ms,0,414.16459111496806,1
+50,10,0,18,1,REVOKE,obsolete: elapsed 745.7ms > freshness 500ms,0,433.0980370286852,1
+50,10,0,19,1,REVOKE,obsolete: elapsed 745.8ms > freshness 500ms,0,413.00401487387717,1
+50,10,0,20,1,REVOKE,obsolete: elapsed 707.2ms > freshness 500ms,0,392.8890530951321,1
+50,10,0,21,1,REVOKE,obsolete: elapsed 718.3ms > freshness 500ms,0,409.76207493804395,1
+50,10,0,22,1,REVOKE,obsolete: elapsed 688.7ms > freshness 500ms,0,399.1313478909433,1
+50,10,0,23,1,REVOKE,obsolete: elapsed 709.7ms > freshness 500ms,0,401.3099242001772,1
+50,10,0,24,1,REVOKE,obsolete: elapsed 737.5ms > freshness 500ms,0,432.74719920009375,1
+50,10,0,25,1,REVOKE,obsolete: elapsed 739.5ms > freshness 500ms,0,420.7376779522747,1
+50,10,0,26,1,REVOKE,obsolete: elapsed 723.5ms > freshness 500ms,0,429.17528096586466,1
+50,10,0,27,1,REVOKE,obsolete: elapsed 708.3ms > freshness 500ms,0,413.4810990653932,1
+50,10,0,28,1,REVOKE,obsolete: elapsed 703.4ms > freshness 500ms,0,412.69253101199865,1
+50,10,0,29,1,REVOKE,obsolete: elapsed 715.6ms > freshness 500ms,0,426.32327298633754,1
+50,10,0,30,0,REVOKE,obsolete: elapsed 590.8ms > freshness 500ms_at_publish,0,833.5565750021487,1
+50,10,0,31,0,REVOKE,obsolete: elapsed 560.5ms > freshness 500ms_at_publish,0,828.5218540113419,1
+50,10,0,32,0,REVOKE,obsolete: elapsed 556.5ms > freshness 500ms_at_publish,0,812.1265070512891,1
+50,10,0,33,0,REVOKE,obsolete: elapsed 573.2ms > freshness 500ms_at_publish,0,832.8415839932859,1
+50,10,0,34,0,REVOKE,obsolete: elapsed 537.9ms > freshness 500ms_at_publish,0,795.21354008466,1
+50,10,0,35,0,REVOKE,obsolete: elapsed 588.0ms > freshness 500ms_at_publish,0,834.469968220219,1
+50,10,0,36,0,REVOKE,obsolete: elapsed 552.0ms > freshness 500ms_at_publish,0,814.4691400229931,1
+50,10,0,37,0,REVOKE,obsolete: elapsed 582.5ms > freshness 500ms_at_publish,0,842.0442419592291,1
+50,10,0,38,0,REVOKE,obsolete: elapsed 578.5ms > freshness 500ms_at_publish,0,835.9190248884261,1
+50,10,0,39,0,REVOKE,obsolete: elapsed 557.1ms > freshness 500ms_at_publish,0,793.5181509237736,1
+100,10,0,0,1,REVOKE,obsolete: elapsed 1450.5ms > freshness 500ms,0,811.734332004562,1
+100,10,0,1,1,REVOKE,obsolete: elapsed 1401.5ms > freshness 500ms,0,818.7224559951574,1
+100,10,0,2,1,REVOKE,obsolete: elapsed 1446.1ms > freshness 500ms,0,828.8436268921942,1
+100,10,0,3,1,REVOKE,obsolete: elapsed 1427.5ms > freshness 500ms,0,822.0072269905359,1
+100,10,0,4,1,REVOKE,obsolete: elapsed 1430.2ms > freshness 500ms,0,803.8515981752425,1
+100,10,0,5,1,REVOKE,obsolete: elapsed 1434.7ms > freshness 500ms,0,830.1204319577664,1
+100,10,0,6,1,REVOKE,obsolete: elapsed 1388.5ms > freshness 500ms,0,808.7410579901189,1
+100,10,0,7,1,REVOKE,obsolete: elapsed 1436.4ms > freshness 500ms,0,832.0040539838374,1
+100,10,0,8,1,REVOKE,obsolete: elapsed 1417.0ms > freshness 500ms,0,812.070962972939,1
+100,10,0,9,1,REVOKE,obsolete: elapsed 1437.5ms > freshness 500ms,0,825.3623689524829,1
+100,10,0,10,1,REVOKE,obsolete: elapsed 1434.1ms > freshness 500ms,0,800.0352322123945,1
+100,10,0,11,1,REVOKE,obsolete: elapsed 1474.7ms > freshness 500ms,0,817.0952550135553,1
+100,10,0,12,1,REVOKE,obsolete: elapsed 1457.9ms > freshness 500ms,0,844.4402960594743,1
+100,10,0,13,1,REVOKE,obsolete: elapsed 1427.5ms > freshness 500ms,0,837.3638449702412,1
+100,10,0,14,1,REVOKE,obsolete: elapsed 1425.9ms > freshness 500ms,0,826.7402921337634,1
+100,10,0,15,1,REVOKE,obsolete: elapsed 1419.7ms > freshness 500ms,0,826.1064530815929,1
+100,10,0,16,1,REVOKE,obsolete: elapsed 1451.6ms > freshness 500ms,0,836.3260689657182,1
+100,10,0,17,1,REVOKE,obsolete: elapsed 1442.5ms > freshness 500ms,0,817.1556890010834,1
+100,10,0,18,1,REVOKE,obsolete: elapsed 1426.4ms > freshness 500ms,0,826.1202699504793,1
+100,10,0,19,1,REVOKE,obsolete: elapsed 1398.6ms > freshness 500ms,0,808.3078251220286,1
+100,10,0,20,1,REVOKE,obsolete: elapsed 1459.4ms > freshness 500ms,0,823.8728048745543,1
+100,10,0,21,1,REVOKE,obsolete: elapsed 1422.4ms > freshness 500ms,0,795.4866120126098,1
+100,10,0,22,1,REVOKE,obsolete: elapsed 1383.8ms > freshness 500ms,0,810.7180350925773,1
+100,10,0,23,1,REVOKE,obsolete: elapsed 1468.5ms > freshness 500ms,0,836.6400268860161,1
+100,10,0,24,1,REVOKE,obsolete: elapsed 1409.8ms > freshness 500ms,0,808.3284350577742,1
+100,10,0,25,1,REVOKE,obsolete: elapsed 1453.5ms > freshness 500ms,0,818.4111129958183,1
+100,10,0,26,1,REVOKE,obsolete: elapsed 1416.5ms > freshness 500ms,0,808.1800360232592,1
+100,10,0,27,1,REVOKE,obsolete: elapsed 1409.6ms > freshness 500ms,0,827.6484250091016,1
+100,10,0,28,1,REVOKE,obsolete: elapsed 1412.5ms > freshness 500ms,0,808.788196882233,1
+100,10,0,29,1,REVOKE,obsolete: elapsed 1427.8ms > freshness 500ms,0,840.2959131635725,1
+100,10,0,30,0,REVOKE,obsolete: elapsed 604.6ms > freshness 500ms,0,805.6201750878245,1
+100,10,0,31,0,REVOKE,obsolete: elapsed 622.5ms > freshness 500ms,0,826.1358989402652,1
+100,10,0,32,0,REVOKE,obsolete: elapsed 611.4ms > freshness 500ms,0,811.6908399388194,1
+100,10,0,33,0,REVOKE,obsolete: elapsed 605.7ms > freshness 500ms,0,804.4512739870697,1
+100,10,0,34,0,REVOKE,obsolete: elapsed 611.9ms > freshness 500ms,0,815.0170578155667,1
+100,10,0,35,0,REVOKE,obsolete: elapsed 611.5ms > freshness 500ms,0,821.1048939265311,1
+100,10,0,36,0,REVOKE,obsolete: elapsed 603.0ms > freshness 500ms,0,808.52209799923,1
+100,10,0,37,0,REVOKE,obsolete: elapsed 607.2ms > freshness 500ms,0,808.5427260957658,1
+100,10,0,38,0,REVOKE,obsolete: elapsed 623.6ms > freshness 500ms,0,822.5286640226841,1
+100,10,0,39,0,REVOKE,obsolete: elapsed 602.9ms > freshness 500ms,0,798.6878959927708,1
+250,50,0,0,1,REVOKE,obsolete: elapsed 3715.1ms > freshness 500ms,0,2079.908743966371,1
+250,50,0,1,1,REVOKE,obsolete: elapsed 3784.6ms > freshness 500ms,0,2119.714803993702,1
+250,50,0,2,1,REVOKE,obsolete: elapsed 3413.9ms > freshness 500ms,0,1986.1325540114194,1
+250,50,0,3,1,REVOKE,obsolete: elapsed 3685.0ms > freshness 500ms,0,2226.8562368117273,1
+250,50,0,4,1,REVOKE,obsolete: elapsed 3654.2ms > freshness 500ms,0,2050.845881924033,1
+250,50,0,5,1,REVOKE,obsolete: elapsed 3626.5ms > freshness 500ms,0,2085.8638118952513,1
+250,50,0,6,1,REVOKE,obsolete: elapsed 3654.2ms > freshness 500ms,0,2110.5001631658524,1
+250,50,0,7,1,REVOKE,obsolete: elapsed 3482.5ms > freshness 500ms,0,1966.2055340595543,1
+250,50,0,8,1,REVOKE,obsolete: elapsed 3525.2ms > freshness 500ms,0,2014.1290070023388,1
+250,50,0,9,1,REVOKE,obsolete: elapsed 3584.3ms > freshness 500ms,0,2164.018346229568,1
+250,50,0,10,1,REVOKE,obsolete: elapsed 3615.9ms > freshness 500ms,0,2067.366652889177,1
+250,50,0,11,1,REVOKE,obsolete: elapsed 3733.2ms > freshness 500ms,0,2096.8891480006278,1
+250,50,0,12,1,REVOKE,obsolete: elapsed 3408.9ms > freshness 500ms,0,2044.5769459474832,1
+250,50,0,13,1,REVOKE,obsolete: elapsed 3650.3ms > freshness 500ms,0,2069.0587169956416,1
+250,50,0,14,1,REVOKE,obsolete: elapsed 3642.3ms > freshness 500ms,0,2075.6996509153396,1
+250,50,0,15,1,REVOKE,obsolete: elapsed 3495.4ms > freshness 500ms,0,2041.1055258009583,1
+250,50,0,16,1,REVOKE,obsolete: elapsed 3728.1ms > freshness 500ms,0,2108.002698980272,1
+250,50,0,17,1,REVOKE,obsolete: elapsed 3604.1ms > freshness 500ms,0,2033.527865074575,1
+250,50,0,18,1,REVOKE,obsolete: elapsed 3663.1ms > freshness 500ms,0,2142.169022001326,1
+250,50,0,19,1,REVOKE,obsolete: elapsed 3499.6ms > freshness 500ms,0,1914.3389579840004,1
+250,50,0,20,1,REVOKE,obsolete: elapsed 3721.8ms > freshness 500ms,0,2056.4965789671987,1
+250,50,0,21,1,REVOKE,obsolete: elapsed 3636.0ms > freshness 500ms,0,2019.7098720818758,1
+250,50,0,22,1,REVOKE,obsolete: elapsed 3406.5ms > freshness 500ms,0,1989.7216549143195,1
+250,50,0,23,1,REVOKE,obsolete: elapsed 3645.0ms > freshness 500ms,0,2088.3066130336374,1
+250,50,0,24,1,REVOKE,obsolete: elapsed 3484.3ms > freshness 500ms,0,1995.3608689829707,1
+250,50,0,25,1,REVOKE,obsolete: elapsed 3642.8ms > freshness 500ms,0,2058.8878041598946,1
+250,50,0,26,1,REVOKE,obsolete: elapsed 3646.2ms > freshness 500ms,0,2051.477196160704,1
+250,50,0,27,1,REVOKE,obsolete: elapsed 3724.7ms > freshness 500ms,0,2115.0821449700743,1
+250,50,0,28,1,REVOKE,obsolete: elapsed 3617.6ms > freshness 500ms,0,2115.466637071222,1
+250,50,0,29,1,REVOKE,obsolete: elapsed 3518.7ms > freshness 500ms,0,2143.9579359721392,1
+250,50,0,30,0,REVOKE,obsolete: elapsed 1569.3ms > freshness 500ms,0,2009.782584849745,1
+250,50,0,31,0,REVOKE,obsolete: elapsed 1558.4ms > freshness 500ms,0,2066.345418803394,1
+250,50,0,32,0,REVOKE,obsolete: elapsed 1484.5ms > freshness 500ms,0,2069.0142740495503,1
+250,50,0,33,0,REVOKE,obsolete: elapsed 1607.6ms > freshness 500ms,0,2147.239550948143,1
+250,50,0,34,0,REVOKE,obsolete: elapsed 1585.9ms > freshness 500ms,0,2068.9654720481485,1
+250,50,0,35,0,REVOKE,obsolete: elapsed 1533.4ms > freshness 500ms,0,2056.170967873186,1
+250,50,0,36,0,REVOKE,obsolete: elapsed 1496.7ms > freshness 500ms,0,1987.9328298848122,1
+250,50,0,37,0,REVOKE,obsolete: elapsed 1479.3ms > freshness 500ms,0,1990.613767877221,1
+250,50,0,38,0,REVOKE,obsolete: elapsed 1444.0ms > freshness 500ms,0,1947.2632410470396,1
+250,50,0,39,0,REVOKE,obsolete: elapsed 1763.3ms > freshness 500ms,0,2209.807936102152,1
+50,0,0.1,0,1,REVOKE,obsolete: elapsed 716.9ms > freshness 500ms,0,418.39534509927034,1
+50,0,0.1,1,1,REVOKE,obsolete: elapsed 717.5ms > freshness 500ms,0,412.15864894911647,1
+50,0,0.1,2,1,REVOKE,obsolete: elapsed 713.1ms > freshness 500ms,0,411.2368898931891,1
+50,0,0.1,3,1,REVOKE,obsolete: elapsed 739.4ms > freshness 500ms,0,415.4102879110724,1
+50,0,0.1,4,1,REVOKE,obsolete: elapsed 715.4ms > freshness 500ms,0,414.46129814721644,1
+50,0,0.1,5,1,REVOKE,obsolete: elapsed 712.4ms > freshness 500ms,0,405.6160699110478,1
+50,0,0.1,6,1,REVOKE,obsolete: elapsed 716.9ms > freshness 500ms,0,410.2726918645203,1
+50,0,0.1,7,1,REVOKE,obsolete: elapsed 718.1ms > freshness 500ms,0,406.1657409183681,1
+50,0,0.1,8,1,REVOKE,obsolete: elapsed 707.2ms > freshness 500ms,0,404.24101101234555,1
+50,0,0.1,9,1,REVOKE,obsolete: elapsed 706.7ms > freshness 500ms,0,403.5788387991488,1
+50,0,0.1,10,1,REVOKE,obsolete: elapsed 707.2ms > freshness 500ms,0,403.69822387583554,1
+50,0,0.1,11,1,REVOKE,obsolete: elapsed 719.6ms > freshness 500ms,0,408.41048094443977,1
+50,0,0.1,12,1,REVOKE,obsolete: elapsed 721.4ms > freshness 500ms,0,413.22423703968525,1
+50,0,0.1,13,1,REVOKE,obsolete: elapsed 721.6ms > freshness 500ms,0,423.06470195762813,1
+50,0,0.1,14,1,REVOKE,obsolete: elapsed 737.3ms > freshness 500ms,0,430.5833310354501,1
+50,0,0.1,15,1,REVOKE,obsolete: elapsed 718.8ms > freshness 500ms,0,412.00281819328666,1
+50,0,0.1,16,1,REVOKE,obsolete: elapsed 711.2ms > freshness 500ms,0,406.4778059255332,1
+50,0,0.1,17,1,REVOKE,obsolete: elapsed 715.3ms > freshness 500ms,0,406.2916070688516,1
+50,0,0.1,18,1,REVOKE,obsolete: elapsed 707.2ms > freshness 500ms,0,404.0270699188113,1
+50,0,0.1,19,1,REVOKE,obsolete: elapsed 709.0ms > freshness 500ms,0,405.1190579775721,1
+50,0,0.1,20,1,REVOKE,obsolete: elapsed 707.1ms > freshness 500ms,0,404.266209108755,1
+50,0,0.1,21,1,REVOKE,obsolete: elapsed 720.9ms > freshness 500ms,0,408.05420209653676,1
+50,0,0.1,22,1,REVOKE,obsolete: elapsed 712.9ms > freshness 500ms,0,406.2494479585439,1
+50,0,0.1,23,1,REVOKE,obsolete: elapsed 713.5ms > freshness 500ms,0,408.1068108789623,1
+50,0,0.1,24,1,REVOKE,obsolete: elapsed 712.8ms > freshness 500ms,0,407.04478905536234,1
+50,0,0.1,25,1,REVOKE,obsolete: elapsed 711.7ms > freshness 500ms,0,408.5639677941799,1
+50,0,0.1,26,1,REVOKE,obsolete: elapsed 714.5ms > freshness 500ms,0,410.6004370842129,1
+50,0,0.1,27,1,REVOKE,obsolete: elapsed 717.1ms > freshness 500ms,0,412.1691691689193,1
+50,0,0.1,28,1,REVOKE,obsolete: elapsed 719.0ms > freshness 500ms,0,408.7919860612601,1
+50,0,0.1,29,1,REVOKE,obsolete: elapsed 712.4ms > freshness 500ms,0,404.3269220273942,1
+50,0,0.1,30,0,REVOKE,obsolete: elapsed 555.9ms > freshness 500ms_at_publish,0,807.8419819939882,1
+50,0,0.1,31,0,REVOKE,obsolete: elapsed 556.6ms > freshness 500ms_at_publish,0,809.9592630751431,1
+50,0,0.1,32,0,REVOKE,obsolete: elapsed 556.1ms > freshness 500ms_at_publish,0,808.7952099740505,1
+50,0,0.1,33,0,REVOKE,obsolete: elapsed 566.7ms > freshness 500ms_at_publish,0,822.2275599837303,1
+50,0,0.1,34,0,REVOKE,obsolete: elapsed 583.4ms > freshness 500ms_at_publish,0,837.7966270782053,1
+50,0,0.1,35,0,REVOKE,obsolete: elapsed 573.8ms > freshness 500ms_at_publish,0,825.6768479477614,1
+50,0,0.1,36,0,REVOKE,obsolete: elapsed 578.6ms > freshness 500ms_at_publish,0,834.2086081393063,1
+50,0,0.1,37,0,REVOKE,obsolete: elapsed 562.4ms > freshness 500ms_at_publish,0,819.1602481529117,1
+50,0,0.1,38,0,REVOKE,obsolete: elapsed 565.8ms > freshness 500ms_at_publish,0,818.2822309900075,1
+50,0,0.1,39,0,REVOKE,obsolete: elapsed 559.5ms > freshness 500ms_at_publish,0,811.2235639709979,1
+50,0,1.0,0,1,REVOKE,obsolete: elapsed 707.2ms > freshness 500ms,0,404.2146820574999,1
+50,0,1.0,1,1,REVOKE,obsolete: elapsed 707.3ms > freshness 500ms,0,404.70581292174757,1
+50,0,1.0,2,1,REVOKE,obsolete: elapsed 706.1ms > freshness 500ms,0,405.9262019582093,1
+50,0,1.0,3,1,REVOKE,obsolete: elapsed 718.6ms > freshness 500ms,0,409.0675017796457,1
+50,0,1.0,4,1,REVOKE,obsolete: elapsed 846.4ms > freshness 500ms,0,409.51969008892775,1
+50,0,1.0,5,1,REVOKE,obsolete: elapsed 710.3ms > freshness 500ms,0,404.6130490023643,1
+50,0,1.0,6,1,REVOKE,obsolete: elapsed 716.2ms > freshness 500ms,0,409.8908070009202,1
+50,0,1.0,7,1,REVOKE,obsolete: elapsed 714.5ms > freshness 500ms,0,405.1171150058508,1
+50,0,1.0,8,1,REVOKE,obsolete: elapsed 714.3ms > freshness 500ms,0,406.57393587753177,1
+50,0,1.0,9,1,REVOKE,obsolete: elapsed 723.3ms > freshness 500ms,0,414.5354370120913,1
+50,0,1.0,10,1,REVOKE,obsolete: elapsed 707.1ms > freshness 500ms,0,404.0452940389514,1
+50,0,1.0,11,1,REVOKE,obsolete: elapsed 1114.7ms > freshness 500ms,0,403.9843489881605,1
+50,0,1.0,12,1,REVOKE,obsolete: elapsed 1118.4ms > freshness 500ms,0,415.86309601552784,1
+50,0,1.0,13,1,REVOKE,obsolete: elapsed 710.2ms > freshness 500ms,0,411.0238419380039,1
+50,0,1.0,14,1,REVOKE,obsolete: elapsed 710.4ms > freshness 500ms,0,408.71012187562883,1
+50,0,1.0,15,1,REVOKE,obsolete: elapsed 715.5ms > freshness 500ms,0,538.69579709135,1
+50,0,1.0,16,1,REVOKE,obsolete: elapsed 1118.0ms > freshness 500ms,0,817.2789190430194,1
+50,0,1.0,17,1,REVOKE,obsolete: elapsed 714.6ms > freshness 500ms,0,410.1333920843899,1
+50,0,1.0,18,1,REVOKE,obsolete: elapsed 1115.1ms > freshness 500ms,0,808.3660551346838,1
+50,0,1.0,19,1,REVOKE,obsolete: elapsed 707.7ms > freshness 500ms,0,404.7323320992291,1
+50,0,1.0,20,1,REVOKE,obsolete: elapsed 706.9ms > freshness 500ms,0,404.14685499854386,1
+50,0,1.0,21,1,REVOKE,obsolete: elapsed 716.6ms > freshness 500ms,0,408.98935589939356,1
+50,0,1.0,22,1,REVOKE,obsolete: elapsed 714.2ms > freshness 500ms,0,410.22716695442796,1
+50,0,1.0,23,1,REVOKE,obsolete: elapsed 719.7ms > freshness 500ms,0,408.76908297650516,1
+50,0,1.0,24,1,REVOKE,obsolete: elapsed 712.4ms > freshness 500ms,0,406.2521029263735,1
+50,0,1.0,25,1,REVOKE,obsolete: elapsed 713.3ms > freshness 500ms,0,409.020405029878,1
+50,0,1.0,26,1,REVOKE,obsolete: elapsed 730.5ms > freshness 500ms,0,412.1354348026216,1
+50,0,1.0,27,1,REVOKE,obsolete: elapsed 716.5ms > freshness 500ms,0,409.92645313963294,1
+50,0,1.0,28,1,REVOKE,obsolete: elapsed 705.9ms > freshness 500ms,0,403.6646510940045,1
+50,0,1.0,29,1,REVOKE,obsolete: elapsed 962.9ms > freshness 500ms,0,532.9508339054883,1
+50,0,1.0,30,0,REVOKE,obsolete: elapsed 556.1ms > freshness 500ms_at_publish,0,809.6760818734765,1
+50,0,1.0,31,0,REVOKE,obsolete: elapsed 578.5ms > freshness 500ms_at_publish,0,1846.7236869037151,1
+50,0,1.0,32,0,REVOKE,obsolete: elapsed 559.8ms > freshness 500ms_at_publish,0,816.1899868864566,1
+50,0,1.0,33,0,REVOKE,obsolete: elapsed 566.5ms > freshness 500ms_at_publish,0,818.9622659701854,1
+50,0,1.0,34,0,REVOKE,obsolete: elapsed 562.8ms > freshness 500ms_at_publish,0,816.460704896599,1
+50,0,1.0,35,0,REVOKE,obsolete: elapsed 693.6ms > freshness 500ms_at_publish,0,947.5982501171529,1
+50,0,1.0,36,0,REVOKE,obsolete: elapsed 583.5ms > freshness 500ms_at_publish,0,838.1043241824955,1
+50,0,1.0,37,0,REVOKE,obsolete: elapsed 556.4ms > freshness 500ms_at_publish,0,808.8434399105608,1
+50,0,1.0,38,0,REVOKE,obsolete: elapsed 557.1ms > freshness 500ms_at_publish,0,809.0634231921285,1
+50,0,1.0,39,0,REVOKE,obsolete: elapsed 556.4ms > freshness 500ms_at_publish,0,809.2893061693758,1

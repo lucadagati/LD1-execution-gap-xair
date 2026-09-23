@@ -1,13 +1,15 @@
-version: "3.8"
+name: ld1
 services:
   redis:
     image: redis:7-alpine
+    container_name: ld1-redis
     ports:
       - "6379:6379"
   xair:
     build: .
+    container_name: ld1-xair
     ports:
-      - "8080:8080"
+      - "8082:8080"
     environment:
       - REDIS_URL=redis://redis:6379/0
     depends_on:

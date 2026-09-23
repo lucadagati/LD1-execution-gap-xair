@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import json
 import sys
+import os
 from pathlib import Path
 
-MOTION_FILE = Path(__file__).resolve().parents[3] / "experiments" / "results" / "e8_motion_state.json"
+MOTION_FILE = Path(os.environ.get("XAIR_RESULTS_DIR", Path(__file__).resolve().parents[3] / "experiments" / "results")) / "e8_motion_state.json"
 
 
 def write_state(state: dict) -> None:

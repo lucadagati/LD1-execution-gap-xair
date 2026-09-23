@@ -1,85 +1,54 @@
 #!/usr/bin/env python3
-"""E4 HTTP load test on POST /v1/intents (real FastAPI path)."""
+"""E4: sequential load on POST /v1/intents (XAIR core only, no gateway recheck).
+
+Each intent names a distinct target: this endpoint stops at AUTHORIZED (no
+t_p report follows), so a reused target would be held and later intents
+would be DELAYed, measuring coordination rather than validation cost.
+"""
 
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import sys
 import time
 import uuid
-from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-RESULTS_DIR = ROOT / "experiments" / "results"
-XAIR = "http://127.0.0.1:8080"
+from common import RESULTS_DIR, XAIR, http_json, now_iso, percentile, write_csv, xair_context
 
 
 def post_intent(i: int) -> tuple[dict, float]:
-    import urllib.request
-
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
     body = {
         "id": str(uuid.uuid4()),
         "source": "ai",
-        "timestamp_decision": ts,
+        "timestamp_decision": now_iso(),
         "freshness_window_ms": 500,
         "preconditions": [{"expr": "line.state == 'RUN'"}],
-        # Distinct target per intent: this endpoint posts directly to XAIR core
-        # (bypassing the adapter's t_p publish/report step), so an EXECUTE here
-        # acquires the coordinator's per-target lock with nothing to release it.
-        # A reused target would therefore show DELAY (target_busy) on its
-        # second use rather than isolating validation/adapter overhead.
         "payload": {"action_type": "TICK", "target_entity": f"e4_target_{i}", "parameters": {}},
     }
     t0 = time.perf_counter()
-    req = urllib.request.Request(
-        f"{XAIR}/v1/intents",
-        data=json.dumps(body).encode(),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    with urllib.request.urlopen(req, timeout=10) as r:
-        out = json.loads(r.read().decode())
-    e2e_ms = (time.perf_counter() - t0) * 1000.0
-    return out, e2e_ms
+    out = http_json(f"{XAIR}/v1/intents", body, timeout=10)
+    return out, (time.perf_counter() - t0) * 1000.0
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--intents", type=int, default=1000)
-    parser.add_argument("--out", type=Path, default=RESULTS_DIR / "e4_load_http.csv")
+    parser.add_argument("--intents", type=int, default=10000)
+    parser.add_argument("--out", default=str(RESULTS_DIR / "e4_load_http.csv"))
     args = parser.parse_args()
-    args.out.parent.mkdir(parents=True, exist_ok=True)
 
-    # Prime context
-    import urllib.request
-    urllib.request.urlopen(
-        urllib.request.Request(
-            f"{XAIR}/v1/context/snapshot",
-            data=json.dumps({"line": {"state": "RUN"}}).encode(),
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        ),
-        timeout=5,
-    )
-
-    internal_lats = []
-    e2e_lats = []
+    xair_context({"line": {"state": "RUN"}})
+    internal, e2e = [], []
     outcomes: dict[str, int] = {}
     t0 = time.perf_counter()
     for i in range(args.intents):
-        out, e2e = post_intent(i)
-        internal_lats.append(float(out.get("validation_latency_ms") or 0))
-        e2e_lats.append(e2e)
+        out, ms = post_intent(i)
+        internal.append(float(out.get("validation_latency_ms") or 0))
+        e2e.append(ms)
         outcome = out.get("outcome") or "UNKNOWN"
         outcomes[outcome] = outcomes.get(outcome, 0) + 1
     elapsed = time.perf_counter() - t0
-
-    def p99(vals: list[float]) -> float:
-        return sorted(vals)[int(len(vals) * 0.99) - 1] if vals else 0.0
 
     row = {
         "intents": args.intents,
@@ -89,18 +58,15 @@ def main():
         "outcome_delay": outcomes.get("DELAY", 0),
         "outcome_revoke": outcomes.get("REVOKE", 0),
         "outcome_degrade": outcomes.get("DEGRADE", 0),
-        "vl_internal_p50_ms": sorted(internal_lats)[len(internal_lats) // 2],
-        "vl_internal_p99_ms": p99(internal_lats),
-        "vl_e2e_p50_ms": sorted(e2e_lats)[len(e2e_lats) // 2],
-        "vl_e2e_p99_ms": p99(e2e_lats),
+        "vl_internal_p50_ms": percentile(internal, 0.50),
+        "vl_internal_p99_ms": percentile(internal, 0.99),
+        "vl_e2e_p50_ms": percentile(e2e, 0.50),
+        "vl_e2e_p99_ms": percentile(e2e, 0.99),
     }
-    with args.out.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=row.keys())
-        w.writeheader()
-        w.writerow(row)
+    write_csv(Path(args.out), [row])
     print(json.dumps(row, indent=2))
     if outcomes.get("EXECUTE", 0) != args.intents:
-        print(f"WARNING: {args.intents - outcomes.get('EXECUTE', 0)}/{args.intents} intents did not EXECUTE: {outcomes}", file=sys.stderr)
+        print(f"WARNING: not every intent executed: {outcomes}", file=sys.stderr)
         return 1
     return 0
 

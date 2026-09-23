@@ -1,27 +1,22 @@
 #!/usr/bin/env bash
-# E8 with optional Gazebo joint-motion witness (requires Gazebo cell + motion tracker).
+# E8-Gazebo: stack + headless Gazebo cell + motion tracker, then the E8 suite.
+# Usage: run_e8_gazebo_full.sh [runs-per-baseline] [campaign-tag]
 set -euo pipefail
-
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SCRIPTS="$ROOT/scripts"
-XAIR="$ROOT/XAIR_Runtime"
-PY="$XAIR/.venv/bin/python"
+# shellcheck source=/dev/null
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_resolve_layout.sh"
 
 set +u
 # shellcheck disable=SC1091
 source /opt/ros/jazzy/setup.bash
 set -u
 "$SCRIPTS/start_full_stack.sh"
-"$SCRIPTS/start_gazebo_cell.sh" || true
+"$SCRIPTS/start_gazebo_cell.sh"
 
-# Motion tracker for arm_delta / sim_motion columns
 if ! pgrep -f "gazebo_motion_tracker.py" >/dev/null; then
-  nohup python3 "$XAIR/simulation/industrial_cell/nodes/gazebo_motion_tracker.py" \
-    > "$ROOT/.run/motion_tracker.log" 2>&1 &
+  nohup env XAIR_RESULTS_DIR="$XAIR_RESULTS_DIR" python3 "$REPO_ROOT/simulation/industrial_cell/nodes/gazebo_motion_tracker.py" \
+    > "$RUN_DIR/motion_tracker.log" 2>&1 &
+  echo $! > "$RUN_DIR/motion_tracker.pid"
   sleep 3
 fi
 
-"$PY" "$XAIR/experiments/run_e8_gazebo_cell.py" --runs "${1:-30}" --use-gazebo
-"$PY" "$XAIR/experiments/aggregate_experiment_results.py"
-"$PY" "$XAIR/experiments/plot_results.py"
-"$SCRIPTS/sync_paper_artifact.sh"
+"$PY" "$REPO_ROOT/experiments/run_e8_gazebo_cell.py" --runs "${1:-30}" --campaign "${2:-1}"
