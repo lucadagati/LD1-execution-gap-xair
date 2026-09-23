@@ -44,6 +44,7 @@ class XAIRHttpClient:
         published: bool,
         reason: str,
         context_version: int | None = None,
+        read_set_version: int | None = None,
     ) -> dict:
         return self._request(
             "POST",
@@ -52,6 +53,7 @@ class XAIRHttpClient:
                 "published": published,
                 "reason": reason,
                 "context_version": context_version,
+                "read_set_version": read_set_version,
             },
         )
 

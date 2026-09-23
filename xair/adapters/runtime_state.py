@@ -15,10 +15,16 @@ runtime = XAIRRuntime(
 
 def read_snapshot() -> tuple[dict, int, bool]:
     """Read (context, version, trusted) as one consistent pair from the store."""
-    ctx, ver, trusted = store.snapshot()
+    ctx, ver, _, trusted = read_snapshot_full()
+    return ctx, ver, trusted
+
+
+def read_snapshot_full() -> tuple[dict, int, dict[str, int], bool]:
+    """Read (context, version, path_versions, trusted) as one document from the store."""
+    ctx, ver, pv, trusted = store.snapshot_full()
     if trusted:
         runtime.install_context_snapshot(ctx, ver, replace=True)
-    return ctx, ver, trusted
+    return ctx, ver, pv, trusted
 
 
 def update_context_store(patch: dict) -> tuple[int, bool]:

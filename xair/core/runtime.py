@@ -14,6 +14,7 @@ from xair.core.intent_receiver import IntentReceiver
 from xair.core.lifecycle import TERMINAL_STATES, InvalidTransition, LifecycleTracker
 from xair.core.models import ActionIntent, DecisionOutcome, IntentRecord, IntentState
 from xair.core.temporal_validator import TemporalValidator
+from xair.core.versioning import read_set, read_set_version
 
 ActuationCallback = Callable[[ActionIntent, DecisionOutcome], None]
 
@@ -156,6 +157,7 @@ class XAIRRuntime:
         *,
         context: dict | None = None,
         context_version: int | None = None,
+        path_versions: dict[str, int] | None = None,
     ) -> IntentRecord:
         """Validate one intent at t_v.
 
@@ -197,6 +199,10 @@ class XAIRRuntime:
             latency_ms = (time.perf_counter() - t0) * 1000.0
             self._metrics["validation_latencies_ms"].append(latency_ms)
             record.context_version = version
+            record.read_set = read_set([*intent.safety_constraints, *intent.preconditions])
+            record.read_set_version = (
+                read_set_version(path_versions, record.read_set) if path_versions is not None else version
+            )
             record.validation_latency_ms = latency_ms
 
             if outcome == DecisionOutcome.DEGRADE:
@@ -236,13 +242,15 @@ class XAIRRuntime:
         reason: str,
         *,
         context_version: int | None = None,
+        read_set_version: int | None = None,
     ) -> IntentRecord:
-        """Close the t_p gate reported by the actuator gateway.
+        """Close the gate (t_g) reported by the actuator gateway.
 
-        Only an AUTHORIZED intent can be published. A report whose context
-        version differs from the one validated at t_v is converted into a
-        suppression (v' = v is required, paper Eq. 2). Replays of an already
-        published intent are idempotent.
+        Only an AUTHORIZED intent can be published. The gateway reports the
+        version it observed at t_g: the read-set version (default scope) or
+        the global version. A report that differs from the value recorded at
+        t_v is converted into a suppression. Replays of an already published
+        intent are idempotent.
         """
         with self._lock:
             record = self.lifecycle.get(intent_id)
@@ -254,7 +262,9 @@ class XAIRRuntime:
                 raise InvalidTransition(
                     intent_id, record.state, IntentState.EXECUTED if publish else IntentState.REVOKED
                 )
-            if publish and context_version is not None and context_version != record.context_version:
+            if publish and read_set_version is not None and read_set_version != record.read_set_version:
+                publish, reason = False, "read_set_version_changed_at_gate"
+            elif publish and read_set_version is None and context_version is not None and context_version != record.context_version:
                 publish, reason = False, "context_version_changed_at_publish"
             self.coordinator.release(record.intent)
             if not publish:

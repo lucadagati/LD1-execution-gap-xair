@@ -41,6 +41,7 @@ from xair.core.context_validator import evaluate_predicates  # noqa: E402
 from xair.core.deep_merge import deep_merge  # noqa: E402
 from xair.core.models import ActionIntent  # noqa: E402
 from xair.core.temporal_validator import TemporalValidator  # noqa: E402
+from xair.core.versioning import VERSION_SCOPES, read_set, read_set_version  # noqa: E402
 from xair_http_client import XAIRHttpClient  # noqa: E402
 
 try:
@@ -50,6 +51,9 @@ except ImportError:
 
 XAIR = XAIRHttpClient()
 DEFAULT_MODE = os.environ.get("XAIR_VALIDATION_MODE", "xair")
+# Which version the t_g recheck compares: "readset" (latest value change on the
+# paths the intent's predicates read) or "global" (any accepted context update).
+DEFAULT_VERSION_SCOPE = os.environ.get("XAIR_VERSION_SCOPE", "readset")
 _TEMPORAL = TemporalValidator()
 
 # Adapter-local context cache. Only POST /context and the explicit refreshes
@@ -103,12 +107,31 @@ def _validate(intent: ActionIntent, context: dict) -> tuple[bool, str]:
 
 
 def _pull_xair_context() -> tuple[dict, int | None, bool]:
+    ctx, ver, _, trusted = _pull_xair_snapshot()
+    return ctx, ver, trusted
+
+
+def _pull_xair_snapshot() -> tuple[dict, int | None, dict[str, int], bool]:
     try:
         snap = XAIR.get_context()
         ver = snap.get("context_version")
-        return (snap.get("context") or {}), (int(ver) if ver is not None else None), bool(snap.get("context_trusted", False))
+        return ((snap.get("context") or {}), (int(ver) if ver is not None else None),
+                {k: int(v) for k, v in (snap.get("path_versions") or {}).items()},
+                bool(snap.get("context_trusted", False)))
     except Exception:
-        return {}, None, False
+        return {}, None, {}, False
+
+
+def _scope(query: dict) -> str:
+    scope = str(query.get("version_scope", DEFAULT_VERSION_SCOPE)).lower()
+    return scope if scope in VERSION_SCOPES else "readset"
+
+
+def _gate_version(scope: str, ver: int | None, pv: dict[str, int], paths: list[str]) -> int | None:
+    """Version compared at t_g under ``scope`` (global snapshot or intent read-set)."""
+    if scope == "global":
+        return ver
+    return read_set_version(pv, paths) if ver is not None else None
 
 
 # ---------------------------------------------------------------------- ROS
@@ -250,17 +273,20 @@ def _local_policy(data: dict, intent: ActionIntent, baseline: str, refresh: bool
                    gateway_released=True, ros_published=ros_ok)
 
 
-def _local_authoritative(data: dict, intent: ActionIntent) -> dict:
+def _local_authoritative(data: dict, intent: ActionIntent, scope: str) -> dict:
     baseline = "local_authoritative"
+    paths = read_set([*intent.safety_constraints, *intent.preconditions])
     t0 = time.perf_counter()
-    ctx, ver, trusted = _pull_xair_context()
+    ctx, ver_g, pv, trusted = _pull_xair_snapshot()
+    ver = _gate_version(scope, ver_g, pv, paths)
     if not trusted:
         return _result(data, baseline, "REVOKE", "context_untrusted", t0)
     ok, reason = _validate(intent, ctx)
     if not ok:
         return _result(data, baseline, "REVOKE", reason, t0, context_version=ver)
     tv = time.perf_counter()
-    ctx2, ver2, trusted2 = _pull_xair_context()
+    ctx2, ver2_g, pv2, trusted2 = _pull_xair_snapshot()
+    ver2 = _gate_version(scope, ver2_g, pv2, paths)
     if not trusted2:
         return _result(data, baseline, "REVOKE", "context_untrusted_at_publish", t0, context_version=ver)
     if ver is None or ver2 is None or ver2 != ver:
@@ -285,7 +311,9 @@ def _xair_policy(data: dict, query: dict) -> dict:
 
     t_validate_end = time.perf_counter()
     outcome = result.get("outcome")
-    validation_version = result.get("context_version")
+    scope = _scope(query)
+    paths = list(result.get("read_set") or [])
+    validation_version = result.get("read_set_version") if scope == "readset" else result.get("context_version")
     if result.get("duplicate"):
         return _result(data, "xair", outcome, "duplicate_idempotent_replay",
                        validation_latency_ms_xair=result.get("validation_latency_ms"),
@@ -327,11 +355,14 @@ def _xair_policy(data: dict, query: dict) -> dict:
             time.sleep(publish_delay_ms / 1000.0)
         t_recheck_start = time.perf_counter()
         try:
-            ctx, current_version, trusted = _pull_xair_context()
+            ctx, ver_g, pv, trusted = _pull_xair_snapshot()
+            current_version = _gate_version(scope, ver_g, pv, paths)
             if not trusted:
                 gate_blocked, gate_reason = True, "context_untrusted_at_publish"
             elif validation_version is None or current_version is None or int(current_version) != int(validation_version):
-                gate_blocked, gate_reason = True, "context_version_changed_at_publish"
+                gate_blocked, gate_reason = True, (
+                    "read_set_version_changed_at_gate" if scope == "readset" else "context_version_changed_at_publish"
+                )
             elif intent is None:
                 gate_blocked, gate_reason = True, "schema_invalid_at_publish"
             else:
@@ -355,7 +386,7 @@ def _xair_policy(data: dict, query: dict) -> dict:
         try:
             publication = XAIR.report_publication(
                 str(result.get("id")), published=gateway_released, reason=gate_reason,
-                context_version=current_version,
+                **({"read_set_version": current_version} if scope == "readset" else {"context_version": current_version}),
             )
             result["state"] = publication.get("state", result.get("state"))
         except Exception as exc:
@@ -379,6 +410,7 @@ def _xair_policy(data: dict, query: dict) -> dict:
         "ros_published": ros_ok,
         "gateway_released": gateway_released,
         "gate_blocked": gate_blocked,
+        "version_scope": scope,
         "context_version": validation_version,
         "context_version_at_publish": current_version,
         "validation_to_gate_ms": (t_recheck_end - t_validate_end) * 1000.0,
@@ -432,7 +464,7 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
         push_ok = str(query.get("push_notified", "true")).lower() in ("1", "true", "yes")
         return _local_policy(data, intent, "local_push", refresh=push_ok)
     if mode == "local_authoritative":
-        return _local_authoritative(data, intent)
+        return _local_authoritative(data, intent, _scope(query))
     return _result(data, mode, "REVOKE", f"unknown_mode:{mode}")
 
 

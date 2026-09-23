@@ -19,6 +19,7 @@ find "$XAIR_RESULTS_DIR" -maxdepth 1 -type f \( -name '*.csv' -o -name '*.json' 
 {
   date -u +"utc=%Y-%m-%dT%H:%M:%SZ"
   uname -a
+  echo "loadavg=$(cut -d" " -f1-3 /proc/loadavg) nproc=$(nproc)"
   command -v lscpu >/dev/null && lscpu
   command -v free >/dev/null && free -h
   "$PY" --version
@@ -46,6 +47,7 @@ done
 step 10/14 "E12 scaling";               "$PY" "$X/run_e12_scaling.py" --trials 100 --warmup 20 --repetitions 5 --producers 1 10 50 --context-kb 1 64
 step 11/14 "E13 faults";                "$PY" "$X/run_e13_faults.py"
 step 12/14 "E14 action classes";        "$PY" "$X/run_e14_variants.py" --runs 100
+step 12b/14 "E16 context churn";        "$PY" "$X/run_e16_context_churn.py" --runs 100
 step 13/14 "aggregate";                 "$PY" "$X/aggregate_experiment_results.py" >/dev/null
 step 14/14 "figures";                   "$PY" "$X/plot_results.py"
 

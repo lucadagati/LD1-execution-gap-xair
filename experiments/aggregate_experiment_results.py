@@ -207,6 +207,24 @@ def e8(paths: list[Path]) -> dict:
     return out
 
 
+def e16(rows: list[dict]) -> dict:
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        groups[f"{r['version_scope']}|{r['pattern']}|{float(r['target_rate_hz']):g}"].append(r)
+    return {
+        k: {
+            "fpr": rate(sum(1 - int(r["gateway_released"]) for r in v), len(v)),
+            "achieved_rate_hz": float(v[0]["achieved_rate_hz"]),
+            "goodput_ips": float(v[0]["goodput_ips"]),
+            "e2e_ms": lat([float(r["e2e_latency_ms"]) for r in v]),
+            "validation_to_gate_ms": lat([float(r["validation_to_gate_ms"]) for r in v if r.get("validation_to_gate_ms")]),
+            "revoke_reasons": dict(sorted({x: sum(1 for r in v if r["reason"] == x and r["gateway_released"] == "0")
+                                           for x in {r["reason"] for r in v if r["gateway_released"] == "0"}}.items())),
+        }
+        for k, v in sorted(groups.items())
+    }
+
+
 def legacy(base: Path) -> dict:
     out: dict = {"host": LEGACY_DIR}
     e6 = load(base / "e6_network.csv")
@@ -276,6 +294,8 @@ def main() -> int:
                           "passed": sum(truthy(r["pass"]) for r in rows), "total": len(rows)}
     if rows := load(R / "e14_variants.csv"):
         summary["e14"] = grouped_rate(rows, ("scenario", "baseline"), "stale_executed")
+    if rows := load(R / "e16_context_churn.csv"):
+        summary["e16"] = e16(rows)
     e6_runs = {p.stem: e6(load(p)) for p in sorted(R.glob("e6_network*.csv")) if load(p)}
     if e6_runs:
         summary["e6"] = e6_runs

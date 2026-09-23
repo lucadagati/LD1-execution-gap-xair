@@ -34,7 +34,7 @@ if curl -sf "$XAIR_URL/v1/metrics" >/dev/null 2>&1; then
   echo "[OK] XAIR already running at $XAIR_URL"
 else
   echo "Starting XAIR on :$XAIR_PORT..."
-  (cd "$REPO_ROOT" && nohup env REDIS_URL="$REDIS_URL" PYTHONPATH="$REPO_ROOT" \
+  (cd "$REPO_ROOT" && setsid nohup env REDIS_URL="$REDIS_URL" PYTHONPATH="$REPO_ROOT" \
     "$PY" -m uvicorn xair.adapters.http_server:app --host 127.0.0.1 --port "$XAIR_PORT" \
     > "$RUN_DIR/xair.log" 2>&1 & echo $! > "$RUN_DIR/xair.pid")
   wait_http "$XAIR_URL/v1/metrics" "XAIR /v1/metrics"
@@ -48,7 +48,7 @@ else
   echo "Starting actuator gateway on :$ADAPTER_HTTP_PORT (ws :$ADAPTER_WS_PORT)..."
   # PYTHONPATH_PREPEND (not PYTHONPATH) so run_with_ros.sh merges it with
   # rclpy's site-packages instead of clobbering them.
-  nohup env XAIR_URL="$XAIR_URL" PYTHONPATH_PREPEND="$REPO_ROOT:$SCRIPTS" \
+  setsid nohup env XAIR_URL="$XAIR_URL" PYTHONPATH_PREPEND="$REPO_ROOT:$SCRIPTS" \
     "$SCRIPTS/run_with_ros.sh" "$PY" "$SCRIPTS/adaptix_quest_adapter.py" "$ADAPTER_WS_PORT" "$ADAPTER_HTTP_PORT" \
     > "$RUN_DIR/adapter.log" 2>&1 &
   echo $! > "$RUN_DIR/adapter.pid"
@@ -62,14 +62,14 @@ if [ -f /opt/ros/jazzy/setup.bash ]; then
   set -u
   if ! pgrep -f "$SCRIPTS/ros_audit_subscriber.py" >/dev/null; then
     echo "Starting ROS audit witness..."
-    nohup env ROS_AUDIT_FILE="$ROS_AUDIT_FILE" PYTHONPATH_PREPEND="$REPO_ROOT:$SCRIPTS" \
+    setsid nohup env ROS_AUDIT_FILE="$ROS_AUDIT_FILE" PYTHONPATH_PREPEND="$REPO_ROOT:$SCRIPTS" \
       "$SCRIPTS/run_with_ros.sh" python3 "$SCRIPTS/ros_audit_subscriber.py" \
       > "$RUN_DIR/ros_audit.log" 2>&1 &
     echo $! > "$RUN_DIR/ros_audit.pid"
   fi
   if ! pgrep -f "rosbridge_websocket" >/dev/null; then
     echo "Starting rosbridge :${ROSBRIDGE_PORT:-9090}..."
-    nohup "$SCRIPTS/run_with_ros.sh" ros2 launch rosbridge_server rosbridge_websocket_launch.xml \
+    setsid nohup "$SCRIPTS/run_with_ros.sh" ros2 launch rosbridge_server rosbridge_websocket_launch.xml \
       port:="${ROSBRIDGE_PORT:-9090}" address:=0.0.0.0 > "$RUN_DIR/rosbridge.log" 2>&1 &
     echo $! > "$RUN_DIR/rosbridge.pid"
   fi

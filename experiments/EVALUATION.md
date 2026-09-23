@@ -29,6 +29,16 @@ installed. `ros_published` (ROS publish call succeeded) and `ros_observed`
 
 All contextual modes use `xair.core` temporal validator and predicate evaluator.
 
+## Gate semantics
+
+Instants: decision t_d, validation t_v, gate recheck t_g, middleware release t_r.
+The gate (xair and local_authoritative modes) compares a version at t_g with
+the one recorded at t_v. `version_scope=readset` (default) uses the latest
+value change on the paths the intent's predicates read (per-path versions in
+the context store, `xair/core/versioning.py`); `version_scope=global` uses
+the snapshot version advanced by every accepted update. The interval
+(t_g, t_r] is not protected and is measured by E10 (`recheck_to_publish_ms`).
+
 ## Suites
 
 | Suite | Script | Protocol notes |
@@ -41,12 +51,13 @@ All contextual modes use `xair.core` temporal validator and predicate evaluator.
 | E6 | `run_e6_network.py` | tc netem on `lo`; drifted + valid controls, reasons logged |
 | E8-Gazebo | `run_e8_gazebo_cell.py` | ROS message witness + joint-motion witness, one file per campaign |
 | E9 | `run_e9_consistency_sweep.py` | remote write to XAIR only; δ matters only for `local_push` (threshold L = 50 ms) |
-| E10 | `run_e10_toctou.py` | injected write at an offset after validation, 50 ms induced publish delay; each trial classified `before_recheck` / `concurrent` / `after_release` |
+| E10 | `run_e10_toctou.py` | injected write at an offset after validation, 50 ms induced gate delay; each trial classified before t_g (`before_recheck`) / in (t_g, t_r] (`concurrent`) / after t_r (`after_release`) |
 | E11 | `run_e11_stratified.py` | mixed labels, 3 seeds; cost measured on valid trials only |
 | E12 | `run_e12_scaling.py` | closed loop, persistent worker pool, retries counted |
 | E13 | `run_e13_faults.py` | 5 malformed templates, false precondition, duplicates (release-boundary), clock skew |
 | E14 | `run_e14_variants.py` | E1 pattern for RESUME / STOP / GRASP / SET_SPEED |
 | E15 | `run_e15_opcua_hil.py` | line-state write through a local OPC UA server |
+| E16 | `run_e16_context_churn.py` | valid intents under background writers at 0–500 Hz (unrelated field / same-value rewrite); `version_scope=global` vs `readset` |
 
 ## Data provenance
 
@@ -56,9 +67,12 @@ host (2026-09-23), produced with the code in this tree:
 - HTTP suites: `scripts/run_paper_campaign.sh`
 - E6: `scripts/run_e6_netns.sh 30 10 500` and `... 30 10 10000 e6_network_fresh10s.csv`
   (stack inside a network namespace; netem never touches the host loopback)
-- E8-Gazebo: `scripts/run_e8_docker.sh 30 <tag>` (image `docker/ros-jazzy`); campaigns 1 and 3
-  are analysed; in campaign 2 the ROS message witness stalled after 66 trials, so its
-  witness columns are not used (gateway outcomes identical)
+- E8-Gazebo: `scripts/run_e8_docker.sh 30 <tag>` (image `docker/ros-jazzy`), campaigns 1 and 2;
+  `experiments/make_paper_tables.py` excludes from the witness figures any campaign whose ROS
+  subscriber stopped counting (none in the frozen data)
+- E16: part of `scripts/run_paper_campaign.sh`
+- Manuscript numbers and supplementary tables: `experiments/make_paper_tables.py`
+  (called by `scripts/sync_paper_outputs.sh`)
 - E15: `experiments/run_e15_opcua_hil.py --runs 30` (needs `asyncua`, in the `dev` extra)
 
 ## Known limitations

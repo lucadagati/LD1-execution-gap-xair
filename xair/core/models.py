@@ -105,4 +105,6 @@ class IntentRecord:
     reason: str = ""
     validation_latency_ms: float = 0.0
     context_version: int = 0
+    read_set: list[str] = field(default_factory=list)
+    read_set_version: int = 0
     publication_decision: str | None = None

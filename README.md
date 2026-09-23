@@ -6,7 +6,8 @@ Reference implementation, experiment suites, and frozen data for the paper
 
 XAIR validates **AIS action intents** (JSON Schema in `schemas/`) against a
 versioned plant-context snapshot at validation time `t_v`; the actuator gateway
-rechecks the snapshot version and predicates immediately before release at `t_p`.
+rechecks the intent's read-set version and predicates at `t_g`, immediately
+before the middleware release at `t_r`.
 
 ## Layout
 
@@ -50,7 +51,7 @@ REDIS_URL=redis://127.0.0.1:6379/1 ./scripts/run_paper_campaign.sh
 | Step | Command | Output |
 |------|---------|--------|
 | HTTP campaign (E0–E4, E9–E14, ~25 min) | `./scripts/run_paper_campaign.sh` | `experiments/results/` |
-| Freeze + summary + figures | `./scripts/sync_paper_outputs.sh` | `data/execution-gap/` |
+| Freeze + summary + figures + generated tables | `./scripts/sync_paper_outputs.sh` | `data/execution-gap/` (and `journal/` locally) |
 | E8-Gazebo in container (ROS 2 Jazzy + Gazebo Harmonic) | `./scripts/run_e8_docker.sh 30 <tag>` | `experiments/results/e8_gazebo_campaign<tag>.csv` |
 | E8-Gazebo on a native Jazzy host | `./scripts/run_e8_gazebo_full.sh 30 <tag>` | same |
 | E6 netem in a network namespace (root) | `sudo ./scripts/run_e6_netns.sh 30 10 500` | `experiments/results/e6_network.csv` |

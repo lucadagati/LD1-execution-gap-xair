@@ -156,6 +156,37 @@ def fig_e10(R: Path, out: Path) -> None:
     save(fig, out, "e10_injection_timing")
 
 
+def fig_e16(R: Path, out: Path) -> None:
+    rows = load(R / "e16_context_churn.csv")
+    if not rows:
+        return
+    series = (("global", "unrelated", "Global, unrelated field", "#eb6834", "o", "-"),
+              ("global", "related_same", "Global, same-value rewrite", "#4a3aa7", "s", "-"),
+              ("readset", "unrelated", "Read-set, unrelated field", "#2a78d6", "^", "--"),
+              ("readset", "related_same", "Read-set, same-value rewrite", "#1baf7a", "v", ":"))
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.4))
+    for scope, pattern, label, color, marker, ls in series:
+        cells = defaultdict(list)
+        for r in rows:
+            if r["version_scope"] == scope and r["pattern"] == pattern:
+                cells[float(r["target_rate_hz"])].append(r)
+        xs = sorted(cells)
+        ach = [float(cells[x][0]["achieved_rate_hz"]) for x in xs]
+        fpr = [sum(1 - int(r["gateway_released"]) for r in cells[x]) / len(cells[x]) for x in xs]
+        good = [float(cells[x][0]["goodput_ips"]) for x in xs]
+        axes[0].plot(ach, fpr, color=color, marker=marker, linestyle=ls, linewidth=2, markersize=5, label=label)
+        axes[1].plot(ach, good, color=color, marker=marker, linestyle=ls, linewidth=2, markersize=5)
+    axes[0].set_ylabel("Valid intents revoked")
+    axes[0].set_ylim(-0.03, 1.05)
+    axes[1].set_ylabel("Goodput (intent/s)")
+    for ax in axes:
+        ax.set_xlabel("Achieved context-update rate (Hz)")
+        ax.grid(axis="x", color=GRID, linewidth=0.6)
+    fig.legend(ncol=2, frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.0), fontsize=7.5)
+    fig.tight_layout()
+    save(fig, out, "e16_context_churn")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results", type=Path, default=RESULTS_DIR)
@@ -163,7 +194,7 @@ def main() -> None:
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     style()
-    for fn in (fig_e1, fig_e4, fig_e9, fig_e10):
+    for fn in (fig_e1, fig_e4, fig_e9, fig_e10, fig_e16):
         fn(args.results, args.out)
     print(f"Wrote figures to {args.out}")
 

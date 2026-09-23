@@ -1,121 +1,121 @@
 baseline,run,outcome,reason,gateway_released,stale_executed,ros_published,ros_observed,ros_witness_agrees,arm_delta,sim_motion,motion_witness_agrees,error,intent_age_at_submit_ms,campaign
-xair,0,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.007,0,1,,209.3,1
-xair,1,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0061,0,1,,208.1,1
-xair,2,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.008,0,1,,210.7,1
-xair,3,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.009,0,1,,206.2,1
-xair,4,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0089,0,1,,206.0,1
-xair,5,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0054,0,1,,215.3,1
-xair,6,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0026,0,1,,229.3,1
-xair,7,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0011,0,1,,206.6,1
-xair,8,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0013,0,1,,208.1,1
-xair,9,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0008,0,1,,211.8,1
-xair,10,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0017,0,1,,212.2,1
-xair,11,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0043,0,1,,209.1,1
-xair,12,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0058,0,1,,208.6,1
-xair,13,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0074,0,1,,213.7,1
-xair,14,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0068,0,1,,207.8,1
-xair,15,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0077,0,1,,208.2,1
-xair,16,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0089,0,1,,209.5,1
-xair,17,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0094,0,1,,229.4,1
-xair,18,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0071,0,1,,221.6,1
-xair,19,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0043,0,1,,213.1,1
-xair,20,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0037,0,1,,209.6,1
-xair,21,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0038,0,1,,208.3,1
-xair,22,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0021,0,1,,210.3,1
-xair,23,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0,0,1,,210.5,1
-xair,24,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0031,0,1,,209.9,1
-xair,25,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0059,0,1,,214.5,1
-xair,26,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0074,0,1,,207.8,1
-xair,27,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.007,0,1,,207.3,1
-xair,28,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0085,0,1,,209.8,1
-xair,29,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.009,0,1,,231.6,1
-direct,0,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2333,1,1,,210.1,1
-direct,1,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3,1,1,,205.9,1
-direct,2,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2895,1,1,,206.5,1
-direct,3,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2901,1,1,,206.4,1
-direct,4,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2872,1,1,,210.5,1
-direct,5,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3214,1,1,,226.7,1
-direct,6,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.0075,0,0,,206.1,1
-direct,7,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.0,0,0,,207.7,1
-direct,8,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3067,1,1,,209.1,1
-direct,9,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3075,1,1,,229.9,1
-direct,10,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3089,1,1,,205.1,1
-direct,11,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3033,1,1,,207.4,1
-direct,12,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.291,1,1,,226.8,1
-direct,13,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2823,1,1,,207.9,1
-direct,14,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.0,0,0,,207.2,1
-direct,15,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2949,1,1,,208.4,1
-direct,16,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3097,1,1,,204.7,1
-direct,17,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.0003,0,0,,229.7,1
-direct,18,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3074,1,1,,210.0,1
-direct,19,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.0001,0,0,,210.6,1
-direct,20,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3076,1,1,,230.0,1
-direct,21,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3151,1,1,,205.0,1
-direct,22,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3129,1,1,,227.7,1
-direct,23,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2967,1,1,,207.3,1
-direct,24,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3063,1,1,,220.2,1
-direct,25,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3101,1,1,,206.1,1
-direct,26,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2981,1,1,,207.3,1
-direct,27,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3029,1,1,,227.4,1
-direct,28,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3051,1,1,,212.7,1
-direct,29,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3026,1,1,,207.5,1
-naive,0,EXECUTE,naive_temporal_only,1,1,1,1,1,0.2761,1,1,,205.3,1
-naive,1,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3098,1,1,,205.8,1
-naive,2,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3122,1,1,,204.8,1
-naive,3,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3138,1,1,,213.2,1
-naive,4,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0001,0,0,,217.0,1
-naive,5,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0,0,0,,226.6,1
-naive,6,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0,0,0,,205.8,1
-naive,7,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3043,1,1,,204.9,1
-naive,8,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0001,0,0,,206.6,1
-naive,9,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3036,1,1,,208.7,1
-naive,10,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3015,1,1,,217.8,1
-naive,11,EXECUTE,naive_temporal_only,1,1,1,1,1,0.296,1,1,,206.4,1
-naive,12,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3045,1,1,,208.7,1
-naive,13,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3123,1,1,,207.7,1
-naive,14,EXECUTE,naive_temporal_only,1,1,1,1,1,0.2937,1,1,,208.1,1
-naive,15,EXECUTE,naive_temporal_only,1,1,1,1,1,0.2872,1,1,,205.7,1
-naive,16,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3126,1,1,,205.3,1
-naive,17,EXECUTE,naive_temporal_only,1,1,1,1,1,0.298,1,1,,209.1,1
-naive,18,EXECUTE,naive_temporal_only,1,1,1,1,1,0.2946,1,1,,209.1,1
-naive,19,EXECUTE,naive_temporal_only,1,1,1,1,1,0.008,0,0,,207.2,1
-naive,20,EXECUTE,naive_temporal_only,1,1,1,1,1,0.2974,1,1,,205.9,1
-naive,21,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3041,1,1,,206.6,1
-naive,22,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3047,1,1,,205.9,1
-naive,23,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3111,1,1,,206.3,1
-naive,24,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3063,1,1,,206.4,1
-naive,25,EXECUTE,naive_temporal_only,1,1,1,1,1,0.2952,1,1,,227.6,1
-naive,26,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3219,1,1,,207.2,1
-naive,27,EXECUTE,naive_temporal_only,1,1,1,1,1,0.2903,1,1,,205.5,1
-naive,28,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0,0,0,,205.4,1
-naive,29,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3076,1,1,,206.4,1
-local,0,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0273,0,1,,213.2,1
-local,1,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0097,0,1,,230.1,1
-local,2,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0095,0,1,,206.9,1
-local,3,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0079,0,1,,208.5,1
-local,4,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0068,0,1,,209.0,1
-local,5,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0062,0,1,,206.2,1
-local,6,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.003,0,1,,206.1,1
-local,7,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0018,0,1,,210.5,1
-local,8,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0014,0,1,,209.4,1
-local,9,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0032,0,1,,208.1,1
-local,10,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0043,0,1,,207.8,1
-local,11,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.004,0,1,,207.7,1
-local,12,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0059,0,1,,208.0,1
-local,13,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0074,0,1,,206.0,1
-local,14,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0087,0,1,,207.6,1
-local,15,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0084,0,1,,207.7,1
-local,16,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0063,0,1,,207.1,1
-local,17,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0062,0,1,,207.6,1
-local,18,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0057,0,1,,208.1,1
-local,19,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0027,0,1,,212.0,1
-local,20,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0006,0,1,,211.3,1
-local,21,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0015,0,1,,212.4,1
-local,22,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0032,0,1,,228.5,1
-local,23,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0028,0,1,,207.0,1
-local,24,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0033,0,1,,209.0,1
-local,25,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0059,0,1,,206.3,1
-local,26,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0076,0,1,,229.6,1
-local,27,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0093,0,1,,227.7,1
-local,28,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0091,0,1,,207.6,1
-local,29,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.01,0,1,,226.9,1
+xair,0,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0034,0,1,,209.2,1
+xair,1,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0037,0,1,,207.3,1
+xair,2,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0039,0,1,,209.9,1
+xair,3,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0042,0,1,,207.1,1
+xair,4,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0044,0,1,,209.5,1
+xair,5,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0046,0,1,,207.1,1
+xair,6,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0048,0,1,,207.4,1
+xair,7,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0053,0,1,,210.4,1
+xair,8,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0057,0,1,,207.6,1
+xair,9,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0059,0,1,,206.4,1
+xair,10,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0057,0,1,,206.1,1
+xair,11,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0058,0,1,,209.5,1
+xair,12,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0061,0,1,,208.7,1
+xair,13,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0063,0,1,,207.5,1
+xair,14,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0065,0,1,,207.6,1
+xair,15,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0066,0,1,,207.6,1
+xair,16,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.007,0,1,,208.0,1
+xair,17,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0074,0,1,,207.4,1
+xair,18,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0076,0,1,,207.2,1
+xair,19,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0077,0,1,,205.5,1
+xair,20,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0079,0,1,,207.6,1
+xair,21,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0078,0,1,,208.9,1
+xair,22,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0079,0,1,,208.5,1
+xair,23,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0081,0,1,,206.8,1
+xair,24,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0083,0,1,,207.5,1
+xair,25,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0087,0,1,,227.1,1
+xair,26,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.009,0,1,,207.7,1
+xair,27,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0094,0,1,,229.7,1
+xair,28,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0093,0,1,,207.4,1
+xair,29,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0092,0,1,,206.8,1
+direct,0,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.2524,1,1,,205.4,1
+direct,1,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.0,0,0,,206.3,1
+direct,2,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3109,1,1,,206.3,1
+direct,3,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3238,1,1,,205.5,1
+direct,4,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3085,1,1,,207.6,1
+direct,5,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3034,1,1,,206.8,1
+direct,6,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3185,1,1,,207.9,1
+direct,7,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3199,1,1,,206.6,1
+direct,8,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.314,1,1,,204.9,1
+direct,9,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3008,1,1,,206.7,1
+direct,10,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3077,1,1,,205.3,1
+direct,11,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3245,1,1,,206.8,1
+direct,12,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3124,1,1,,205.7,1
+direct,13,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3152,1,1,,205.7,1
+direct,14,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3081,1,1,,206.6,1
+direct,15,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3199,1,1,,205.5,1
+direct,16,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3055,1,1,,206.4,1
+direct,17,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3048,1,1,,206.0,1
+direct,18,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3047,1,1,,205.7,1
+direct,19,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3141,1,1,,207.5,1
+direct,20,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3101,1,1,,206.6,1
+direct,21,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3092,1,1,,206.3,1
+direct,22,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3054,1,1,,205.7,1
+direct,23,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3048,1,1,,206.4,1
+direct,24,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.314,1,1,,225.3,1
+direct,25,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3028,1,1,,205.7,1
+direct,26,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3127,1,1,,205.2,1
+direct,27,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3077,1,1,,206.8,1
+direct,28,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3223,1,1,,205.5,1
+direct,29,EXECUTE,direct_bypass_no_validation,1,1,1,1,1,0.3207,1,1,,205.0,1
+naive,0,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3206,1,1,,207.0,1
+naive,1,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3114,1,1,,206.5,1
+naive,2,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3118,1,1,,205.4,1
+naive,3,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0,0,0,,205.9,1
+naive,4,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3049,1,1,,206.0,1
+naive,5,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3187,1,1,,204.6,1
+naive,6,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3059,1,1,,206.8,1
+naive,7,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3179,1,1,,208.2,1
+naive,8,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3197,1,1,,205.5,1
+naive,9,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3174,1,1,,207.3,1
+naive,10,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3168,1,1,,207.7,1
+naive,11,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3143,1,1,,206.8,1
+naive,12,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3122,1,1,,205.9,1
+naive,13,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3135,1,1,,208.2,1
+naive,14,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0,0,0,,203.9,1
+naive,15,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3079,1,1,,207.8,1
+naive,16,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3154,1,1,,206.2,1
+naive,17,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3172,1,1,,206.7,1
+naive,18,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3025,1,1,,205.8,1
+naive,19,EXECUTE,naive_temporal_only,1,1,1,1,1,0.31,1,1,,205.7,1
+naive,20,EXECUTE,naive_temporal_only,1,1,1,1,1,0.0,0,0,,205.6,1
+naive,21,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3117,1,1,,205.0,1
+naive,22,EXECUTE,naive_temporal_only,1,1,1,1,1,0.319,1,1,,207.3,1
+naive,23,EXECUTE,naive_temporal_only,1,1,1,1,1,0.311,1,1,,205.6,1
+naive,24,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3058,1,1,,206.0,1
+naive,25,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3278,1,1,,205.7,1
+naive,26,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3157,1,1,,205.2,1
+naive,27,EXECUTE,naive_temporal_only,1,1,1,1,1,0.318,1,1,,207.4,1
+naive,28,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3134,1,1,,206.1,1
+naive,29,EXECUTE,naive_temporal_only,1,1,1,1,1,0.3076,1,1,,205.1,1
+local,0,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0259,0,1,,207.4,1
+local,1,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0079,0,1,,206.7,1
+local,2,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0076,0,1,,207.0,1
+local,3,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0074,0,1,,206.9,1
+local,4,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0089,0,1,,208.6,1
+local,5,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0086,0,1,,206.5,1
+local,6,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0083,0,1,,207.0,1
+local,7,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.008,0,1,,205.4,1
+local,8,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0078,0,1,,208.4,1
+local,9,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0075,0,1,,207.4,1
+local,10,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0073,0,1,,206.3,1
+local,11,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.007,0,1,,205.4,1
+local,12,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0068,0,1,,206.3,1
+local,13,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0056,0,1,,227.6,1
+local,14,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0053,0,1,,207.0,1
+local,15,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0051,0,1,,207.0,1
+local,16,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0048,0,1,,207.2,1
+local,17,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0046,0,1,,207.0,1
+local,18,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0057,0,1,,208.3,1
+local,19,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0054,0,1,,206.0,1
+local,20,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0051,0,1,,207.3,1
+local,21,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0046,0,1,,208.6,1
+local,22,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0042,0,1,,207.0,1
+local,23,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0039,0,1,,207.2,1
+local,24,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0036,0,1,,206.6,1
+local,25,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.004,0,1,,208.7,1
+local,26,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0044,0,1,,206.9,1
+local,27,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0037,0,1,,205.6,1
+local,28,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0032,0,1,,228.1,1
+local,29,REVOKE,precondition_failed: line.state == 'RUN',0,0,0,0,1,0.0027,0,1,,207.8,1

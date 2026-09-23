@@ -1,4 +1,4 @@
-utc=2026-09-23T07:06:23Z
+utc=2026-09-23T12:24:52Z
 Linux dagati-llm169 6.8.12-18-pve #1 SMP PREEMPT_DYNAMIC PMX 6.8.12-18 (2025-12-15T18:07Z) x86_64 x86_64 x86_64 GNU/Linux
 Architecture:                            x86_64
 CPU op-mode(s):                          32-bit, 64-bit
@@ -48,8 +48,9 @@ Vulnerability Tsa:                       Mitigation; Clear CPU buffers
 Vulnerability Tsx async abort:           Not affected
 Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
                total        used        free      shared  buff/cache   available
-Mem:           512Gi        12Gi       486Gi        59Mi        13Gi       499Gi
+Mem:           512Gi        13Gi       485Gi        69Mi        13Gi       498Gi
 Swap:             0B          0B          0B
 Python 3.12.12
+fastapi==0.141.1 uvicorn==0.52.1 pydantic==2.13.4 jsonschema==4.26.0 redis==8.1.0
 redis_url=redis://127.0.0.1:6379/1
 ros2=absent

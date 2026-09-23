@@ -12,7 +12,7 @@ CAMPAIGN_FILES=(
   environment.txt e0_lifecycle.json e1_baselines.csv e1_fpr.csv e3_conflict_http.csv
   e4_load_http.csv e9_consistency_sweep.csv e10_toctou.csv e10_toctou_boundary.csv
   e11_stratified_seed42.csv e11_stratified_seed7.csv e11_stratified_seed123.csv
-  e12_scaling.csv e13_faults.csv e14_variants.csv
+  e12_scaling.csv e13_faults.csv e14_variants.csv e16_context_churn.csv
 )
 
 missing=0
@@ -38,13 +38,7 @@ shopt -u nullglob
   --out "$DATA/paper_metrics_summary.json" >/dev/null
 if [ -d "$REPO_ROOT/journal" ]; then
   "$PY" "$REPO_ROOT/experiments/plot_results.py" --results "$DATA" --out "$REPO_ROOT/journal/figures"
+  "$PY" "$REPO_ROOT/experiments/make_paper_tables.py" --summary "$DATA/paper_metrics_summary.json" --out "$REPO_ROOT/journal/generated"
 fi
 
-if git -C "$REPO_ROOT" rev-parse HEAD >/dev/null 2>&1; then
-  {
-    echo "commit=$(git -C "$REPO_ROOT" rev-parse HEAD)"
-    echo "describe=$(git -C "$REPO_ROOT" describe --tags --always --dirty 2>/dev/null || echo none)"
-    echo "repository=https://github.com/lucadagati/LD1-execution-gap-xair"
-  } > "$DATA/COMMIT.txt"
-fi
 echo "Frozen campaign in $DATA"

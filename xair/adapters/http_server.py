@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from xair import __version__
-from xair.adapters.runtime_state import read_snapshot, runtime, update_context_store
+from xair.adapters.runtime_state import read_snapshot, read_snapshot_full, runtime, update_context_store
 from xair.core.lifecycle import InvalidTransition
 from xair.core.models import ActionIntent, DecisionOutcome, IntentState
 
@@ -106,7 +106,7 @@ def submit_intent_batch(body: list[dict]):
 
 @app.post("/v1/intents")
 def submit_intent(body: dict):
-    ctx, ver, trusted = read_snapshot()
+    ctx, ver, pv, trusted = read_snapshot_full()
     if not trusted:
         return _rejection(body.get("id"), "context_store_untrusted", ver, False)
     schema_err = _schema_error(body)
@@ -117,7 +117,7 @@ def submit_intent(body: dict):
     # so it cannot re-acquire the target nor trigger a second release.
     record, duplicate = runtime.admit(intent)
     if not duplicate:
-        record = runtime.process_intent(intent, context=ctx, context_version=ver)
+        record = runtime.process_intent(intent, context=ctx, context_version=ver, path_versions=pv)
     return {
         "id": intent.id,
         "state": record.state.value,
@@ -126,6 +126,8 @@ def submit_intent(body: dict):
         "validation_latency_ms": record.validation_latency_ms,
         # Version of the snapshot this decision was validated against (v).
         "context_version": record.context_version,
+        "read_set": record.read_set,
+        "read_set_version": record.read_set_version,
         "context_trusted": trusted,
         "duplicate": duplicate,
     }
@@ -135,6 +137,7 @@ class PublicationReport(BaseModel):
     published: bool
     reason: str
     context_version: int | None = None
+    read_set_version: int | None = None
 
 
 @app.post("/v1/intents/{intent_id}/publication")
@@ -146,7 +149,8 @@ def report_publication(intent_id: str, body: PublicationReport):
     """
     try:
         record = runtime.confirm_publication(
-            intent_id, body.published, body.reason, context_version=body.context_version
+            intent_id, body.published, body.reason,
+            context_version=body.context_version, read_set_version=body.read_set_version,
         )
     except KeyError:
         raise HTTPException(status_code=404, detail="intent not found")
@@ -195,8 +199,8 @@ def metrics():
 
 @app.get("/v1/context/snapshot")
 def get_context_snapshot():
-    ctx, ver, trusted = read_snapshot()
-    return {"ok": True, "context": ctx, "context_version": ver, "context_trusted": trusted}
+    ctx, ver, pv, trusted = read_snapshot_full()
+    return {"ok": True, "context": ctx, "context_version": ver, "path_versions": pv, "context_trusted": trusted}
 
 
 @app.post("/v1/context/snapshot")

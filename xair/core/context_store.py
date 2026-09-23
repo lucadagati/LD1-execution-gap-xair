@@ -6,6 +6,7 @@ import threading
 from typing import Any
 
 from xair.core.deep_merge import deep_merge
+from xair.core.versioning import changed_paths
 
 try:
     import redis
@@ -21,22 +22,36 @@ SNAPSHOT_KEY = "xair:snapshot"
 _MAX_TX_RETRIES = 32
 
 
-def _decode(raw: str | None) -> tuple[dict, int]:
+def _decode(raw: str | None) -> tuple[dict, int, dict[str, int]]:
     if not raw:
-        return {}, 0
+        return {}, 0, {}
     doc = json.loads(raw)
-    return dict(doc.get("context") or {}), int(doc.get("version") or 0)
+    return (
+        dict(doc.get("context") or {}),
+        int(doc.get("version") or 0),
+        {k: int(v) for k, v in (doc.get("path_versions") or {}).items()},
+    )
 
 
-def _encode(context: dict, version: int) -> str:
-    return json.dumps({"context": context, "version": version})
+def _encode(context: dict, version: int, path_versions: dict[str, int]) -> str:
+    return json.dumps({"context": context, "version": version, "path_versions": path_versions})
+
+
+def _apply(context: dict, version: int, path_versions: dict[str, int], patch: dict):
+    """Merge ``patch``; the global version always advances, a path version only on a value change."""
+    version += 1
+    path_versions = dict(path_versions)
+    for path in changed_paths(context, patch):
+        path_versions[path] = version
+    return deep_merge(context, patch), version, path_versions
 
 
 class RedisContextStore:
     """Versioned context snapshot, Redis-backed or in-memory.
 
-    Context and its monotonic version live in *one* serialized document, so a
-    reader always obtains a (context, version) pair that was written together.
+    Context, its monotonic global version, and the per-path versions (the
+    global version at which each leaf last changed value) live in *one*
+    serialized document, so a reader always obtains them written together.
     With Redis, updates are an optimistic WATCH/MULTI transaction on that key,
     which keeps the version monotonic across processes; the in-memory fallback
     protects the same pair with a process lock.
@@ -48,6 +63,7 @@ class RedisContextStore:
         self._lock = threading.Lock()
         self._memory: dict[str, Any] = {}
         self._version = 0
+        self._path_versions: dict[str, int] = {}
         self._redis_required = bool(self._url)
         self._redis_available = False
         self._ensure_client()
@@ -106,8 +122,9 @@ class RedisContextStore:
                 # no other process can see. The caller gets the last known
                 # version; snapshot() reports the store as untrusted.
                 return self._version
-            self._memory = deep_merge(self._memory, patch)
-            self._version += 1
+            self._memory, self._version, self._path_versions = _apply(
+                self._memory, self._version, self._path_versions, patch
+            )
             return self._version
 
     def _update_redis(self, patch: dict) -> int:
@@ -115,13 +132,11 @@ class RedisContextStore:
             for _ in range(_MAX_TX_RETRIES):
                 try:
                     pipe.watch(SNAPSHOT_KEY)
-                    context, version = _decode(pipe.get(SNAPSHOT_KEY))
-                    context = deep_merge(context, patch)
-                    version += 1
+                    context, version, pv = _apply(*_decode(pipe.get(SNAPSHOT_KEY)), patch)
                     pipe.multi()
-                    pipe.set(SNAPSHOT_KEY, _encode(context, version))
+                    pipe.set(SNAPSHOT_KEY, _encode(context, version, pv))
                     pipe.execute()
-                    self._memory, self._version = context, version
+                    self._memory, self._version, self._path_versions = context, version, pv
                     self._redis_available = True
                     return version
                 except WatchError:
@@ -129,7 +144,11 @@ class RedisContextStore:
         raise RuntimeError("context update lost the optimistic race too many times")
 
     def snapshot(self) -> tuple[dict, int, bool]:
-        """Return (context, version, store_trusted) read as one consistent pair.
+        ctx, ver, _, trusted = self.snapshot_full()
+        return ctx, ver, trusted
+
+    def snapshot_full(self) -> tuple[dict, int, dict[str, int], bool]:
+        """Return (context, version, path_versions, store_trusted) read as one document.
 
         When Redis is configured but unreachable, store_trusted is False so
         callers must revoke rather than execute on a stale local copy.
@@ -138,10 +157,9 @@ class RedisContextStore:
             self._ensure_client()
             if self._client is not None:
                 try:
-                    context, version = _decode(self._client.get(SNAPSHOT_KEY))
-                    self._memory, self._version = context, version
+                    self._memory, self._version, self._path_versions = _decode(self._client.get(SNAPSHOT_KEY))
                     self._redis_available = True
                 except Exception:
                     self._drop_client()
             trusted = (not self._redis_required) or self._redis_available
-            return dict(self._memory), self._version, trusted
+            return dict(self._memory), self._version, dict(self._path_versions), trusted
