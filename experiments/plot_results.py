@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Paper figures (vector PDF + PNG) from a results directory.
+"""Paper figures (vector PDF) from a results directory.
 
 Colors follow the policy, never its rank, and every bar carries a direct
 k/n label so identity and value never rely on color alone.
@@ -45,7 +45,6 @@ def style() -> None:
 
 def save(fig, out: Path, stem: str) -> None:
     fig.savefig(out / f"{stem}.pdf", bbox_inches="tight", pad_inches=0.03)
-    fig.savefig(out / f"{stem}.png", bbox_inches="tight", pad_inches=0.03)
     plt.close(fig)
 
 

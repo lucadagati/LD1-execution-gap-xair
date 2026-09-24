@@ -5,7 +5,7 @@ set -e
 echo "=== AdaptiX — Gazebo Harmonic setup ==="
 
 if [ ! -f /opt/ros/jazzy/setup.bash ]; then
-  echo "ROS 2 Jazzy required. Run scripts/setup_server_ros.sh first."
+  echo "ROS 2 Jazzy (Ubuntu 24.04) required; see https://docs.ros.org/en/jazzy/Installation.html, or run E8 in the container: ./scripts/run_e8_docker.sh"
   exit 1
 fi
 

@@ -58,7 +58,7 @@ REDIS_URL=redis://127.0.0.1:6379/1 ./scripts/run_paper_campaign.sh
 | E15 OPC UA (needs `asyncua`) | `.venv/bin/python experiments/run_e15_opcua_hil.py --runs 30` | `experiments/results/e15_opcua_hil.csv` |
 | Smoke check (scratch dir) | `./scripts/verify_reproduction.sh` | temp dir |
 | Release check | `./scripts/verify_release.sh <tag>` | — |
-| Clean-clone audit (fresh clone, venv, tests, smoke) | `REF=v1.0.1 ./scripts/clean_clone_audit.sh` | temp dir |
+| Clean-clone audit (fresh clone, venv, tests, smoke) | `REF=v1.0.2 ./scripts/clean_clone_audit.sh` | temp dir |
 
 Suite definitions, metrics, and data provenance are in
 [experiments/EVALUATION.md](experiments/EVALUATION.md).
