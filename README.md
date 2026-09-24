@@ -30,7 +30,7 @@ journal/         manuscript — local only, git-ignored, never published
 ## Quick start
 
 ```bash
-./scripts/ensure_venv.sh          # .venv + pip install -e ".[dev]"
+./scripts/ensure_venv.sh          # .venv (Python >= 3.12, via uv if present) + install -e ".[dev]"
 .venv/bin/python -m pytest -q tests
 ./scripts/start_full_stack.sh     # Redis (docker) + XAIR :8080 + gateway :9092
 ./scripts/verify_e2e.sh
@@ -58,6 +58,7 @@ REDIS_URL=redis://127.0.0.1:6379/1 ./scripts/run_paper_campaign.sh
 | E15 OPC UA (needs `asyncua`) | `.venv/bin/python experiments/run_e15_opcua_hil.py --runs 30` | `experiments/results/e15_opcua_hil.csv` |
 | Smoke check (scratch dir) | `./scripts/verify_reproduction.sh` | temp dir |
 | Release check | `./scripts/verify_release.sh <tag>` | — |
+| Clean-clone audit (fresh clone, venv, tests, smoke) | `REF=v1.0.1 ./scripts/clean_clone_audit.sh` | temp dir |
 
 Suite definitions, metrics, and data provenance are in
 [experiments/EVALUATION.md](experiments/EVALUATION.md).

@@ -17,7 +17,7 @@ authors:
     affiliation: "University of Messina"
 license: Apache-2.0
 repository-code: "https://github.com/lucadagati/LD1-execution-gap-xair"
-version: "1.0.0"
+version: "1.0.1"
 keywords:
   - runtime assurance
   - execution-time validation
