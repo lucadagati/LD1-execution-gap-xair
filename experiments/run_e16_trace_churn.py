@@ -84,6 +84,8 @@ def main() -> int:
     parser.add_argument("--first-cycle", type=int, default=0)
     parser.add_argument("--cycles", type=int, default=5)
     parser.add_argument("--seed", type=int, default=16)
+    parser.add_argument("--phase", choices=("random", "fixed"), default="random",
+                        help="fixed: submit on the slot boundary (sensitivity check for phase locking)")
     parser.add_argument("--out", default=str(RESULTS_DIR / "e16_trace_churn.csv"))
     args = parser.parse_args()
 
@@ -104,7 +106,8 @@ def main() -> int:
             for n, (scope, kind) in enumerate(plan):
                 # uniform random phase within each slot: a fixed spacing that is a multiple of
                 # the publishing interval would lock every intent to the same notification phase
-                delay = writer.t0 + (n + rng.random()) * spacing - time.monotonic()
+                phase = rng.random() if args.phase == "random" else 0.0
+                delay = writer.t0 + (n + phase) * spacing - time.monotonic()
                 if delay > 0:
                     time.sleep(delay)
                 intent = {

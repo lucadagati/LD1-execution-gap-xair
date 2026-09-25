@@ -1,0 +1,401 @@
+policy,kind,run,gateway_released,reason
+0,drift,0,1,published_after_gate_recheck
+0,drift,1,1,published_after_gate_recheck
+0,drift,2,1,published_after_gate_recheck
+0,drift,3,1,published_after_gate_recheck
+0,drift,4,1,published_after_gate_recheck
+0,drift,5,1,published_after_gate_recheck
+0,drift,6,1,published_after_gate_recheck
+0,drift,7,1,published_after_gate_recheck
+0,drift,8,1,published_after_gate_recheck
+0,drift,9,1,published_after_gate_recheck
+0,drift,10,1,published_after_gate_recheck
+0,drift,11,1,published_after_gate_recheck
+0,drift,12,1,published_after_gate_recheck
+0,drift,13,1,published_after_gate_recheck
+0,drift,14,1,published_after_gate_recheck
+0,drift,15,1,published_after_gate_recheck
+0,drift,16,1,published_after_gate_recheck
+0,drift,17,1,published_after_gate_recheck
+0,drift,18,1,published_after_gate_recheck
+0,drift,19,1,published_after_gate_recheck
+0,drift,20,1,published_after_gate_recheck
+0,drift,21,1,published_after_gate_recheck
+0,drift,22,1,published_after_gate_recheck
+0,drift,23,1,published_after_gate_recheck
+0,drift,24,1,published_after_gate_recheck
+0,drift,25,1,published_after_gate_recheck
+0,drift,26,1,published_after_gate_recheck
+0,drift,27,1,published_after_gate_recheck
+0,drift,28,1,published_after_gate_recheck
+0,drift,29,1,published_after_gate_recheck
+0,drift,30,1,published_after_gate_recheck
+0,drift,31,1,published_after_gate_recheck
+0,drift,32,1,published_after_gate_recheck
+0,drift,33,1,published_after_gate_recheck
+0,drift,34,1,published_after_gate_recheck
+0,drift,35,1,published_after_gate_recheck
+0,drift,36,1,published_after_gate_recheck
+0,drift,37,1,published_after_gate_recheck
+0,drift,38,1,published_after_gate_recheck
+0,drift,39,1,published_after_gate_recheck
+0,drift,40,1,published_after_gate_recheck
+0,drift,41,1,published_after_gate_recheck
+0,drift,42,1,published_after_gate_recheck
+0,drift,43,1,published_after_gate_recheck
+0,drift,44,1,published_after_gate_recheck
+0,drift,45,1,published_after_gate_recheck
+0,drift,46,1,published_after_gate_recheck
+0,drift,47,1,published_after_gate_recheck
+0,drift,48,1,published_after_gate_recheck
+0,drift,49,1,published_after_gate_recheck
+0,drift,50,1,published_after_gate_recheck
+0,drift,51,1,published_after_gate_recheck
+0,drift,52,1,published_after_gate_recheck
+0,drift,53,1,published_after_gate_recheck
+0,drift,54,1,published_after_gate_recheck
+0,drift,55,1,published_after_gate_recheck
+0,drift,56,1,published_after_gate_recheck
+0,drift,57,1,published_after_gate_recheck
+0,drift,58,1,published_after_gate_recheck
+0,drift,59,1,published_after_gate_recheck
+0,drift,60,1,published_after_gate_recheck
+0,drift,61,1,published_after_gate_recheck
+0,drift,62,1,published_after_gate_recheck
+0,drift,63,1,published_after_gate_recheck
+0,drift,64,1,published_after_gate_recheck
+0,drift,65,1,published_after_gate_recheck
+0,drift,66,1,published_after_gate_recheck
+0,drift,67,1,published_after_gate_recheck
+0,drift,68,1,published_after_gate_recheck
+0,drift,69,1,published_after_gate_recheck
+0,drift,70,1,published_after_gate_recheck
+0,drift,71,1,published_after_gate_recheck
+0,drift,72,1,published_after_gate_recheck
+0,drift,73,1,published_after_gate_recheck
+0,drift,74,1,published_after_gate_recheck
+0,drift,75,1,published_after_gate_recheck
+0,drift,76,1,published_after_gate_recheck
+0,drift,77,1,published_after_gate_recheck
+0,drift,78,1,published_after_gate_recheck
+0,drift,79,1,published_after_gate_recheck
+0,drift,80,1,published_after_gate_recheck
+0,drift,81,1,published_after_gate_recheck
+0,drift,82,1,published_after_gate_recheck
+0,drift,83,1,published_after_gate_recheck
+0,drift,84,1,published_after_gate_recheck
+0,drift,85,1,published_after_gate_recheck
+0,drift,86,1,published_after_gate_recheck
+0,drift,87,1,published_after_gate_recheck
+0,drift,88,1,published_after_gate_recheck
+0,drift,89,1,published_after_gate_recheck
+0,drift,90,1,published_after_gate_recheck
+0,drift,91,1,published_after_gate_recheck
+0,drift,92,1,published_after_gate_recheck
+0,drift,93,1,published_after_gate_recheck
+0,drift,94,1,published_after_gate_recheck
+0,drift,95,1,published_after_gate_recheck
+0,drift,96,1,published_after_gate_recheck
+0,drift,97,1,published_after_gate_recheck
+0,drift,98,1,published_after_gate_recheck
+0,drift,99,1,published_after_gate_recheck
+0,valid,0,1,published_after_gate_recheck
+0,valid,1,1,published_after_gate_recheck
+0,valid,2,1,published_after_gate_recheck
+0,valid,3,1,published_after_gate_recheck
+0,valid,4,1,published_after_gate_recheck
+0,valid,5,1,published_after_gate_recheck
+0,valid,6,1,published_after_gate_recheck
+0,valid,7,1,published_after_gate_recheck
+0,valid,8,1,published_after_gate_recheck
+0,valid,9,1,published_after_gate_recheck
+0,valid,10,1,published_after_gate_recheck
+0,valid,11,1,published_after_gate_recheck
+0,valid,12,1,published_after_gate_recheck
+0,valid,13,1,published_after_gate_recheck
+0,valid,14,1,published_after_gate_recheck
+0,valid,15,1,published_after_gate_recheck
+0,valid,16,1,published_after_gate_recheck
+0,valid,17,1,published_after_gate_recheck
+0,valid,18,1,published_after_gate_recheck
+0,valid,19,1,published_after_gate_recheck
+0,valid,20,1,published_after_gate_recheck
+0,valid,21,1,published_after_gate_recheck
+0,valid,22,1,published_after_gate_recheck
+0,valid,23,1,published_after_gate_recheck
+0,valid,24,1,published_after_gate_recheck
+0,valid,25,1,published_after_gate_recheck
+0,valid,26,1,published_after_gate_recheck
+0,valid,27,1,published_after_gate_recheck
+0,valid,28,1,published_after_gate_recheck
+0,valid,29,1,published_after_gate_recheck
+0,valid,30,1,published_after_gate_recheck
+0,valid,31,1,published_after_gate_recheck
+0,valid,32,1,published_after_gate_recheck
+0,valid,33,1,published_after_gate_recheck
+0,valid,34,1,published_after_gate_recheck
+0,valid,35,1,published_after_gate_recheck
+0,valid,36,1,published_after_gate_recheck
+0,valid,37,1,published_after_gate_recheck
+0,valid,38,1,published_after_gate_recheck
+0,valid,39,1,published_after_gate_recheck
+0,valid,40,1,published_after_gate_recheck
+0,valid,41,1,published_after_gate_recheck
+0,valid,42,1,published_after_gate_recheck
+0,valid,43,1,published_after_gate_recheck
+0,valid,44,1,published_after_gate_recheck
+0,valid,45,1,published_after_gate_recheck
+0,valid,46,1,published_after_gate_recheck
+0,valid,47,1,published_after_gate_recheck
+0,valid,48,1,published_after_gate_recheck
+0,valid,49,1,published_after_gate_recheck
+0,valid,50,1,published_after_gate_recheck
+0,valid,51,1,published_after_gate_recheck
+0,valid,52,1,published_after_gate_recheck
+0,valid,53,1,published_after_gate_recheck
+0,valid,54,1,published_after_gate_recheck
+0,valid,55,1,published_after_gate_recheck
+0,valid,56,1,published_after_gate_recheck
+0,valid,57,1,published_after_gate_recheck
+0,valid,58,1,published_after_gate_recheck
+0,valid,59,1,published_after_gate_recheck
+0,valid,60,1,published_after_gate_recheck
+0,valid,61,1,published_after_gate_recheck
+0,valid,62,1,published_after_gate_recheck
+0,valid,63,1,published_after_gate_recheck
+0,valid,64,1,published_after_gate_recheck
+0,valid,65,1,published_after_gate_recheck
+0,valid,66,1,published_after_gate_recheck
+0,valid,67,1,published_after_gate_recheck
+0,valid,68,1,published_after_gate_recheck
+0,valid,69,1,published_after_gate_recheck
+0,valid,70,1,published_after_gate_recheck
+0,valid,71,1,published_after_gate_recheck
+0,valid,72,1,published_after_gate_recheck
+0,valid,73,1,published_after_gate_recheck
+0,valid,74,1,published_after_gate_recheck
+0,valid,75,1,published_after_gate_recheck
+0,valid,76,1,published_after_gate_recheck
+0,valid,77,1,published_after_gate_recheck
+0,valid,78,1,published_after_gate_recheck
+0,valid,79,1,published_after_gate_recheck
+0,valid,80,1,published_after_gate_recheck
+0,valid,81,1,published_after_gate_recheck
+0,valid,82,1,published_after_gate_recheck
+0,valid,83,1,published_after_gate_recheck
+0,valid,84,1,published_after_gate_recheck
+0,valid,85,1,published_after_gate_recheck
+0,valid,86,1,published_after_gate_recheck
+0,valid,87,1,published_after_gate_recheck
+0,valid,88,1,published_after_gate_recheck
+0,valid,89,1,published_after_gate_recheck
+0,valid,90,1,published_after_gate_recheck
+0,valid,91,1,published_after_gate_recheck
+0,valid,92,1,published_after_gate_recheck
+0,valid,93,1,published_after_gate_recheck
+0,valid,94,1,published_after_gate_recheck
+0,valid,95,1,published_after_gate_recheck
+0,valid,96,1,published_after_gate_recheck
+0,valid,97,1,published_after_gate_recheck
+0,valid,98,1,published_after_gate_recheck
+0,valid,99,1,published_after_gate_recheck
+1,drift,0,0,precondition_failed: line.state == 'RUN'
+1,drift,1,0,precondition_failed: line.state == 'RUN'
+1,drift,2,0,precondition_failed: line.state == 'RUN'
+1,drift,3,0,precondition_failed: line.state == 'RUN'
+1,drift,4,0,precondition_failed: line.state == 'RUN'
+1,drift,5,0,precondition_failed: line.state == 'RUN'
+1,drift,6,0,precondition_failed: line.state == 'RUN'
+1,drift,7,0,precondition_failed: line.state == 'RUN'
+1,drift,8,0,precondition_failed: line.state == 'RUN'
+1,drift,9,0,precondition_failed: line.state == 'RUN'
+1,drift,10,0,precondition_failed: line.state == 'RUN'
+1,drift,11,0,precondition_failed: line.state == 'RUN'
+1,drift,12,0,precondition_failed: line.state == 'RUN'
+1,drift,13,0,precondition_failed: line.state == 'RUN'
+1,drift,14,0,precondition_failed: line.state == 'RUN'
+1,drift,15,0,precondition_failed: line.state == 'RUN'
+1,drift,16,0,precondition_failed: line.state == 'RUN'
+1,drift,17,0,precondition_failed: line.state == 'RUN'
+1,drift,18,0,precondition_failed: line.state == 'RUN'
+1,drift,19,0,precondition_failed: line.state == 'RUN'
+1,drift,20,0,precondition_failed: line.state == 'RUN'
+1,drift,21,0,precondition_failed: line.state == 'RUN'
+1,drift,22,0,precondition_failed: line.state == 'RUN'
+1,drift,23,0,precondition_failed: line.state == 'RUN'
+1,drift,24,0,precondition_failed: line.state == 'RUN'
+1,drift,25,0,precondition_failed: line.state == 'RUN'
+1,drift,26,0,precondition_failed: line.state == 'RUN'
+1,drift,27,0,precondition_failed: line.state == 'RUN'
+1,drift,28,0,precondition_failed: line.state == 'RUN'
+1,drift,29,0,precondition_failed: line.state == 'RUN'
+1,drift,30,0,precondition_failed: line.state == 'RUN'
+1,drift,31,0,precondition_failed: line.state == 'RUN'
+1,drift,32,0,precondition_failed: line.state == 'RUN'
+1,drift,33,0,precondition_failed: line.state == 'RUN'
+1,drift,34,0,precondition_failed: line.state == 'RUN'
+1,drift,35,0,precondition_failed: line.state == 'RUN'
+1,drift,36,0,precondition_failed: line.state == 'RUN'
+1,drift,37,0,precondition_failed: line.state == 'RUN'
+1,drift,38,0,precondition_failed: line.state == 'RUN'
+1,drift,39,0,precondition_failed: line.state == 'RUN'
+1,drift,40,0,precondition_failed: line.state == 'RUN'
+1,drift,41,0,precondition_failed: line.state == 'RUN'
+1,drift,42,0,precondition_failed: line.state == 'RUN'
+1,drift,43,0,precondition_failed: line.state == 'RUN'
+1,drift,44,0,precondition_failed: line.state == 'RUN'
+1,drift,45,0,precondition_failed: line.state == 'RUN'
+1,drift,46,0,precondition_failed: line.state == 'RUN'
+1,drift,47,0,precondition_failed: line.state == 'RUN'
+1,drift,48,0,precondition_failed: line.state == 'RUN'
+1,drift,49,0,precondition_failed: line.state == 'RUN'
+1,drift,50,0,precondition_failed: line.state == 'RUN'
+1,drift,51,0,precondition_failed: line.state == 'RUN'
+1,drift,52,0,precondition_failed: line.state == 'RUN'
+1,drift,53,0,precondition_failed: line.state == 'RUN'
+1,drift,54,0,precondition_failed: line.state == 'RUN'
+1,drift,55,0,precondition_failed: line.state == 'RUN'
+1,drift,56,0,precondition_failed: line.state == 'RUN'
+1,drift,57,0,precondition_failed: line.state == 'RUN'
+1,drift,58,0,precondition_failed: line.state == 'RUN'
+1,drift,59,0,precondition_failed: line.state == 'RUN'
+1,drift,60,0,precondition_failed: line.state == 'RUN'
+1,drift,61,0,precondition_failed: line.state == 'RUN'
+1,drift,62,0,precondition_failed: line.state == 'RUN'
+1,drift,63,0,precondition_failed: line.state == 'RUN'
+1,drift,64,0,precondition_failed: line.state == 'RUN'
+1,drift,65,0,precondition_failed: line.state == 'RUN'
+1,drift,66,0,precondition_failed: line.state == 'RUN'
+1,drift,67,0,precondition_failed: line.state == 'RUN'
+1,drift,68,0,precondition_failed: line.state == 'RUN'
+1,drift,69,0,precondition_failed: line.state == 'RUN'
+1,drift,70,0,precondition_failed: line.state == 'RUN'
+1,drift,71,0,precondition_failed: line.state == 'RUN'
+1,drift,72,0,precondition_failed: line.state == 'RUN'
+1,drift,73,0,precondition_failed: line.state == 'RUN'
+1,drift,74,0,precondition_failed: line.state == 'RUN'
+1,drift,75,0,precondition_failed: line.state == 'RUN'
+1,drift,76,0,precondition_failed: line.state == 'RUN'
+1,drift,77,0,precondition_failed: line.state == 'RUN'
+1,drift,78,0,precondition_failed: line.state == 'RUN'
+1,drift,79,0,precondition_failed: line.state == 'RUN'
+1,drift,80,0,precondition_failed: line.state == 'RUN'
+1,drift,81,0,precondition_failed: line.state == 'RUN'
+1,drift,82,0,precondition_failed: line.state == 'RUN'
+1,drift,83,0,precondition_failed: line.state == 'RUN'
+1,drift,84,0,precondition_failed: line.state == 'RUN'
+1,drift,85,0,precondition_failed: line.state == 'RUN'
+1,drift,86,0,precondition_failed: line.state == 'RUN'
+1,drift,87,0,precondition_failed: line.state == 'RUN'
+1,drift,88,0,precondition_failed: line.state == 'RUN'
+1,drift,89,0,precondition_failed: line.state == 'RUN'
+1,drift,90,0,precondition_failed: line.state == 'RUN'
+1,drift,91,0,precondition_failed: line.state == 'RUN'
+1,drift,92,0,precondition_failed: line.state == 'RUN'
+1,drift,93,0,precondition_failed: line.state == 'RUN'
+1,drift,94,0,precondition_failed: line.state == 'RUN'
+1,drift,95,0,precondition_failed: line.state == 'RUN'
+1,drift,96,0,precondition_failed: line.state == 'RUN'
+1,drift,97,0,precondition_failed: line.state == 'RUN'
+1,drift,98,0,precondition_failed: line.state == 'RUN'
+1,drift,99,0,precondition_failed: line.state == 'RUN'
+1,valid,0,1,published_after_gate_recheck
+1,valid,1,1,published_after_gate_recheck
+1,valid,2,1,published_after_gate_recheck
+1,valid,3,1,published_after_gate_recheck
+1,valid,4,1,published_after_gate_recheck
+1,valid,5,1,published_after_gate_recheck
+1,valid,6,1,published_after_gate_recheck
+1,valid,7,1,published_after_gate_recheck
+1,valid,8,1,published_after_gate_recheck
+1,valid,9,1,published_after_gate_recheck
+1,valid,10,1,published_after_gate_recheck
+1,valid,11,1,published_after_gate_recheck
+1,valid,12,1,published_after_gate_recheck
+1,valid,13,1,published_after_gate_recheck
+1,valid,14,1,published_after_gate_recheck
+1,valid,15,1,published_after_gate_recheck
+1,valid,16,1,published_after_gate_recheck
+1,valid,17,1,published_after_gate_recheck
+1,valid,18,1,published_after_gate_recheck
+1,valid,19,1,published_after_gate_recheck
+1,valid,20,1,published_after_gate_recheck
+1,valid,21,1,published_after_gate_recheck
+1,valid,22,1,published_after_gate_recheck
+1,valid,23,1,published_after_gate_recheck
+1,valid,24,1,published_after_gate_recheck
+1,valid,25,1,published_after_gate_recheck
+1,valid,26,1,published_after_gate_recheck
+1,valid,27,1,published_after_gate_recheck
+1,valid,28,1,published_after_gate_recheck
+1,valid,29,1,published_after_gate_recheck
+1,valid,30,1,published_after_gate_recheck
+1,valid,31,1,published_after_gate_recheck
+1,valid,32,1,published_after_gate_recheck
+1,valid,33,1,published_after_gate_recheck
+1,valid,34,1,published_after_gate_recheck
+1,valid,35,1,published_after_gate_recheck
+1,valid,36,1,published_after_gate_recheck
+1,valid,37,1,published_after_gate_recheck
+1,valid,38,1,published_after_gate_recheck
+1,valid,39,1,published_after_gate_recheck
+1,valid,40,1,published_after_gate_recheck
+1,valid,41,1,published_after_gate_recheck
+1,valid,42,1,published_after_gate_recheck
+1,valid,43,1,published_after_gate_recheck
+1,valid,44,1,published_after_gate_recheck
+1,valid,45,1,published_after_gate_recheck
+1,valid,46,1,published_after_gate_recheck
+1,valid,47,1,published_after_gate_recheck
+1,valid,48,1,published_after_gate_recheck
+1,valid,49,1,published_after_gate_recheck
+1,valid,50,1,published_after_gate_recheck
+1,valid,51,1,published_after_gate_recheck
+1,valid,52,1,published_after_gate_recheck
+1,valid,53,1,published_after_gate_recheck
+1,valid,54,1,published_after_gate_recheck
+1,valid,55,1,published_after_gate_recheck
+1,valid,56,1,published_after_gate_recheck
+1,valid,57,1,published_after_gate_recheck
+1,valid,58,1,published_after_gate_recheck
+1,valid,59,1,published_after_gate_recheck
+1,valid,60,1,published_after_gate_recheck
+1,valid,61,1,published_after_gate_recheck
+1,valid,62,1,published_after_gate_recheck
+1,valid,63,1,published_after_gate_recheck
+1,valid,64,1,published_after_gate_recheck
+1,valid,65,1,published_after_gate_recheck
+1,valid,66,1,published_after_gate_recheck
+1,valid,67,1,published_after_gate_recheck
+1,valid,68,1,published_after_gate_recheck
+1,valid,69,1,published_after_gate_recheck
+1,valid,70,1,published_after_gate_recheck
+1,valid,71,1,published_after_gate_recheck
+1,valid,72,1,published_after_gate_recheck
+1,valid,73,1,published_after_gate_recheck
+1,valid,74,1,published_after_gate_recheck
+1,valid,75,1,published_after_gate_recheck
+1,valid,76,1,published_after_gate_recheck
+1,valid,77,1,published_after_gate_recheck
+1,valid,78,1,published_after_gate_recheck
+1,valid,79,1,published_after_gate_recheck
+1,valid,80,1,published_after_gate_recheck
+1,valid,81,1,published_after_gate_recheck
+1,valid,82,1,published_after_gate_recheck
+1,valid,83,1,published_after_gate_recheck
+1,valid,84,1,published_after_gate_recheck
+1,valid,85,1,published_after_gate_recheck
+1,valid,86,1,published_after_gate_recheck
+1,valid,87,1,published_after_gate_recheck
+1,valid,88,1,published_after_gate_recheck
+1,valid,89,1,published_after_gate_recheck
+1,valid,90,1,published_after_gate_recheck
+1,valid,91,1,published_after_gate_recheck
+1,valid,92,1,published_after_gate_recheck
+1,valid,93,1,published_after_gate_recheck
+1,valid,94,1,published_after_gate_recheck
+1,valid,95,1,published_after_gate_recheck
+1,valid,96,1,published_after_gate_recheck
+1,valid,97,1,published_after_gate_recheck
+1,valid,98,1,published_after_gate_recheck
+1,valid,99,1,published_after_gate_recheck

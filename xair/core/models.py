@@ -107,4 +107,5 @@ class IntentRecord:
     context_version: int = 0
     read_set: list[str] = field(default_factory=list)
     read_set_version: int = 0
+    policy_predicates: list[str] = field(default_factory=list)
     publication_decision: str | None = None

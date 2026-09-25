@@ -92,16 +92,18 @@ def _intent_or_none(data: dict) -> ActionIntent | None:
         return None
 
 
-def _temporal_ok(intent: ActionIntent) -> tuple[bool, str]:
-    return _TEMPORAL.validate(intent)
+def _temporal_ok(intent: ActionIntent, release: bool = False) -> tuple[bool, str]:
+    # Freshness bounds the age at validation; at a release recheck the bound is
+    # the deadline (or the freshness window when no deadline is declared).
+    return _TEMPORAL.validate_release(intent) if release else _TEMPORAL.validate(intent)
 
 
 def _predicates_ok(intent: ActionIntent, context: dict) -> tuple[bool, str]:
     return evaluate_predicates(intent.safety_constraints, intent.preconditions, context)
 
 
-def _validate(intent: ActionIntent, context: dict) -> tuple[bool, str]:
-    ok, reason = _temporal_ok(intent)
+def _validate(intent: ActionIntent, context: dict, release: bool = False) -> tuple[bool, str]:
+    ok, reason = _temporal_ok(intent, release)
     if not ok:
         return ok, reason
     return _predicates_ok(intent, context)
@@ -113,14 +115,19 @@ def _pull_xair_context() -> tuple[dict, int | None, bool]:
 
 
 def _pull_xair_snapshot() -> tuple[dict, int | None, dict[str, int], bool]:
+    return _pull_xair_snapshot_timed()[:4]
+
+
+def _pull_xair_snapshot_timed():
+    """(context, version, path_versions, trusted, store-read monotonic bounds or None)."""
     try:
         snap = XAIR.get_context()
         ver = snap.get("context_version")
         return ((snap.get("context") or {}), (int(ver) if ver is not None else None),
                 {k: int(v) for k, v in (snap.get("path_versions") or {}).items()},
-                bool(snap.get("context_trusted", False)))
+                bool(snap.get("context_trusted", False)), snap.get("store_read_mono_ms"))
     except Exception:
-        return {}, None, {}, False
+        return {}, None, {}, False, None
 
 
 def _scope(query: dict) -> str:
@@ -293,7 +300,7 @@ def _local_authoritative(data: dict, intent: ActionIntent, scope: str) -> dict:
     if ver is None or ver2 is None or ver2 != ver:
         return _result(data, baseline, "REVOKE", "context_version_changed_at_publish", t0,
                        context_version=ver, toctou_window_ms=(time.perf_counter() - tv) * 1000.0)
-    ok, reason = _validate(intent, ctx2)
+    ok, reason = _validate(intent, ctx2, release=True)
     if not ok:
         return _result(data, baseline, "REVOKE", f"{reason}_at_publish", t0, context_version=ver)
     ros_ok = _release(data)
@@ -330,6 +337,12 @@ def _xair_policy(data: dict, query: dict, atomic: bool = False) -> dict:
     injection_version: int | None = None
     gate_read_version: int | None = None
     commit_version: int | None = None
+    commit_info: dict = {}
+    t_publish_start: float | None = None
+    t_publish_wall_ms: float | None = None  # CLOCK_REALTIME at t_m, for ages against t_d
+    t_gate_wall_ms: float | None = None     # CLOCK_REALTIME at the gate's temporal check (optimistic)
+    store_io_ms: list | None = None          # gate's store read (optimistic) or commit (atomic), monotonic
+    injection_store_ms: list | None = None   # commit of the injected write, monotonic
     injection_thread: threading.Thread | None = None
     current_version = validation_version
     publish_delay_ms = float(query.get("publish_delay_ms", 0) or 0)
@@ -341,13 +354,14 @@ def _xair_policy(data: dict, query: dict, atomic: bool = False) -> dict:
         inject_after_ms = float(inject_after_ms_raw or 0)
 
         def inject_invalid_context() -> None:
-            nonlocal injection_started, injection_completed, injection_version
+            nonlocal injection_started, injection_completed, injection_version, injection_store_ms
             if inject_after_ms > 0:
                 time.sleep(inject_after_ms / 1000.0)
             injection_started = time.perf_counter()
             out = XAIR.update_context({"line": {"state": "PAUSED"}, "gripper": {"state": "CLOSED"}})
             injection_completed = time.perf_counter()
             injection_version = out.get("context_version")
+            injection_store_ms = out.get("store_write_mono_ms")
 
         injection_thread = threading.Thread(target=inject_invalid_context, daemon=True)
         injection_thread.start()
@@ -355,18 +369,24 @@ def _xair_policy(data: dict, query: dict, atomic: bool = False) -> dict:
     # DEGRADE requeues the same id for a separate revalidation pass; it is not
     # ready for actuation, so only EXECUTE proceeds to the t_p gate.
     if outcome == "EXECUTE" and atomic:
-        # Atomic check-and-actuate: XAIR commits the release iff nu_R is unchanged,
-        # in the same store transaction that orders every context update. t_r is
-        # that commit; the middleware call below only delivers a committed command.
+        # Atomic authorization commit (t_c): XAIR commits the authorization iff
+        # nu_R is unchanged and the age bound holds, in one store operation
+        # serialized with every context update. The middleware call (t_m) below
+        # follows the commit; a context change in (t_c, t_m] is a post-commit
+        # invalidation, located by the monotonic bounds recorded here.
         if publish_delay_ms > 0:
             time.sleep(publish_delay_ms / 1000.0)
         t_recheck_start = time.perf_counter()
         try:
-            act = XAIR.actuate(str(result.get("id")))
+            act = XAIR.commit(str(result.get("id")))
             t_recheck_end = time.perf_counter()
             commit_version = act.get("commit_version")
-            gate_reason = act.get("reason") or "atomic_actuation"
+            store_io_ms = act.get("commit_mono_ms")
+            commit_info = {k: act.get(k) for k in ("status", "seq", "store_time_ms", "age_at_commit_ms", "age_bound_ms")}
+            gate_reason = act.get("reason") or "atomic_commit"
             if act.get("released"):
+                t_publish_start = time.perf_counter()
+                t_publish_wall_ms = time.time() * 1000.0
                 ros_ok = _release(data)
                 gateway_released = True
                 t_publish_end = time.perf_counter()
@@ -384,7 +404,7 @@ def _xair_policy(data: dict, query: dict, atomic: bool = False) -> dict:
             time.sleep(publish_delay_ms / 1000.0)
         t_recheck_start = time.perf_counter()
         try:
-            ctx, ver_g, pv, trusted = _pull_xair_snapshot()
+            ctx, ver_g, pv, trusted, store_io_ms = _pull_xair_snapshot_timed()
             gate_read_version = ver_g
             current_version = _gate_version(scope, ver_g, pv, paths)
             if not trusted:
@@ -397,13 +417,16 @@ def _xair_policy(data: dict, query: dict, atomic: bool = False) -> dict:
             elif intent is None:
                 gate_blocked, gate_reason = True, "schema_invalid_at_publish"
             else:
-                ok, reason = _validate(intent, ctx)
+                t_gate_wall_ms = time.time() * 1000.0
+                ok, reason = _validate(intent, ctx, release=True)
                 if not ok:
                     gate_blocked, gate_reason = True, f"{reason}_at_publish"
                 else:
                     gate_reason = "published_after_gate_recheck"
             t_recheck_end = time.perf_counter()
             if not gate_blocked:
+                t_publish_start = time.perf_counter()
+                t_publish_wall_ms = time.time() * 1000.0
                 ros_ok = _release(data)
                 gateway_released = True
                 t_publish_end = time.perf_counter()
@@ -460,6 +483,18 @@ def _xair_policy(data: dict, query: dict, atomic: bool = False) -> dict:
         "gate_read_version": gate_read_version,
         "commit_version": commit_version,
         "baseline": "xair_atomic" if atomic else "xair",
+        # Shared-clock (CLOCK_MONOTONIC) instants, ms relative to this request:
+        # t_m = start of the middleware call; store_io = bounds on the gate's
+        # store read (optimistic) or on the authorization commit (atomic);
+        # injection_store = bounds on the commit of the injected write.
+        "t_middleware_ms": rel(t_publish_start),
+        "t_middleware_wall_ms": t_publish_wall_ms,
+        "t_gate_wall_ms": t_gate_wall_ms,
+        "store_io_lo_ms": rel(store_io_ms[0] / 1000.0) if store_io_ms else None,
+        "store_io_hi_ms": rel(store_io_ms[1] / 1000.0) if store_io_ms else None,
+        "injection_store_lo_ms": rel(injection_store_ms[0] / 1000.0) if injection_store_ms else None,
+        "injection_store_hi_ms": rel(injection_store_ms[1] / 1000.0) if injection_store_ms else None,
+        **{f"commit_{k}": v for k, v in commit_info.items()},
     }
 
 

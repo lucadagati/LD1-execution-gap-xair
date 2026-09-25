@@ -57,8 +57,11 @@ class XAIRHttpClient:
             },
         )
 
-    def actuate(self, intent_id: str) -> dict:
-        return self._request("POST", f"/v1/intents/{intent_id}/actuate", {})
+    def commit(self, intent_id: str) -> dict:
+        return self._request("POST", f"/v1/intents/{intent_id}/commit", {})
+
+    def actuations(self, start: int = 0) -> dict:
+        return self._request("GET", f"/v1/actuations?start={int(start)}")
 
     def metrics(self) -> dict:
         req = urllib.request.Request(f"{self.base_url}/v1/metrics", method="GET")

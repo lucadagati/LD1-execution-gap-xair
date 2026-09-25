@@ -117,6 +117,17 @@ def e10(rows: list[dict]) -> dict:
     }
     if exact:
         out["version_ordering"] = exact
+    if inj and "position_vs_middleware" in inj[0]:
+        rel_after = [r for r in inj if r["gateway_released"] == "1" and r["version_order"] == "after_check"]
+        pos: dict[str, int] = defaultdict(int)
+        for r in rel_after:
+            pos[r["position_vs_middleware"] or "unknown"] += 1
+        released_rows = [r for r in rows if r["gateway_released"] == "1"]
+        out["position_vs_middleware"] = dict(pos)
+        out["residual_bounds_ms"] = {
+            "lo": lat([v for r in released_rows if (v := fnum(r, "residual_lo_ms")) is not None]),
+            "hi": lat([v for r in released_rows if (v := fnum(r, "residual_hi_ms")) is not None]),
+        }
     return out
 
 
@@ -251,11 +262,112 @@ def e16_trace(rows: list[dict]) -> dict:
             for k, v in sorted(groups.items())}
 
 
+def e10_deadline(rows: list[dict]) -> dict:
+    out = {}
+    for mode in sorted({r["mode"] for r in rows}):
+        cell = [r for r in rows if r["mode"] == mode]
+        rel = [r for r in cell if r["gateway_released"] == "1"]
+        d = float(cell[0]["deadline_ms"])
+        ages_rel = [v for r in rel if (v := fnum(r, "age_at_check_ms")) is not None]
+        ages_m = [v for r in rel if (v := fnum(r, "age_at_middleware_ms")) is not None]
+        out[mode] = {
+            "trials": len(cell), "released": len(rel), "deadline_ms": d,
+            "late_at_check": sum(int(r["late_at_check"]) for r in cell),
+            "late_at_middleware": sum(int(r["late_at_middleware"]) for r in cell),
+            "max_age_at_check_released_ms": max(ages_rel, default=None),
+            "max_age_at_middleware_ms": max(ages_m, default=None),
+            "check_to_middleware_ms": lat([m - c for r in rel
+                                           if (m := fnum(r, "age_at_middleware_ms")) is not None
+                                           and (c := fnum(r, "age_at_check_ms")) is not None]),
+            "revoked_reasons": dict(sorted({(r["reason"] or "").split(":")[0]: 0 for r in cell}.items())),
+        }
+        for r in cell:
+            if r["gateway_released"] == "0":
+                key = (r["reason"] or "").split(":")[0]
+                out[mode]["revoked_reasons"][key] = out[mode]["revoked_reasons"].get(key, 0) + 1
+        out[mode]["revoked_reasons"] = {k: v for k, v in out[mode]["revoked_reasons"].items() if v}
+    return out
+
+
+def e18(rows: list[dict]) -> dict:
+    out = {}
+    for name in sorted({r["scenario"] for r in rows}):
+        cell = [r for r in rows if r["scenario"] == name]
+        num = lambda k: sum(int(r[k]) for r in cell if r.get(k) not in (None, ""))
+        out[name] = {"reps": len(cell), "committed": num("log_records"), "effects": num("effects"),
+                     "duplicate_effects": num("duplicate_effects"), "lost": num("lost"),
+                     "suppressed_replays": num("suppressed_replays"),
+                     **{k: num(k) for k in ("refused_duplicates", "effects_in_commit_order",
+                                            "commit_versions_monotone", "flagged", "withheld") if cell[0].get(k) not in (None, "")}}
+    return out
+
+
+def spread(values: list[float]) -> dict:
+    return {"n": len(values), "mean": statistics.fmean(values) if values else None,
+            "sd": statistics.stdev(values) if len(values) > 1 else 0.0,
+            "min": min(values, default=None), "max": max(values, default=None), "values": values}
+
+
+def across_campaigns(builds: list[dict]) -> dict:
+    """Between-campaign spread of the timing-sensitive metrics (one value per campaign)."""
+    out: dict = {}
+    def collect(name, fn):
+        vals = [v for b in builds if (v := fn(b)) is not None]
+        if vals:
+            out[name] = spread(vals)
+    for key in ("e10_boundary", "e10_atomic", "e10_natural", "e10_natural_atomic"):
+        collect(f"{key}.stale_exact", lambda b, k=key: b.get(k, {}).get("version_ordering", {}).get("stale_exact", {}).get("k"))
+        collect(f"{key}.potential_stale", lambda b, k=key: b.get(k, {}).get("version_ordering", {}).get("potential_stale"))
+        collect(f"{key}.stale_at_middleware", lambda b, k=key: b.get(k, {}).get("position_vs_middleware", {}).get("stale_at_middleware", 0) if k in b else None)
+        collect(f"{key}.residual_lo_p50_ms", lambda b, k=key: b.get(k, {}).get("residual_bounds_ms", {}).get("lo", {}).get("p50"))
+        collect(f"{key}.residual_hi_p50_ms", lambda b, k=key: b.get(k, {}).get("residual_bounds_ms", {}).get("hi", {}).get("p50"))
+        collect(f"{key}.validation_to_release_p50_ms", lambda b, k=key: b.get(k, {}).get("validation_to_release_ms_controls", {}).get("p50"))
+    for key in ("e16", "e16_trace"):
+        cells = sorted({c for b in builds for c in b.get(key, {})})
+        for c in cells:
+            collect(f"{key}.{c}.fpr", lambda b, k=key, c=c: b.get(k, {}).get(c, {}).get("fpr", {}).get("rate"))
+    for mode in ("xair", "xair_atomic"):
+        collect(f"e10_deadline.{mode}.late_at_check", lambda b, m=mode: b.get("e10_deadline", {}).get(m, {}).get("late_at_check"))
+        collect(f"e10_deadline.{mode}.late_at_middleware", lambda b, m=mode: b.get("e10_deadline", {}).get(m, {}).get("late_at_middleware"))
+    return out
+
+
+def model_fit(cells: list[tuple[float, float, float]]) -> dict:
+    """Largest gap between observed FPR and the Poisson / periodic predictions over (rate_hz, gate_s, fpr) cells."""
+    import math
+    pois = [abs(1 - math.exp(-lam * g) - o) for lam, g, o in cells]
+    per = [abs(min(1.0, lam * g) - o) for lam, g, o in cells]
+    return {"cells": len(cells), "max_abs_err_poisson": max(pois, default=None), "max_abs_err_periodic": max(per, default=None)}
+
+
+def _fit_cells(build: dict) -> dict:
+    """Global-version cells with a non-zero rate (E16) and version-scoped trace cells (E16-trace)."""
+    e16 = [(v["achieved_rate_hz"], v["validation_to_gate_ms"]["mean"] / 1000, v["fpr"]["rate"])
+           for k, v in build.get("e16", {}).items() if k.startswith("global|") and not k.endswith("|0")]
+    tr = [(v["achieved_update_rate_hz"], v["validation_to_gate_ms"]["mean"] / 1000, v["fpr"]["rate"])
+          for k, v in build.get("e16_trace", {}).items() if k.split("|")[1] == "global" or k.endswith("readset|continuous")]
+    return {"e16": e16, "e16_trace": tr}
+
+
 def build_summary(R: Path) -> dict:
     summary = _build(R)
+    if summary.get("e16"):
+        summary["model_fit"] = {"e16": model_fit(_fit_cells(summary)["e16"])}
     for sub in SUBSETS:
         if (R / sub).is_dir():
             summary[sub] = _build(R / sub)
+            camp = sorted(p for p in (R / sub / "campaigns").glob("c*") if p.is_dir()) if (R / sub / "campaigns").is_dir() else []
+            if camp:
+                builds = {"c1": summary[sub], **{p.name: _build(p) for p in camp}}
+                summary[sub]["campaigns"] = {k: v for k, v in builds.items() if k != "c1"}
+                summary[sub]["across_campaigns"] = across_campaigns(list(builds.values()))
+                cells = [_fit_cells(b) for b in builds.values()]
+                summary[sub]["model_fit"] = {
+                    "e16_per_campaign": model_fit([c for x in cells for c in x["e16"]]),
+                    "e16_trace_per_campaign": model_fit([c for x in cells for c in x["e16_trace"]]),
+                }
+            if (R / sub / "sensitivity").is_dir():
+                summary[sub]["sensitivity"] = {p.name: _build(p) for p in sorted((R / sub / "sensitivity").iterdir()) if p.is_dir()}
     return summary
 
 
@@ -309,6 +421,12 @@ def _build(R: Path) -> dict:
         summary["e10_natural_atomic"] = e10(rows)
     if rows := load(R / "e16_trace_churn.csv"):
         summary["e16_trace"] = e16_trace(rows)
+    if rows := load(R / "e10_deadline.csv"):
+        summary["e10_deadline"] = e10_deadline(rows)
+    if rows := load(R / "e17_policy.csv"):
+        summary["e17"] = grouped_rate(rows, ("policy", "kind"), "gateway_released")
+    if rows := load(R / "e18_outbox_faults.csv"):
+        summary["e18"] = e18(rows)
     reps = [load(p)[0] for p in sorted(R.glob("e4_load_http_rep*.csv")) if load(p)]
     if reps:
         summary["e4_reps"] = [{k: float(v) for k, v in r.items()} for r in reps]

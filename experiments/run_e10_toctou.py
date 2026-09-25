@@ -22,13 +22,28 @@ Each injected trial is classified by where the write landed:
 The unprotected residual window is recheck-end -> release-end
 (``recheck_to_publish_ms``), reported separately.
 
-With ``--mode xair_atomic`` the gateway releases through XAIR's atomic
-check-and-actuate, whose commit is serialized with every context update. The
-store versions then give an exact order: ``injection_version`` (global
-version created by the injected write) against ``check_version`` (version read
-by the gate, or version at the actuation commit). A release with
-``injection_version <= check_version`` would be a stale release; for the
-atomic mode it is impossible by construction and is counted exactly.
+With ``--mode xair_atomic`` the gateway obtains an atomic authorization
+commit (t_c) from XAIR, serialized with every context update, before its
+middleware call (t_m). The store versions give an exact order:
+``injection_version`` (global version created by the injected write) against
+``check_version`` (version read by the gate, or version at the commit). A
+release with ``injection_version <= check_version`` would be a stale
+authorization; in the atomic mode it is impossible by construction.
+
+Every process on one kernel shares CLOCK_MONOTONIC, so the store-side bounds
+that XAIR returns (on the gate's snapshot read, on the commit, and on the
+commit of the injected write) are comparable with the gateway's t_m. That
+locates each released trial's write relative to the middleware call:
+
+  stale_at_middleware   write committed after the check but before t_m: the
+                        command reached middleware while not admissible
+                        (optimistic mode), or after an authorization it
+                        invalidated (atomic mode: post-commit invalidation);
+  after_middleware      write committed after t_m;
+  ambiguous             the bounds overlap t_m.
+
+It also bounds the residual interval: from the store's answer to the gate's
+read (optimistic) or from the commit (atomic) to t_m.
 """
 
 from __future__ import annotations
@@ -87,6 +102,11 @@ def run_trial(offset_ms: float, publish_delay_ms: float, run_idx: int, do_inject
     else:
         stale = int(do_inject and rel and window == "before_recheck")
         potential = int(do_inject and rel and window in ("before_recheck", "concurrent"))
+    tm, lo, hi = resp.get("t_middleware_ms"), resp.get("store_io_lo_ms"), resp.get("store_io_hi_ms")
+    ilo, ihi = resp.get("injection_store_lo_ms"), resp.get("injection_store_hi_ms")
+    at_m = ""
+    if do_inject and rel and order == "after_check" and None not in (tm, ilo, ihi):
+        at_m = "stale_at_middleware" if ihi < tm else "after_middleware" if ilo > tm else "ambiguous"
     return {
         "run": run_idx,
         "mode": mode,
@@ -103,6 +123,16 @@ def run_trial(offset_ms: float, publish_delay_ms: float, run_idx: int, do_inject
         "check_version": cv,
         "version_order": order,
         "stale_exact": stale_exact,
+        "position_vs_middleware": at_m,
+        "residual_lo_ms": tm - hi if None not in (tm, hi) else None,
+        "residual_hi_ms": tm - lo if None not in (tm, lo) else None,
+        "t_middleware_ms": tm,
+        "store_io_lo_ms": lo,
+        "store_io_hi_ms": hi,
+        "injection_store_lo_ms": ilo,
+        "injection_store_hi_ms": ihi,
+        "commit_status": resp.get("commit_status"),
+        "commit_age_ms": resp.get("commit_age_at_commit_ms"),
         "outcome": resp.get("outcome"),
         "reason": resp.get("reason"),
         "validation_to_gate_ms": resp.get("validation_to_gate_ms"),

@@ -1,0 +1,1 @@
+{"netem_one_way_delay": "0.5ms", "netem_jitter": "0.1ms", "suites": "e16_trace", "seed_offset": 0, "compose_extra": "", "trace_phase": "fixed", "tcp_connect_rtt_ms_p50_p99": {"bench->xair": [1.311, 1.664], "bench->gateway": [1.294, 2.687], "bench->redis": [1.303, 1.711]}, "shared_monotonic_clock_check": "50/50", "loadavg": ["12.09", "11.67", "11.53"]}

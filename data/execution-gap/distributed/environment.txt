@@ -1,1 +1,1 @@
-{"netem_one_way_delay": "0.5ms", "netem_jitter": "0.1ms", "tcp_connect_rtt_ms_p50_p99": {"bench->xair": [1.233, 1.599], "bench->gateway": [1.241, 1.574], "bench->redis": [1.252, 2.763]}, "loadavg": ["20.53", "21.16", "20.08"]}
+{"netem_one_way_delay": "0.5ms", "netem_jitter": "0.1ms", "suites": "all", "seed_offset": 0, "compose_extra": "", "trace_phase": "random", "tcp_connect_rtt_ms_p50_p99": {"bench->xair": [1.261, 1.592], "bench->gateway": [1.256, 1.701], "bench->redis": [1.27, 2.166]}, "shared_monotonic_clock_check": "50/50", "loadavg": ["11.36", "11.73", "12.78"]}

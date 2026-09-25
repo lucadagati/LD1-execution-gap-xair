@@ -26,7 +26,7 @@ installed. `ros_published` (ROS publish call succeeded) and `ros_observed`
 | `local_push` | cache, refreshed iff `push_notified=true` | temporal + predicates |
 | `local_authoritative` | shared snapshot, re-read at `t_p` | + version recheck |
 | `xair` | XAIR validates at `t_v`; gateway re-reads at `t_p` | + version recheck, publication report |
-| `xair_atomic` | XAIR validates at `t_v`; release is an atomic check-and-commit in XAIR | read-set version compared in the same store transaction that orders context updates (`POST /v1/intents/{id}/actuate`) |
+| `xair_atomic` | XAIR validates at `t_v`; atomic authorization commit `t_c` in XAIR, then release `t_m` | Lua script on the store: read-set version, age vs deadline on the store clock, idempotent append to the actuation log (`POST /v1/intents/{id}/commit`) |
 
 All contextual modes use `xair.core` temporal validator and predicate evaluator.
 
@@ -59,6 +59,9 @@ the snapshot version advanced by every accepted update. The interval
 | E14 | `run_e14_variants.py` | E1 pattern for RESUME / STOP / GRASP / SET_SPEED |
 | E15 | `run_e15_opcua_hil.py` | line-state write through a local OPC UA server |
 | E16 | `run_e16_context_churn.py` | valid intents under background writers at 0–500 Hz (unrelated field / same-value rewrite); `version_scope=global` vs `readset` |
+| E10-deadline | `run_e10_deadline.py` | deadline 100 ms, induced gate delay swept 85–105 ms; age at the check (gateway clock / store clock) and at `t_m`; late releases counted |
+| E17 | `run_e17_policy.py` | producer omits `line.state == 'RUN'`; drift and valid trials with and without server-side policy (`PUT /v1/policy`) |
+| E18 | `run_e18_outbox_faults.py` | actuation-log fault model against Redis db 2: gateway crash after commit, duplicate commit, consumer crash after apply, consumer restarts, concurrent commits, post-commit invalidation |
 | E16-trace | `run_e16_trace_churn.py` | UCI hydraulic test-rig recording (17 sensors, 1–100 Hz) replayed without interruption as OPC UA-style notifications at 1000/100/10 ms, 600 intents per interval interleaved at random and spread over the 300 s replay with a random phase; discrete vs continuous (100 Hz pressure) intents; scopes global / readset / predicate |
 
 ## Data provenance
@@ -77,7 +80,9 @@ host (2026-09-23), produced with the code in this tree:
   (called by `scripts/sync_paper_outputs.sh`)
 - E15: `experiments/run_e15_opcua_hil.py --runs 30` (needs `asyncua`, in the `dev` extra)
 - `pinned/`: E4 (three runs) and E12 on reserved cores with a dedicated Redis (`scripts/run_pinned_perf.sh`)
-- `distributed/`: E1, E1c, E9, E10 (optimistic, atomic, natural window), E12, E16, E16-trace on
+- `distributed/`: E1, E1c, E9, E10 (optimistic, atomic, natural window), E10-deadline, E12, E16, E16-trace, E17, E18;
+  `distributed/campaigns/c2..c5`: independent repetitions of the timing-sensitive suites;
+  `distributed/sensitivity/`: 2 ± 1 ms jitter, shared CPUs, phase-locked E16-trace (`scripts/run_distributed_campaigns.sh`); on
   the five-node testbed (`scripts/run_distributed.sh`, compose file `docker/distributed/compose.yml`)
 - E16-trace data: UCI "Condition monitoring of hydraulic systems" (DOI 10.24432/C5CW21, CC BY 4.0),
   downloaded on first use into `experiments/.cache/` and verified by SHA-256 (`experiments/uci_hydraulic.py`)

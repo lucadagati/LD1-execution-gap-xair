@@ -18,9 +18,10 @@ subsets=("$@")
 for sub in "${subsets[@]}"; do
   [ -d "$SRC/$sub" ] || { echo "skip $sub: $SRC/$sub not found"; continue; }
   [ -f "$SRC/$sub/environment.txt" ] || { echo "Refusing to freeze $sub without environment.txt" >&2; exit 1; }
-  mkdir -p "$DATA/$sub"
-  find "$DATA/$sub" -maxdepth 1 -type f -delete
-  cp -f "$SRC/$sub"/*.csv "$SRC/$sub/environment.txt" "$DATA/$sub/"
+  rm -rf "${DATA:?}/$sub"
+  # every campaign directory under the subset (campaigns/cN, sensitivity/<name>) keeps its layout
+  (cd "$SRC/$sub" && find . \( -name '*.csv' -o -name environment.txt \) -print0 | while IFS= read -r -d '' f; do
+      mkdir -p "$DATA/$sub/$(dirname "$f")" && cp -f "$f" "$DATA/$sub/$f"; done)
   echo "Frozen $sub -> $DATA/$sub"
 done
 

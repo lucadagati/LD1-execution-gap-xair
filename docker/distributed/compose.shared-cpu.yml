@@ -1,0 +1,8 @@
+# Sensitivity variant: every node may run on every CPU of the testbed set, so
+# the components contend for cores instead of running on disjoint CPU sets.
+x-shared: &shared "3,6,7,8,9,12,13,14,25,27,39,41,45,54,55,57"
+services:
+  redis: {cpuset: *shared}
+  xair: {cpuset: *shared}
+  gateway: {cpuset: *shared}
+  bench: {cpuset: *shared}

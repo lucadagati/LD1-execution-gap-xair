@@ -21,13 +21,23 @@ def read_snapshot() -> tuple[dict, int, bool]:
 
 def read_snapshot_full() -> tuple[dict, int, dict[str, int], bool]:
     """Read (context, version, path_versions, trusted) as one document from the store."""
-    ctx, ver, pv, trusted = store.snapshot_full()
+    return read_snapshot_timed()[:4]
+
+
+def read_snapshot_timed():
+    """As ``read_snapshot_full``, plus monotonic (lo, hi) bounds on the store read."""
+    ctx, ver, pv, trusted, io = store.snapshot_timed()
     if trusted:
         runtime.install_context_snapshot(ctx, ver, replace=True)
-    return ctx, ver, pv, trusted
+    return ctx, ver, pv, trusted, io
 
 
 def update_context_store(patch: dict) -> tuple[int, bool]:
-    ver = store.update(patch)
+    return update_context_store_timed(patch)[:2]
+
+
+def update_context_store_timed(patch: dict):
+    """Apply a context patch; return (version, trusted, monotonic bounds on its commit)."""
+    ver, io = store.update_timed(patch)
     _, ver_now, trusted = read_snapshot()
-    return max(ver, ver_now), trusted
+    return max(ver, ver_now), trusted, io

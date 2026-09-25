@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import statistics
 from pathlib import Path
 
 from common import ROOT
@@ -52,7 +53,7 @@ def main() -> int:
     d = json.loads(args.summary.read_text())
     args.out.mkdir(parents=True, exist_ok=True)
     for name in ("tab_e6", "tab_e8", "tab_e11_cost", "tab_e13", "tab_e14", "tab_e16",
-                 "tab_e12_pinned", "tab_e12_dist", "tab_e16_trace", "tab_e10_modes", "tab_e16_dist", "tab_e12_both", "tab_e4_reps"):
+                 "tab_e12_pinned", "tab_e12_dist", "tab_e16_trace", "tab_e10_modes", "tab_e16_dist", "tab_e12_both", "tab_e4_reps", "tab_e10_summary", "tab_dist_extra"):
         (args.out / f"{name}.tex").write_text("")  # suites without data yield empty tables
     macros: list[str] = []
 
@@ -166,6 +167,88 @@ def main() -> int:
                         f" & {a['released']}/{a['injected']} & {a['stale']['k']} \\\\")
         (args.out / "tab_e10_modes.tex").write_text("\n".join(rows) + "\n")
 
+    # ---- five-campaign tables (distributed testbed) ----
+    camps = [dist] + list(dist.get("campaigns", {}).values()) if dist else []
+    def pooled(key, fn):
+        return sum(fn(c.get(key, {})) for c in camps if c.get(key))
+    def ncamp(key):
+        return sum(1 for c in camps if c.get(key))
+    if camps and all(c.get("e10_atomic") for c in camps):
+        vo = lambda k: (lambda e: e.get("version_ordering", {}).get(k, 0))
+        pos = lambda k: (lambda e: e.get("position_vs_middleware", {}).get(k, 0))
+        def cells(key):
+            before = pooled(key, vo("blocked_before_check")) + pooled(key, vo("released_before_check"))
+            blocked = pooled(key, vo("blocked_before_check"))
+            rel = pooled(key, vo("released_after_check"))
+            return (f"{blocked}/{before}", f"{rel}",
+                    f"{pooled(key, pos('stale_at_middleware'))} / {pooled(key, pos('ambiguous'))} / {pooled(key, pos('after_middleware'))}")
+        def rng(key, path):
+            vals = []
+            for c in camps:
+                e = c.get(key, {})
+                for k in path:
+                    e = e.get(k, {}) if isinstance(e, dict) else {}
+                if isinstance(e, (int, float)):
+                    vals.append(e)
+            return f"{min(vals):.2f}--{max(vals):.2f}" if vals else "--"
+        rows = []
+        for label, ko, ka in (("induced", "e10_boundary", "e10_atomic"), ("natural", "e10_natural", "e10_natural_atomic")):
+            o, a_ = cells(ko), cells(ka)
+            rows.append(f"\\multirow{{3}}{{*}}{{{label}}} & blocked / ordered before check & {o[0]} & {a_[0]} \\\\")
+            rows.append(f" & released (write ordered after check) & {o[1]} & {a_[1]} \\\\")
+            rows.append(f" & write before / overlapping / after $t_m$ & {o[2]} & {a_[2]} \\\\")
+        rows.append("\\midrule")
+        rows.append(f"\\multicolumn{{2}}{{@{{}}l}}{{check-to-$t_m$, lower bound p50 [ms]}} & {rng('e10_natural', ['residual_bounds_ms', 'lo', 'p50'])} & {rng('e10_natural_atomic', ['residual_bounds_ms', 'lo', 'p50'])} \\\\")
+        rows.append(f"\\multicolumn{{2}}{{@{{}}l}}{{check-to-$t_m$, upper bound p50 [ms]}} & {rng('e10_natural', ['residual_bounds_ms', 'hi', 'p50'])} & {rng('e10_natural_atomic', ['residual_bounds_ms', 'hi', 'p50'])} \\\\")
+        rows.append(f"\\multicolumn{{2}}{{@{{}}l}}{{validation to release p50 [ms]}} & {rng('e10_natural', ['validation_to_release_ms_controls', 'p50'])} & {rng('e10_natural_atomic', ['validation_to_release_ms_controls', 'p50'])} \\\\")
+        dl = lambda m, k: sum(c.get("e10_deadline", {}).get(m, {}).get(k, 0) for c in camps)
+        rows.append(f"\\multicolumn{{2}}{{@{{}}l}}{{deadline: late at check / at $t_m$}} & {dl('xair', 'late_at_check')} / {dl('xair', 'late_at_middleware')} & {dl('xair_atomic', 'late_at_check')} / {dl('xair_atomic', 'late_at_middleware')} \\\\")
+        (args.out / "tab_e10_summary.tex").write_text("\n".join(rows) + "\n")
+        macros.append(f"\\newcommand{{\\TenCampaigns}}{{{len(camps)}}}")
+    if camps and all(c.get("e16_trace") for c in camps):
+        rows = []
+        keys = camps[0]["e16_trace"].keys()
+        for iv in sorted({float(k.split("|")[0]) for k in keys}, reverse=True):
+            vals = []
+            for sc in ("global", "readset", "predicate"):
+                for kind in ("discrete", "continuous"):
+                    ks = [c["e16_trace"][f"{iv:g}|{sc}|{kind}"]["fpr"] for c in camps]
+                    k, n = sum(x["k"] for x in ks), sum(x["n"] for x in ks)
+                    vals.append(f"{100 * k / n:.0f}" if k else "0")
+            rate_hz = statistics.fmean(c["e16_trace"][f"{iv:g}|global|discrete"]["achieved_update_rate_hz"] for c in camps)
+            rows.append(f"{iv:g} & {rate_hz:.0f} & " + " & ".join(vals) + " \\\\")
+        (args.out / "tab_e16_trace.tex").write_text("\n".join(rows) + "\n")
+        n_trace = sum(c["e16_trace"][next(iter(keys))]["fpr"]["n"] for c in camps)
+        macros.append(f"\\newcommand{{\\TraceN}}{{{n_trace}}}")
+
+    if dist and dist.get("e18"):
+        lines = []
+        dlines = []
+        for m, label in (("xair", "optimistic"), ("xair_atomic", "atomic")):
+            t = sum(c.get("e10_deadline", {}).get(m, {}).get("trials", 0) for c in camps)
+            r = sum(c.get("e10_deadline", {}).get(m, {}).get("released", 0) for c in camps)
+            lc = sum(c.get("e10_deadline", {}).get(m, {}).get("late_at_check", 0) for c in camps)
+            lm = sum(c.get("e10_deadline", {}).get(m, {}).get("late_at_middleware", 0) for c in camps)
+            ctm = [c["e10_deadline"][m]["check_to_middleware_ms"]["p50"] for c in camps if c.get("e10_deadline")]
+            dlines.append(f"{label} & {t} & {r} & {lc} & {lm} & {min(ctm):.2f}--{max(ctm):.2f} \\\\")
+        e17 = dist.get("e17", {})
+        pol = lambda k: kn(e17[k]) if k in e17 else "--"
+        e18 = dist["e18"]
+        names = {"gateway_crash_after_commit": "gateway crash after commit", "duplicate_commit": "retried commit",
+                 "consumer_crash_after_apply": "consumer crash after effect", "consumer_restarts": "consumer restarts",
+                 "concurrent_commits": "8 concurrent committers", "post_commit_invalidation": "read-set change after commit"}
+        f18 = "\n".join(f"{names.get(k, k)} & {v['committed']} & {v['effects']} & {v['duplicate_effects']} & {v['lost']} \\\\" for k, v in e18.items())
+        (args.out / "tab_dist_extra.tex").write_text(
+            "E10-deadline (deadline 100\\,ms, five campaigns): late releases by the age at the check and at $t_m$.\n"
+            "\\begin{center}\\small\\begin{tabular}{@{}lrrrrc@{}}\\toprule\n"
+            "\\textbf{Mode} & \\textbf{Trials} & \\textbf{Released} & \\textbf{Late at check} & \\textbf{Late at $t_m$} & \\textbf{Check to $t_m$ p50 [ms]} \\\\\n\\midrule\n"
+            + "\n".join(dlines) + "\n\\bottomrule\\end{tabular}\\end{center}\n"
+            "E17 (released / trials): without policy, drift " + pol("0|drift") + ", valid " + pol("0|valid")
+            + "; with policy, drift " + pol("1|drift") + ", valid " + pol("1|valid") + ".\n\n"
+            "E18 (10 repetitions of 100 commits per scenario; the last scenario uses a consumer that rechecks at apply time and withholds changed commands).\n"
+            "\\begin{center}\\small\\begin{tabular}{@{}lrrrr@{}}\\toprule\n"
+            "\\textbf{Scenario} & \\textbf{Committed} & \\textbf{Effects} & \\textbf{Duplicates} & \\textbf{Lost} \\\\\n\\midrule\n"
+            + f18 + "\n\\bottomrule\\end{tabular}\\end{center}\n")
     (args.out / "numbers.tex").write_text("\n".join(macros) + "\n")
     print(f"Wrote {len(macros)} macros and tables to {args.out}")
     return 0

@@ -2,13 +2,17 @@
 
 Per-trial data behind every number, table, and figure of the manuscript. The top-level
 files were produced on 2026-09-23 on one host (see `environment.txt`; the host was shared,
-load average 68–75). Two sub-directories hold the campaigns of 2026-09-24/25:
+load average 68–75). Two sub-directories hold the campaigns of 2026-09-24/26:
 
 - `pinned/`: E4 (three runs) and E12 on reserved cores with a dedicated Redis
   (`scripts/run_pinned_perf.sh`);
-- `distributed/`: E1, E1c, E9, E10 (optimistic and atomic release, induced and natural
-  window), E12, E16, and E16-trace on the four-container testbed with netem delay
-  (`scripts/run_distributed.sh`, `docker/distributed/compose.yml`).
+- `distributed/`: campaign 1 on the four-container testbed with netem delay: E1, E1c, E9,
+  E10 (optimistic and atomic commit, induced and natural window, shared-clock positions),
+  E10-deadline, E12, E16, E16-trace, E17 (server-side policy), E18 (actuation-log faults);
+  `distributed/campaigns/c2..c5`: independent repetitions (seed offsets 1..4) of E10,
+  E10-deadline, E16, and E16-trace; `distributed/sensitivity/`: 2 ± 1 ms delay (`jitter2ms`),
+  CPU sets shared by all components (`shared_cpu`), phase-locked E16-trace (`phase_locked`).
+  All produced by `scripts/run_distributed_campaigns.sh` (compose files in `docker/distributed/`).
 
 Each sub-directory has its own `environment.txt`; both are frozen with
 `scripts/freeze_subsets.sh`, and `paper_metrics_summary.json` summarizes them under the
@@ -37,10 +41,13 @@ is not redistributed here.
 | `paper_metrics_summary.json` | all aggregates | `experiments/aggregate_experiment_results.py` |
 
 Code: the top-level data were generated with the code of release **v1.0.0**; changes
-committed after those runs that touch the recorded paths are the atomic release endpoint,
+committed after those runs that touch the recorded paths are the atomic commit endpoint,
 the predicate-only gate scope, and extra version columns in E10, all added as new options
-whose defaults leave the v1.0.0 behavior unchanged. The sub-directories were generated with
-release **v1.1.0**.
+whose defaults leave the v1.0.0 behavior unchanged. `pinned/` was generated with release **v1.1.0**; `distributed/` with release **v1.2.0**
+(atomic authorization commit as a store-side script, shared-clock instrumentation). The
+changes of v1.2.0 that touch recorded paths (release-time temporal semantics, server-side
+policy, commit endpoint) are inactive in the top-level suites: their ages stay far below both
+bounds and no policy is installed.
 
 Results of the originally submitted campaign (2026-09-10) are not part of this dataset;
 their differences from these results are documented in the project's internal review.

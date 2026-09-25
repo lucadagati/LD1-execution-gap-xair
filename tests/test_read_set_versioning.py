@@ -76,39 +76,86 @@ def test_aba_change_on_read_path_blocks_read_set_gate():
     assert final.reason == "read_set_version_changed_at_gate"
 
 
-def test_atomic_actuation_serializes_with_context_updates():
-    store = RedisContextStore("")
-    store.update({"line": {"state": "RUN"}})
-    _, _, pv, _ = store.snapshot_full()
-    expected = read_set_version(pv, ["line.state"])
-    store.update({"telemetry": {"t": 1.0}})  # unrelated write: still committable
-    ok, observed, _ = store.compare_and_actuate(["line.state"], expected, {"intent_id": "a"})
-    assert ok and observed == expected
-    store.update({"line": {"state": "PAUSED"}})
-    ok, observed, _ = store.compare_and_actuate(["line.state"], expected, {"intent_id": "b"})
-    assert not ok and observed != expected
-    assert [r["intent_id"] for r in store.actuation_log()] == ["a"]
+def _commit(store, intent_id, expected, *, age_bound=None, decision_ms=None):
+    import time as _t
+    return store.commit_authorization(intent_id, ["line.state"], expected, {"read_set": ["line.state"]},
+                                      decision_epoch_ms=_t.time() * 1000.0 if decision_ms is None else decision_ms,
+                                      age_bound_ms=age_bound)
 
 
-def test_atomic_actuation_under_concurrent_writers_never_commits_after_change():
-    import threading
-    store = RedisContextStore("")
-    store.update({"line": {"state": "RUN"}})
-    _, _, pv, _ = store.snapshot_full()
-    expected = read_set_version(pv, ["line.state"])
-    results = []
+def _stores():
+    """In-memory store, plus a Redis one on db 1 when a local server is reachable."""
+    import os
+    out = [RedisContextStore("")]
+    url = os.environ.get("XAIR_TEST_REDIS_URL", "redis://127.0.0.1:6379/1")
+    try:
+        import redis
+        client = redis.from_url(url)
+        client.ping()
+        client.delete("xair:snapshot", "xair:actuations", "xair:committed")
+        out.append(RedisContextStore(url))
+    except Exception:
+        pass
+    return out
 
-    def writer():
+
+def test_atomic_commit_serializes_with_context_updates():
+    for store in _stores():
+        store.update({"line": {"state": "RUN"}})
+        _, _, pv, _ = store.snapshot_full()
+        expected = read_set_version(pv, ["line.state"])
+        store.update({"telemetry": {"t": 1.0}})  # unrelated write: still committable
+        res = _commit(store, "a", expected)
+        assert res["status"] == "committed" and res["observed"] == expected and res["seq"] == 1
+        assert _commit(store, "a", expected)["status"] == "duplicate"
         store.update({"line": {"state": "PAUSED"}})
+        res = _commit(store, "b", expected)
+        assert res["status"] == "changed" and res["observed"] != expected
+        assert [r["intent_id"] for r in store.actuation_log()] == ["a"]
 
-    def actuator(i):
-        results.append(store.compare_and_actuate(["line.state"], expected, {"intent_id": str(i)}))
 
-    threads = [threading.Thread(target=writer)] + [threading.Thread(target=actuator, args=(i,)) for i in range(20)]
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
-    pause_version = store.snapshot_full()[2]["line.state"]
-    # every committed actuation happened at a global version before the write
-    assert all(commit < pause_version for ok, _, commit in results if ok)
+def test_atomic_commit_checks_age_on_the_store_clock():
+    import time as _t
+    for store in _stores():
+        store.update({"line": {"state": "RUN"}})
+        expected = read_set_version(store.snapshot_full()[2], ["line.state"])
+        old = _t.time() * 1000.0 - 500.0
+        res = _commit(store, "late", expected, age_bound=100.0, decision_ms=old)
+        assert res["status"] == "expired" and res["age_at_commit_ms"] >= 500.0
+        res = _commit(store, "ok", expected, age_bound=10_000.0, decision_ms=old)
+        assert res["status"] == "committed" and store.actuation_log()[-1]["age_at_commit_ms"] >= 500.0
+
+
+def test_atomic_commit_under_concurrent_writers_never_commits_after_change():
+    import threading
+    for store in _stores():
+        store.update({"line": {"state": "RUN"}})
+        expected = read_set_version(store.snapshot_full()[2], ["line.state"])
+        results = []
+
+        def writer():
+            store.update({"line": {"state": "PAUSED"}})
+
+        def committer(i):
+            results.append(_commit(store, f"c{i}", expected))
+
+        threads = [threading.Thread(target=writer)] + [threading.Thread(target=committer, args=(i,)) for i in range(20)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        pause_version = store.snapshot_full()[2]["line.state"]
+        # every committed authorization happened at a global version before the write
+        assert all(r["commit_version"] < pause_version for r in results if r["status"] == "committed")
+        assert all(r["status"] in ("committed", "changed") for r in results)
+
+
+def test_atomic_commit_refuses_decisions_ahead_of_the_store_clock():
+    import time as _t
+    for store in _stores():
+        store.update({"line": {"state": "RUN"}})
+        expected = read_set_version(store.snapshot_full()[2], ["line.state"])
+        ahead = _t.time() * 1000.0 + 200.0
+        res = store.commit_authorization("ahead", ["line.state"], expected, {"read_set": ["line.state"]},
+                                         decision_epoch_ms=ahead, age_bound_ms=1000.0, max_ahead_ms=50.0)
+        assert res["status"] == "future_skew"

@@ -56,11 +56,12 @@ REDIS_URL=redis://127.0.0.1:6379/1 ./scripts/run_paper_campaign.sh
 | E8-Gazebo on a native Jazzy host | `./scripts/run_e8_gazebo_full.sh 30 <tag>` | same |
 | E6 netem in a network namespace (root) | `sudo ./scripts/run_e6_netns.sh 30 10 500` | `experiments/results/e6_network.csv` |
 | E4/E12 on reserved cores + dedicated Redis | `./scripts/run_pinned_perf.sh` | `experiments/results/pinned/` |
-| Distributed testbed (5 nodes on a bridge, netem LAN delay; root) | `sudo ./scripts/run_distributed.sh 0.5ms 0.1ms` | `experiments/results/distributed/` |
+| Distributed testbed (4 nodes on a bridge, netem LAN delay; root) | `sudo ./scripts/run_distributed.sh 0.5ms 0.1ms` | `experiments/results/distributed/` |
+| All distributed campaigns (5 repetitions + sensitivity; ~2.5 h) | `sudo ./scripts/run_distributed_campaigns.sh` | `experiments/results/distributed/{,campaigns,sensitivity}` |
 | E15 OPC UA (needs `asyncua`) | `.venv/bin/python experiments/run_e15_opcua_hil.py --runs 30` | `experiments/results/e15_opcua_hil.csv` |
 | Smoke check (scratch dir) | `./scripts/verify_reproduction.sh` | temp dir |
 | Release check | `./scripts/verify_release.sh <tag>` | — |
-| Clean-clone audit (fresh clone, venv, tests, smoke) | `REF=v1.1.0 ./scripts/clean_clone_audit.sh` | temp dir |
+| Clean-clone audit (fresh clone, venv, tests, smoke) | `REF=v1.2.0 ./scripts/clean_clone_audit.sh` | temp dir |
 
 Suite definitions, metrics, and data provenance are in
 [experiments/EVALUATION.md](experiments/EVALUATION.md).

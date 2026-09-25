@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import math
+import os
 import threading
 import time
 from collections import OrderedDict
@@ -68,6 +70,26 @@ class XAIRRuntime:
         }
         # intent id -> monotonic admission time, oldest first.
         self._seen: OrderedDict[str, float] = OrderedDict()
+        # Server-side policy: action_type -> predicates every such intent must
+        # satisfy, whatever its producer declared (XAIR_POLICY_FILE, JSON).
+        self.policy: dict[str, list[str]] = {}
+        if path := os.environ.get("XAIR_POLICY_FILE"):
+            self.set_policy(json.loads(open(path, encoding="utf-8").read()))
+
+    # ----------------------------------------------------------------- policy
+
+    def set_policy(self, policy: dict) -> dict[str, list[str]]:
+        """Install mandatory predicates per action type: {"RESUME": ["line.state == 'RUN'"], ...}."""
+        with self._lock:
+            self.policy = {str(k): [str(e) for e in v] for k, v in (policy or {}).items()}
+            return dict(self.policy)
+
+    def _apply_policy(self, intent: ActionIntent) -> list[str]:
+        """Append the mandatory predicates the producer omitted; return the ones added."""
+        added = [e for e in self.policy.get(intent.payload.action_type, [])
+                 if e not in intent.preconditions and e not in intent.safety_constraints]
+        intent.preconditions = [*intent.preconditions, *added]
+        return added
 
     # ------------------------------------------------------------------ context
 
@@ -189,6 +211,7 @@ class XAIRRuntime:
                 self._metrics["revoked"] += 1
                 return record
 
+            record.policy_predicates = self._apply_policy(intent)
             conflict, _ = self.coordinator.check_conflict(intent)
             temporal_ok, temporal_reason = self.temporal.validate(intent, now)
             context_ok, context_reason = self.context.validate(intent, snapshot)

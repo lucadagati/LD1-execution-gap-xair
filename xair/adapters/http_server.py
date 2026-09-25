@@ -8,7 +8,8 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from xair import __version__
-from xair.adapters.runtime_state import read_snapshot, read_snapshot_full, runtime, store, update_context_store
+from xair.adapters.runtime_state import (read_snapshot, read_snapshot_full, read_snapshot_timed, runtime, store,
+                                         update_context_store_timed)
 from xair.core.lifecycle import InvalidTransition
 from xair.core.models import ActionIntent, DecisionOutcome, IntentState
 
@@ -128,6 +129,7 @@ def submit_intent(body: dict):
         "context_version": record.context_version,
         "read_set": record.read_set,
         "read_set_version": record.read_set_version,
+        "policy_predicates": record.policy_predicates,
         "context_trusted": trusted,
         "duplicate": duplicate,
     }
@@ -165,43 +167,71 @@ def report_publication(intent_id: str, body: PublicationReport):
     }
 
 
-@app.post("/v1/intents/{intent_id}/actuate")
-def actuate(intent_id: str):
-    """Atomic check-and-actuate: release iff the read-set version still equals nu_R(t_v).
+_COMMIT_REASONS = {
+    "committed": "authorization_committed",
+    "changed": "read_set_version_changed_at_commit",
+    "expired": "age_bound_exceeded_at_commit",
+    "duplicate": "duplicate_commit",
+    "future_skew": "decision_ahead_of_store_clock_at_commit",
+    "unavailable": "context_untrusted_at_commit",
+}
 
-    The comparison and the actuation record are committed in one store
-    transaction, serialized with every context update, so no context change
-    can fall between the last check and the release (the interval (t_g, t_r]
-    of the optimistic gate collapses). The release instant t_r is the commit.
+
+@app.post("/v1/intents/{intent_id}/commit")
+def commit_authorization(intent_id: str):
+    """Atomic authorization commit (t_c).
+
+    The read-set version comparison, the age check on the store clock, and the
+    append of the authorization record to the actuation log are one atomic
+    store operation, serialized with every context update. A committed record
+    is an authorization, not an actuation: the middleware call (t_m) and the
+    actuator's effect (t_a) follow it, and a context change after t_c is a
+    post-commit invalidation that this operation does not observe.
     """
     record = runtime.lifecycle.get(intent_id)
     if record is None:
         raise HTTPException(status_code=404, detail="intent not found")
     if record.state != IntentState.AUTHORIZED:
-        raise HTTPException(status_code=409, detail=f"{intent_id}: {record.state.value} cannot be actuated")
-    temporal_ok, temporal_reason = runtime.temporal.validate(record.intent)
-    if not temporal_ok:
-        final = runtime.confirm_publication(intent_id, False, f"{temporal_reason}_at_actuation")
-        return {"id": intent_id, "released": False, "reason": final.reason, "commit_version": None}
-    committed, observed, commit_version = store.compare_and_actuate(
-        record.read_set, record.read_set_version,
-        {"intent_id": intent_id, "action_type": record.intent.payload.action_type,
-         "target_entity": record.intent.payload.target_entity},
+        raise HTTPException(status_code=409, detail=f"{intent_id}: {record.state.value} cannot be committed")
+    temporal = runtime.temporal
+    skew_ok, skew_reason = temporal.validate_release(record.intent)
+    if not skew_ok and skew_reason.startswith("future_skew"):
+        final = runtime.confirm_publication(intent_id, False, f"{skew_reason}_at_commit")
+        return {"id": intent_id, "released": False, "reason": final.reason, "status": "future_skew",
+                "commit_version": None}
+    res = store.commit_authorization(
+        intent_id, record.read_set, record.read_set_version,
+        {"action_type": record.intent.payload.action_type, "target_entity": record.intent.payload.target_entity,
+         "parameters": record.intent.payload.parameters, "read_set": record.read_set,
+         "read_set_version": record.read_set_version},
+        decision_epoch_ms=temporal.decision_epoch_ms(record.intent),
+        age_bound_ms=temporal.release_bound_ms(record.intent) - temporal.clock_uncertainty_ms,
+        max_ahead_ms=temporal.clock_uncertainty_ms,
     )
-    if committed:
-        final = runtime.confirm_publication(intent_id, True, "atomic_actuation_committed",
-                                            read_set_version=record.read_set_version)
-    else:
-        final = runtime.confirm_publication(intent_id, False, "read_set_version_changed_at_actuation")
+    committed = res["status"] == "committed"
+    final = runtime.confirm_publication(intent_id, committed, _COMMIT_REASONS[res["status"]],
+                                        **({"read_set_version": record.read_set_version} if committed else {}))
     return {
         "id": intent_id,
         "released": committed,
+        "status": res["status"],
         "reason": final.reason,
         "state": final.state.value,
         "expected_read_set_version": record.read_set_version,
-        "observed_read_set_version": observed,
-        "commit_version": commit_version,
+        "observed_read_set_version": res["observed"],
+        "commit_version": res["commit_version"],
+        "seq": res["seq"],
+        "store_time_ms": res["store_time_ms"],
+        "age_at_commit_ms": res["age_at_commit_ms"],
+        "age_bound_ms": temporal.release_bound_ms(record.intent),
+        "commit_mono_ms": list(res["mono_ms"]),
     }
+
+
+@app.get("/v1/actuations")
+def list_actuations(start: int = 0):
+    """Committed authorization records from 0-based log position ``start``, in commit order."""
+    return {"start": start, "records": store.actuation_log(start)}
 
 
 @app.get("/v1/intents/{intent_id}")
@@ -231,6 +261,17 @@ def revoke_intent(intent_id: str):
     return {"id": intent_id, "state": record.state.value}
 
 
+@app.get("/v1/policy")
+def get_policy():
+    return {"policy": runtime.policy}
+
+
+@app.put("/v1/policy")
+def put_policy(body: dict):
+    """Install server-side mandatory predicates per action type (operator configuration)."""
+    return {"policy": runtime.set_policy(body)}
+
+
 @app.get("/v1/metrics")
 def metrics():
     return runtime.get_metrics()
@@ -238,11 +279,14 @@ def metrics():
 
 @app.get("/v1/context/snapshot")
 def get_context_snapshot():
-    ctx, ver, pv, trusted = read_snapshot_full()
-    return {"ok": True, "context": ctx, "context_version": ver, "path_versions": pv, "context_trusted": trusted}
+    ctx, ver, pv, trusted, io = read_snapshot_timed()
+    return {"ok": True, "context": ctx, "context_version": ver, "path_versions": pv, "context_trusted": trusted,
+            # Monotonic bounds on the store read (CLOCK_MONOTONIC, shared by processes on one kernel).
+            "store_read_mono_ms": list(io) if io else None}
 
 
 @app.post("/v1/context/snapshot")
 def context_snapshot(body: dict):
-    ver, trusted = update_context_store(body)
-    return {"ok": trusted, "context_version": ver, "context_trusted": trusted}
+    ver, trusted, io = update_context_store_timed(body)
+    return {"ok": trusted, "context_version": ver, "context_trusted": trusted,
+            "store_write_mono_ms": list(io) if io else None}
