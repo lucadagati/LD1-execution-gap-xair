@@ -74,3 +74,41 @@ def test_aba_change_on_read_path_blocks_read_set_gate():
                                    read_set_version=read_set_version(pv2, rec.read_set))
     assert final.publication_decision == "BLOCK"
     assert final.reason == "read_set_version_changed_at_gate"
+
+
+def test_atomic_actuation_serializes_with_context_updates():
+    store = RedisContextStore("")
+    store.update({"line": {"state": "RUN"}})
+    _, _, pv, _ = store.snapshot_full()
+    expected = read_set_version(pv, ["line.state"])
+    store.update({"telemetry": {"t": 1.0}})  # unrelated write: still committable
+    ok, observed, _ = store.compare_and_actuate(["line.state"], expected, {"intent_id": "a"})
+    assert ok and observed == expected
+    store.update({"line": {"state": "PAUSED"}})
+    ok, observed, _ = store.compare_and_actuate(["line.state"], expected, {"intent_id": "b"})
+    assert not ok and observed != expected
+    assert [r["intent_id"] for r in store.actuation_log()] == ["a"]
+
+
+def test_atomic_actuation_under_concurrent_writers_never_commits_after_change():
+    import threading
+    store = RedisContextStore("")
+    store.update({"line": {"state": "RUN"}})
+    _, _, pv, _ = store.snapshot_full()
+    expected = read_set_version(pv, ["line.state"])
+    results = []
+
+    def writer():
+        store.update({"line": {"state": "PAUSED"}})
+
+    def actuator(i):
+        results.append(store.compare_and_actuate(["line.state"], expected, {"intent_id": str(i)}))
+
+    threads = [threading.Thread(target=writer)] + [threading.Thread(target=actuator, args=(i,)) for i in range(20)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    pause_version = store.snapshot_full()[2]["line.state"]
+    # every committed actuation happened at a global version before the write
+    assert all(commit < pause_version for ok, _, commit in results if ok)

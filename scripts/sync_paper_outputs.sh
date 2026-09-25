@@ -23,7 +23,8 @@ done
 
 # Suites that need extra infrastructure (netns/netem, ROS 2 + Gazebo, OPC UA);
 # frozen when present.
-OPTIONAL_GLOBS=(e6_network*.csv e8_gazebo_campaign*.csv e15_opcua_hil.csv)
+OPTIONAL_GLOBS=(e6_network*.csv e8_gazebo_campaign*.csv e15_opcua_hil.csv
+  e10_toctou_atomic.csv e10_natural_window.csv e16_trace_churn.csv)
 
 mkdir -p "$DATA"
 find "$DATA" -maxdepth 1 -type f -delete   # sub-directories (legacy host data) are kept
@@ -33,6 +34,8 @@ for pattern in "${OPTIONAL_GLOBS[@]}"; do
   for f in "$SRC"/$pattern; do cp -f "$f" "$DATA/"; done
 done
 shopt -u nullglob
+
+"$REPO_ROOT/scripts/freeze_subsets.sh" --no-summary
 
 "$PY" "$REPO_ROOT/experiments/aggregate_experiment_results.py" --results "$DATA" \
   --out "$DATA/paper_metrics_summary.json" >/dev/null

@@ -140,15 +140,15 @@ def fig_e10(R: Path, out: Path) -> None:
     if not inj:
         return
     fig, ax = plt.subplots(figsize=(3.5, 2.3))
-    groups = (("0", "Blocked at $t_p$", COLORS["xair"], "o"), ("1", "Released", COLORS["direct"], "^"))
+    groups = (("0", "Blocked at $t_g$", COLORS["xair"], "o"), ("1", "Released", COLORS["direct"], "^"))
     for flag, label, color, marker in groups:
         sub = [r for r in inj if r["gateway_released"] == flag]
         xs = [float(r["t_injection_end_ms"]) - float(r["t_recheck_start_ms"]) for r in sub]
         ys = [float(r["inject_offset_ms"]) for r in sub]
         ax.scatter(xs, ys, s=16, color=color, marker=marker, edgecolors="white", linewidths=0.5, label=f"{label} ({len(sub)})", zorder=3)
     ax.axvline(0, color=INK, linewidth=1, linestyle="--")
-    ax.text(0.5, ax.get_ylim()[1] * 0.97, "recheck starts", fontsize=7, color=MUTED, va="top")
-    ax.set_xlabel("Injection end $-$ recheck start (ms)")
+    ax.text(0.5, ax.get_ylim()[1] * 0.97, "$t_g$", fontsize=7, color=MUTED, va="top")
+    ax.set_xlabel("Injection end $-$ $t_g$ (ms)")
     ax.set_ylabel("Injection offset (ms)")
     ax.grid(axis="x", color=GRID, linewidth=0.6)
     ax.legend(frameon=False, loc="lower right")

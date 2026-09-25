@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from xair import __version__
-from xair.adapters.runtime_state import read_snapshot, read_snapshot_full, runtime, update_context_store
+from xair.adapters.runtime_state import read_snapshot, read_snapshot_full, runtime, store, update_context_store
 from xair.core.lifecycle import InvalidTransition
 from xair.core.models import ActionIntent, DecisionOutcome, IntentState
 
@@ -162,6 +162,45 @@ def report_publication(intent_id: str, body: PublicationReport):
         "outcome": record.outcome.value if record.outcome else None,
         "publication_decision": record.publication_decision,
         "reason": record.reason,
+    }
+
+
+@app.post("/v1/intents/{intent_id}/actuate")
+def actuate(intent_id: str):
+    """Atomic check-and-actuate: release iff the read-set version still equals nu_R(t_v).
+
+    The comparison and the actuation record are committed in one store
+    transaction, serialized with every context update, so no context change
+    can fall between the last check and the release (the interval (t_g, t_r]
+    of the optimistic gate collapses). The release instant t_r is the commit.
+    """
+    record = runtime.lifecycle.get(intent_id)
+    if record is None:
+        raise HTTPException(status_code=404, detail="intent not found")
+    if record.state != IntentState.AUTHORIZED:
+        raise HTTPException(status_code=409, detail=f"{intent_id}: {record.state.value} cannot be actuated")
+    temporal_ok, temporal_reason = runtime.temporal.validate(record.intent)
+    if not temporal_ok:
+        final = runtime.confirm_publication(intent_id, False, f"{temporal_reason}_at_actuation")
+        return {"id": intent_id, "released": False, "reason": final.reason, "commit_version": None}
+    committed, observed, commit_version = store.compare_and_actuate(
+        record.read_set, record.read_set_version,
+        {"intent_id": intent_id, "action_type": record.intent.payload.action_type,
+         "target_entity": record.intent.payload.target_entity},
+    )
+    if committed:
+        final = runtime.confirm_publication(intent_id, True, "atomic_actuation_committed",
+                                            read_set_version=record.read_set_version)
+    else:
+        final = runtime.confirm_publication(intent_id, False, "read_set_version_changed_at_actuation")
+    return {
+        "id": intent_id,
+        "released": committed,
+        "reason": final.reason,
+        "state": final.state.value,
+        "expected_read_set_version": record.read_set_version,
+        "observed_read_set_version": observed,
+        "commit_version": commit_version,
     }
 
 

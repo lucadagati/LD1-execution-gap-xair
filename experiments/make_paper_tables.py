@@ -51,7 +51,8 @@ def main() -> int:
     args = parser.parse_args()
     d = json.loads(args.summary.read_text())
     args.out.mkdir(parents=True, exist_ok=True)
-    for name in ("tab_e6", "tab_e8", "tab_e11_cost", "tab_e13", "tab_e14", "tab_e16"):
+    for name in ("tab_e6", "tab_e8", "tab_e11_cost", "tab_e13", "tab_e14", "tab_e16",
+                 "tab_e12_pinned", "tab_e12_dist", "tab_e16_trace", "tab_e10_modes", "tab_e16_dist", "tab_e12_both", "tab_e4_reps"):
         (args.out / f"{name}.tex").write_text("")  # suites without data yield empty tables
     macros: list[str] = []
 
@@ -105,14 +106,15 @@ def main() -> int:
             f"{k} & {v['n']} & {v['p50']:.3f} & {v['p95']:.3f} & {v['max']:.3f} \\\\"
             for k, v in sorted(e11["validation_cost_by_predicate_count_valid_only"].items(), key=lambda kv: int(kv[0]))) + "\n")
 
-    e16 = d.get("e16", {})
-    if e16:
+    for name, e16 in (("tab_e16", d.get("e16", {})), ("tab_e16_dist", d.get("distributed", {}).get("e16", {}))):
+        if not e16:
+            continue
         rows = []
         for k, v in e16.items():
             scope, pattern, rate = k.split("|")
             rows.append((float(rate), scope, pattern, v))
         rows.sort()
-        (args.out / "tab_e16.tex").write_text("\n".join(
+        (args.out / f"{name}.tex").write_text("\n".join(
             f"{scope} & {pattern.replace('_', ' ')} & {rate:g} & {v['achieved_rate_hz']:.0f} & {kn(v['fpr'])} & {v['goodput_ips']:.1f} & {v['e2e_ms']['p99']:.1f} \\\\"
             for rate, scope, pattern, v in rows) + "\n")
 
@@ -122,6 +124,47 @@ def main() -> int:
             f"{c} & {b} & {kn(m['released'])} & {m['ros_observed']} & {kn(m['ros_witness_agrees'])} & {kn(m['sim_motion'])} \\\\"
             for c, modes in sorted(e8.items()) for b, m in sorted(modes.items())) + "\n")
         macros.append(f"\\newcommand{{\\EightCampaignsUsed}}{{{', '.join(used)}}}")
+
+    fmt = lambda c: f"{c['median_throughput_ips']:.0f} / {c['median_p50_ms']:.1f} / {c['median_p99_ms']:.1f}"
+    for name, e12 in (("tab_e12_pinned", d.get("pinned", {}).get("e12", {})),
+                      ("tab_e12_dist", d.get("distributed", {}).get("e12", {}))):
+        if e12:
+            (args.out / f"{name}.tex").write_text("\n".join(
+                f"{p} & {kb} & {fmt(e12[f'local_authoritative|{p}|{kb}'])} & {fmt(e12[f'xair|{p}|{kb}'])} \\\\"
+                for p in (1, 10, 50) for kb in (1, 64) if f"xair|{p}|{kb}" in e12) + "\n")
+
+    e12p, e12d = d.get("pinned", {}).get("e12", {}), d.get("distributed", {}).get("e12", {})
+    if e12p and e12d:
+        (args.out / "tab_e12_both.tex").write_text("\n".join(
+            f"{p} & {kb} & " + " & ".join(fmt(e[f'{m}|{p}|{kb}']) for e in (e12p, e12d) for m in ("local_authoritative", "xair")) + " \\\\"
+            for p in (1, 10, 50) for kb in (1, 64)) + "\n")
+    reps = d.get("pinned", {}).get("e4_reps", [])
+    if reps:
+        (args.out / "tab_e4_reps.tex").write_text("; ".join(
+            f"{r['throughput_ips']:.0f} intents/s, internal p50 {r['vl_internal_p50_ms']:.3f}\\,ms, end-to-end p50/p99 {r['vl_e2e_p50_ms']:.2f}/{r['vl_e2e_p99_ms']:.2f}\\,ms"
+            for r in reps) + ".")
+
+    dist = d.get("distributed", {})
+    trace = dist.get("e16_trace", {})
+    if trace:
+        rows = []
+        for iv in sorted({float(k.split("|")[0]) for k in trace}, reverse=True):
+            rate_hz = max(v["achieved_update_rate_hz"] for k, v in trace.items() if float(k.split("|")[0]) == iv)
+            vals = [kn(trace[f"{iv:g}|{sc}|{kind}"]["fpr"]) for sc in ("global", "readset", "predicate") for kind in ("discrete", "continuous")]
+            rows.append(f"{iv:g} & {rate_hz:.0f} & " + " & ".join(vals) + " \\\\")
+        (args.out / "tab_e16_trace.tex").write_text("\n".join(rows) + "\n")
+
+    opt, atom = dist.get("e10_boundary", {}), dist.get("e10_atomic", {})
+    if opt and atom:
+        rows = []
+        for off in opt["by_offset_ms"]:
+            o, a = opt["by_offset_ms"][off], atom["by_offset_ms"].get(off)
+            if not a:
+                continue
+            w = lambda c, k: c["windows"].get(k, 0)
+            rows.append(f"{off} & {w(o, 'before_recheck')}/{w(o, 'concurrent')}/{w(o, 'after_release')} & {o['released']}/{o['injected']} & {o['potential_stale']}"
+                        f" & {a['released']}/{a['injected']} & {a['stale']['k']} \\\\")
+        (args.out / "tab_e10_modes.tex").write_text("\n".join(rows) + "\n")
 
     (args.out / "numbers.tex").write_text("\n".join(macros) + "\n")
     print(f"Wrote {len(macros)} macros and tables to {args.out}")

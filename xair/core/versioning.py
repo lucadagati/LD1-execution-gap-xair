@@ -17,7 +17,9 @@ from typing import Any, Iterable
 
 _PATH = re.compile(r"^\s*(\w+(?:\.\w+)*)")
 
-VERSION_SCOPES = ("readset", "global")
+# readset: latest value change on the paths the intent reads; global: any update;
+# predicate: no version condition, the gate only re-evaluates the predicates.
+VERSION_SCOPES = ("readset", "global", "predicate")
 
 
 def leaf_items(patch: dict, prefix: str = "") -> Iterable[tuple[str, Any]]:

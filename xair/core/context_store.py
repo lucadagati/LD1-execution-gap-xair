@@ -6,7 +6,7 @@ import threading
 from typing import Any
 
 from xair.core.deep_merge import deep_merge
-from xair.core.versioning import changed_paths
+from xair.core.versioning import changed_paths, read_set_version
 
 try:
     import redis
@@ -19,6 +19,7 @@ except ImportError:
 
 
 SNAPSHOT_KEY = "xair:snapshot"
+ACTUATION_LOG_KEY = "xair:actuations"
 _MAX_TX_RETRIES = 32
 
 
@@ -64,6 +65,7 @@ class RedisContextStore:
         self._memory: dict[str, Any] = {}
         self._version = 0
         self._path_versions: dict[str, int] = {}
+        self._actuations: list[dict] = []
         self._redis_required = bool(self._url)
         self._redis_available = False
         self._ensure_client()
@@ -142,6 +144,58 @@ class RedisContextStore:
                 except WatchError:
                     continue
         raise RuntimeError("context update lost the optimistic race too many times")
+
+    def compare_and_actuate(self, paths: list[str], expected: int, record: dict) -> tuple[bool, int, int]:
+        """Commit an actuation record iff the read-set version still equals ``expected``.
+
+        The check and the commit form one transaction on the snapshot key
+        (Redis WATCH/MULTI, or the process lock in memory), so every context
+        update is ordered either before the check (and the commit is refused)
+        or after the commit (and cannot have invalidated the released intent).
+        Returns (committed, observed read-set version, global version at commit).
+        """
+        with self._lock:
+            self._ensure_client()
+            if self._client is not None:
+                try:
+                    return self._cas_redis(paths, expected, record)
+                except Exception:
+                    self._drop_client()
+            if self._redis_required:
+                return False, -1, self._version
+            observed = read_set_version(self._path_versions, paths)
+            if observed != expected:
+                return False, observed, self._version
+            self._actuations.append({**record, "commit_version": self._version})
+            return True, observed, self._version
+
+    def _cas_redis(self, paths: list[str], expected: int, record: dict) -> tuple[bool, int, int]:
+        with self._client.pipeline() as pipe:
+            for _ in range(_MAX_TX_RETRIES):
+                try:
+                    pipe.watch(SNAPSHOT_KEY)
+                    _, version, pv = _decode(pipe.get(SNAPSHOT_KEY))
+                    observed = read_set_version(pv, paths)
+                    if observed != expected:
+                        pipe.unwatch()
+                        return False, observed, version
+                    pipe.multi()
+                    pipe.rpush(ACTUATION_LOG_KEY, json.dumps({**record, "commit_version": version}))
+                    pipe.execute()
+                    self._redis_available = True
+                    return True, observed, version
+                except WatchError:
+                    continue
+        raise RuntimeError("actuation lost the optimistic race too many times")
+
+    def actuation_log(self) -> list[dict]:
+        with self._lock:
+            if self._client is not None:
+                try:
+                    return [json.loads(x) for x in self._client.lrange(ACTUATION_LOG_KEY, 0, -1)]
+                except Exception:
+                    self._drop_client()
+            return list(self._actuations)
 
     def snapshot(self) -> tuple[dict, int, bool]:
         ctx, ver, _, trusted = self.snapshot_full()

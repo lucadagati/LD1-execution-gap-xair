@@ -21,6 +21,14 @@ Each injected trial is classified by where the write landed:
 
 The unprotected residual window is recheck-end -> release-end
 (``recheck_to_publish_ms``), reported separately.
+
+With ``--mode xair_atomic`` the gateway releases through XAIR's atomic
+check-and-actuate, whose commit is serialized with every context update. The
+store versions then give an exact order: ``injection_version`` (global
+version created by the injected write) against ``check_version`` (version read
+by the gate, or version at the actuation commit). A release with
+``injection_version <= check_version`` would be a stale release; for the
+atomic mode it is impossible by construction and is counted exactly.
 """
 
 from __future__ import annotations
@@ -51,7 +59,7 @@ def classify(resp: dict) -> str:
     return "concurrent"
 
 
-def run_trial(offset_ms: float, publish_delay_ms: float, run_idx: int, do_inject: bool) -> dict:
+def run_trial(offset_ms: float, publish_delay_ms: float, run_idx: int, do_inject: bool, mode: str = "xair") -> dict:
     adapter("context", RUN)
     intent = {
         "id": str(uuid.uuid4()),
@@ -62,15 +70,26 @@ def run_trial(offset_ms: float, publish_delay_ms: float, run_idx: int, do_inject
         "payload": {"action_type": "RESUME", "target_entity": "line_1"},
     }
     resp = adapter(
-        "intent", intent, mode="xair", publish_delay_ms=publish_delay_ms,
+        "intent", intent, mode=mode, publish_delay_ms=publish_delay_ms,
         inject_pause_after_validation_ms=offset_ms if do_inject else None,
     )
     rel = released(resp)
     window = classify(resp) if do_inject else "control"
-    stale = int(do_inject and rel and window == "before_recheck")
-    potential = int(do_inject and rel and window in ("before_recheck", "concurrent"))
+    iv = resp.get("injection_version")
+    cv = resp.get("commit_version") if mode == "xair_atomic" else resp.get("gate_read_version")
+    order = ("before_check" if iv is not None and cv is not None and iv <= cv else
+             "after_check" if iv is not None and cv is not None else "unknown") if do_inject else "control"
+    stale_exact = int(do_inject and rel and order == "before_check")
+    if mode == "xair_atomic":
+        # The commit is the release: a write ordered after it cannot be stale.
+        stale = stale_exact
+        potential = stale_exact
+    else:
+        stale = int(do_inject and rel and window == "before_recheck")
+        potential = int(do_inject and rel and window in ("before_recheck", "concurrent"))
     return {
         "run": run_idx,
+        "mode": mode,
         "inject": int(do_inject),
         "inject_offset_ms": offset_ms if do_inject else "",
         "publish_delay_ms": publish_delay_ms,
@@ -79,7 +98,11 @@ def run_trial(offset_ms: float, publish_delay_ms: float, run_idx: int, do_inject
         "gate_blocked": int(bool(resp.get("gate_blocked"))),
         "stale_publish": stale,
         "potential_stale_publish": potential,
-        "post_release_invalidation": int(do_inject and rel and window == "after_release"),
+        "post_release_invalidation": int(do_inject and rel and (order == "after_check" if mode == "xair_atomic" else window == "after_release")),
+        "injection_version": iv,
+        "check_version": cv,
+        "version_order": order,
+        "stale_exact": stale_exact,
         "outcome": resp.get("outcome"),
         "reason": resp.get("reason"),
         "validation_to_gate_ms": resp.get("validation_to_gate_ms"),
@@ -101,6 +124,7 @@ def main() -> int:
     parser.add_argument("--publish-delay-ms", type=float, default=50.0)
     parser.add_argument("--inject-fraction", type=float, default=0.75)
     parser.add_argument("--seed", type=int, default=42, help="Shuffles injected/control order within a cell")
+    parser.add_argument("--mode", choices=("xair", "xair_atomic"), default="xair")
     parser.add_argument("--out", default=str(RESULTS_DIR / "e10_toctou.csv"))
     args = parser.parse_args()
     rng = random.Random(args.seed)
@@ -111,7 +135,7 @@ def main() -> int:
         plan = [True] * n_inject + [False] * (args.runs_per_delay - n_inject)
         rng.shuffle(plan)
         for do_inject in plan:
-            rows.append(run_trial(offset, args.publish_delay_ms, run_idx, do_inject))
+            rows.append(run_trial(offset, args.publish_delay_ms, run_idx, do_inject, args.mode))
             run_idx += 1
     out = write_csv(Path(args.out), rows)
 

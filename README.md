@@ -19,7 +19,7 @@ tests/           unit tests (+ opt-in HTTP integration tests)
 scripts/         stack start/stop, actuator gateway, ROS witness, campaign and verification scripts
 experiments/     one script per suite (run_e*.py), aggregation, figures, EVALUATION.md
 simulation/      Gazebo industrial cell (E8) and OPC UA bridge (E15)
-docker/          ROS 2 Jazzy + Gazebo Harmonic image for E8
+docker/          ROS 2 Jazzy/Gazebo image (E8), node image and compose file for the distributed testbed
 data/execution-gap/   frozen per-trial data behind every number in the paper
 journal/         manuscript — local only, git-ignored, never published
 ```
@@ -55,10 +55,12 @@ REDIS_URL=redis://127.0.0.1:6379/1 ./scripts/run_paper_campaign.sh
 | E8-Gazebo in container (ROS 2 Jazzy + Gazebo Harmonic) | `./scripts/run_e8_docker.sh 30 <tag>` | `experiments/results/e8_gazebo_campaign<tag>.csv` |
 | E8-Gazebo on a native Jazzy host | `./scripts/run_e8_gazebo_full.sh 30 <tag>` | same |
 | E6 netem in a network namespace (root) | `sudo ./scripts/run_e6_netns.sh 30 10 500` | `experiments/results/e6_network.csv` |
+| E4/E12 on reserved cores + dedicated Redis | `./scripts/run_pinned_perf.sh` | `experiments/results/pinned/` |
+| Distributed testbed (5 nodes on a bridge, netem LAN delay; root) | `sudo ./scripts/run_distributed.sh 0.5ms 0.1ms` | `experiments/results/distributed/` |
 | E15 OPC UA (needs `asyncua`) | `.venv/bin/python experiments/run_e15_opcua_hil.py --runs 30` | `experiments/results/e15_opcua_hil.csv` |
 | Smoke check (scratch dir) | `./scripts/verify_reproduction.sh` | temp dir |
 | Release check | `./scripts/verify_release.sh <tag>` | — |
-| Clean-clone audit (fresh clone, venv, tests, smoke) | `REF=v1.0.2 ./scripts/clean_clone_audit.sh` | temp dir |
+| Clean-clone audit (fresh clone, venv, tests, smoke) | `REF=v1.1.0 ./scripts/clean_clone_audit.sh` | temp dir |
 
 Suite definitions, metrics, and data provenance are in
 [experiments/EVALUATION.md](experiments/EVALUATION.md).

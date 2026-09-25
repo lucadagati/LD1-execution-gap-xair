@@ -18,6 +18,9 @@ from pathlib import Path
 from common import RESULTS_DIR, XAIR, http_json, now_iso, percentile, write_csv, xair_context
 
 
+RUN_TAG = uuid.uuid4().hex[:8]  # targets are unique per run: this path never releases a target lock
+
+
 def post_intent(i: int) -> tuple[dict, float]:
     body = {
         "id": str(uuid.uuid4()),
@@ -25,7 +28,7 @@ def post_intent(i: int) -> tuple[dict, float]:
         "timestamp_decision": now_iso(),
         "freshness_window_ms": 500,
         "preconditions": [{"expr": "line.state == 'RUN'"}],
-        "payload": {"action_type": "TICK", "target_entity": f"e4_target_{i}", "parameters": {}},
+        "payload": {"action_type": "TICK", "target_entity": f"e4_{RUN_TAG}_{i}", "parameters": {}},
     }
     t0 = time.perf_counter()
     out = http_json(f"{XAIR}/v1/intents", body, timeout=10)

@@ -11,8 +11,9 @@ Endpoints: POST /command (legacy XR pose), POST /intent (AIS), POST /context
   local                refresh the adapter cache from XAIR, then validate locally
   local_stale          validate against the adapter cache, never refreshed
   local_push           refresh only if ``push_notified=true`` (emulated push)
-  local_authoritative  read the shared snapshot, validate, recheck version at t_p
-  xair                 central validation at t_v + adapter recheck at t_p
+  local_authoritative  read the shared snapshot, validate, recheck version at t_g
+  xair                 central validation at t_v + optimistic gate recheck at t_g
+  xair_atomic          central validation at t_v + atomic check-and-actuate in XAIR
 
 Every contextual mode uses the same temporal validator and predicate
 evaluator as XAIR (``xair.core``), so policies differ only in *where* the
@@ -302,7 +303,7 @@ def _local_authoritative(data: dict, intent: ActionIntent, scope: str) -> dict:
                    toctou_window_ms=(tp - tv) * 1000.0)
 
 
-def _xair_policy(data: dict, query: dict) -> dict:
+def _xair_policy(data: dict, query: dict, atomic: bool = False) -> dict:
     t0_wall = time.perf_counter()
     try:
         result = XAIR.submit_intent(data)
@@ -326,6 +327,9 @@ def _xair_policy(data: dict, query: dict) -> dict:
     t_publish_end: float | None = None
     injection_started: float | None = None
     injection_completed: float | None = None
+    injection_version: int | None = None
+    gate_read_version: int | None = None
+    commit_version: int | None = None
     injection_thread: threading.Thread | None = None
     current_version = validation_version
     publish_delay_ms = float(query.get("publish_delay_ms", 0) or 0)
@@ -337,29 +341,56 @@ def _xair_policy(data: dict, query: dict) -> dict:
         inject_after_ms = float(inject_after_ms_raw or 0)
 
         def inject_invalid_context() -> None:
-            nonlocal injection_started, injection_completed
+            nonlocal injection_started, injection_completed, injection_version
             if inject_after_ms > 0:
                 time.sleep(inject_after_ms / 1000.0)
             injection_started = time.perf_counter()
-            XAIR.update_context({"line": {"state": "PAUSED"}, "gripper": {"state": "CLOSED"}})
+            out = XAIR.update_context({"line": {"state": "PAUSED"}, "gripper": {"state": "CLOSED"}})
             injection_completed = time.perf_counter()
+            injection_version = out.get("context_version")
 
         injection_thread = threading.Thread(target=inject_invalid_context, daemon=True)
         injection_thread.start()
 
     # DEGRADE requeues the same id for a separate revalidation pass; it is not
     # ready for actuation, so only EXECUTE proceeds to the t_p gate.
-    if outcome == "EXECUTE":
+    if outcome == "EXECUTE" and atomic:
+        # Atomic check-and-actuate: XAIR commits the release iff nu_R is unchanged,
+        # in the same store transaction that orders every context update. t_r is
+        # that commit; the middleware call below only delivers a committed command.
+        if publish_delay_ms > 0:
+            time.sleep(publish_delay_ms / 1000.0)
+        t_recheck_start = time.perf_counter()
+        try:
+            act = XAIR.actuate(str(result.get("id")))
+            t_recheck_end = time.perf_counter()
+            commit_version = act.get("commit_version")
+            gate_reason = act.get("reason") or "atomic_actuation"
+            if act.get("released"):
+                ros_ok = _release(data)
+                gateway_released = True
+                t_publish_end = time.perf_counter()
+            else:
+                gate_blocked = True
+        except Exception as exc:
+            gate_blocked = True
+            t_recheck_end = time.perf_counter()
+            gate_reason = f"atomic_actuation_error:{type(exc).__name__}"
+        if gate_blocked:
+            outcome = "REVOKE"
+    elif outcome == "EXECUTE":
         intent = _intent_or_none(data)
         if publish_delay_ms > 0:
             time.sleep(publish_delay_ms / 1000.0)
         t_recheck_start = time.perf_counter()
         try:
             ctx, ver_g, pv, trusted = _pull_xair_snapshot()
+            gate_read_version = ver_g
             current_version = _gate_version(scope, ver_g, pv, paths)
             if not trusted:
                 gate_blocked, gate_reason = True, "context_untrusted_at_publish"
-            elif validation_version is None or current_version is None or int(current_version) != int(validation_version):
+            elif scope != "predicate" and (validation_version is None or current_version is None
+                                           or int(current_version) != int(validation_version)):
                 gate_blocked, gate_reason = True, (
                     "read_set_version_changed_at_gate" if scope == "readset" else "context_version_changed_at_publish"
                 )
@@ -386,7 +417,8 @@ def _xair_policy(data: dict, query: dict) -> dict:
         try:
             publication = XAIR.report_publication(
                 str(result.get("id")), published=gateway_released, reason=gate_reason,
-                **({"read_set_version": current_version} if scope == "readset" else {"context_version": current_version}),
+                **({"read_set_version": current_version} if scope == "readset"
+                   else {"context_version": current_version} if scope == "global" else {}),
             )
             result["state"] = publication.get("state", result.get("state"))
         except Exception as exc:
@@ -422,7 +454,12 @@ def _xair_policy(data: dict, query: dict) -> dict:
         "t_publish_end_ms": rel(t_publish_end),
         "t_injection_start_ms": rel(injection_started),
         "t_injection_end_ms": rel(injection_completed),
-        "baseline": "xair",
+        # Global store versions: exact ordering of the injected write relative to
+        # the gate's snapshot read (optimistic gate) or to the actuation commit.
+        "injection_version": injection_version,
+        "gate_read_version": gate_read_version,
+        "commit_version": commit_version,
+        "baseline": "xair_atomic" if atomic else "xair",
     }
 
 
@@ -443,6 +480,8 @@ def process_intent_payload(data: dict, mode: str = DEFAULT_MODE, query: dict | N
 
     if mode == "xair":
         return _xair_policy(data, query)
+    if mode == "xair_atomic":
+        return _xair_policy(data, query, atomic=True)
 
     intent = _intent_or_none(data)
     if intent is None:

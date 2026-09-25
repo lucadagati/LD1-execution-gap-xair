@@ -1,0 +1,47 @@
+# Distributed testbed: each component is a separate network node (own network
+# namespace and IP) on a dedicated bridge, with pinned CPU sets. Link delay is
+# applied per node by scripts/run_distributed.sh (tc netem on each eth0).
+# The cpuset values are those of the host used for the paper (the CPUs its Docker
+# daemon allows); adjust them to disjoint sets available on your machine.
+name: xair-dist
+networks:
+  plant:
+    driver: bridge
+    ipam:
+      config: [{subnet: 172.31.40.0/24}]
+x-node: &node
+  image: xair-node
+  volumes: ["../..:/repo"]
+  networks: [plant]
+services:
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    cpuset: "3,6"
+    networks: [plant]
+  xair:
+    <<: *node
+    cpuset: "7,8,9,12"
+    environment: {REDIS_URL: "redis://redis:6379/0"}
+    command: ["python", "-m", "uvicorn", "xair.adapters.http_server:app", "--host", "0.0.0.0", "--port", "8080"]
+    depends_on: [redis]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/v1/metrics', timeout=2)"]
+      interval: 2s
+      retries: 30
+  gateway:
+    <<: *node
+    cpuset: "13,14,25,27"
+    environment: {XAIR_URL: "http://xair:8080"}
+    command: ["python", "scripts/adaptix_quest_adapter.py", "9091", "9092"]
+    depends_on: {xair: {condition: service_healthy}}
+  bench:
+    <<: *node
+    cpuset: "39,41,45,54,55,57"
+    environment:
+      XAIR_URL: "http://xair:8080"
+      ADAPTER_URL: "http://gateway:9092"
+      XAIR_RESULTS_DIR: "/repo/experiments/results/distributed"
+      XAIR_DATA_CACHE: "/repo/experiments/.cache"
+    command: ["sleep", "infinity"]
+    depends_on: [gateway]

@@ -2,8 +2,8 @@
 """Aggregate every suite into the summary that backs the paper's numbers.
 
 Rates carry Wilson 95% intervals; percentiles are nearest-rank (see common.py).
-Suites that need extra infrastructure (E6 netem, E8-Gazebo, E15 OPC UA) are
-read from ``<results>/host-a-2026-09-10/`` when present, and labelled as such.
+Sub-directories ``pinned/`` (E4/E12 on reserved cores) and ``distributed/``
+(multi-node testbed) are summarized recursively under the same keys.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from pathlib import Path
 
 from common import RESULTS_DIR, percentile, truthy, wilson_ci
 
-LEGACY_DIR = "host-a-2026-09-10"  # optional archived campaign, not part of the paper
+SUBSETS = ("pinned", "distributed")  # additional campaigns stored as sub-directories
 
 
 def load(path: Path) -> list[dict]:
@@ -91,7 +91,20 @@ def e10(rows: list[dict]) -> dict:
             "post_release_invalidation": sum(int(r["post_release_invalidation"]) for r in cell),
         }
     before = [r for r in inj if r["injection_window"] == "before_recheck"]
-    return {
+    exact = {}
+    if inj and "version_order" in inj[0]:
+        rel_inj = [r for r in inj if r["gateway_released"] == "1"]
+        exact = {
+            "mode": inj[0].get("mode", "xair"),
+            "released_before_check": sum(1 for r in rel_inj if r["version_order"] == "before_check"),
+            "released_after_check": sum(1 for r in rel_inj if r["version_order"] == "after_check"),
+            "blocked_before_check": sum(1 for r in inj if r["gateway_released"] == "0" and r["version_order"] == "before_check"),
+            "blocked_after_check": sum(1 for r in inj if r["gateway_released"] == "0" and r["version_order"] == "after_check"),
+            "unknown_order": sum(1 for r in inj if r["version_order"] == "unknown"),
+            "stale_exact": rate(sum(int(r["stale_exact"]) for r in inj), len(inj)),
+            "potential_stale": sum(int(r["potential_stale_publish"]) for r in inj),
+        }
+    out = {
         "runs": len(rows),
         "injected": len(inj),
         "controls": len(ctrl),
@@ -102,6 +115,9 @@ def e10(rows: list[dict]) -> dict:
         "validation_to_release_ms_controls": lat([v for r in ctrl if (v := fnum(r, "validation_to_publish_ms")) is not None]),
         "residual_recheck_to_release_ms": lat([v for r in rows if (v := fnum(r, "recheck_to_publish_ms")) is not None]),
     }
+    if exact:
+        out["version_ordering"] = exact
+    return out
 
 
 def e11(paths: list[Path]) -> dict:
@@ -225,46 +241,26 @@ def e16(rows: list[dict]) -> dict:
     }
 
 
-def legacy(base: Path) -> dict:
-    out: dict = {"host": LEGACY_DIR}
-    e6 = load(base / "e6_network.csv")
-    if e6:
-        groups: dict[str, list[dict]] = defaultdict(list)
-        for r in e6:
-            groups[f"d{r['delay_ms']}_j{r['jitter_ms']}_l{r['loss_pct']}"].append(r)
-        out["e6_network"] = {
-            k: {"revoke": rate(sum(r["outcome"] == "REVOKE" for r in v), len(v)),
-                "median_e2e_ms": statistics.median(float(r["e2e_latency_ms"]) for r in v),
-                "reason_logged": "reason" in v[0], "valid_controls": sum(1 for r in v if r.get("drifted") == "0")}
-            for k, v in groups.items()
-        }
-    e8 = load(base / "e8_gazebo_cell_sim.csv")
-    if e8:
-        out["e8_gazebo_campaign2"] = {
-            b: {"released": rate(sum(truthy(r["stale_executed"]) for r in e8 if r["baseline"] == b), sum(1 for r in e8 if r["baseline"] == b)),
-                "ros_witness_agrees": rate(sum(truthy(r["witness_agreement"]) for r in e8 if r["baseline"] == b), sum(1 for r in e8 if r["baseline"] == b)),
-                "sim_motion": rate(sum(truthy(r["sim_motion"]) for r in e8 if r["baseline"] == b), sum(1 for r in e8 if r["baseline"] == b))}
-            for b in sorted({r["baseline"] for r in e8})
-        }
-    pooled = base / "e8_gazebo_pooled_summary.json"
-    if pooled.exists():
-        out["e8_gazebo_pooled_summary"] = json.loads(pooled.read_text())
-    e15 = load(base / "e15_opcua_hil.csv")
-    if e15:
-        out["e15_opcua"] = grouped_rate(e15, ("mode",), "stale_executed")
-        out["e15_transport"] = sorted({r["transport"] for r in e15})
-    return out
+def e16_trace(rows: list[dict]) -> dict:
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        groups[f"{float(r['publishing_interval_ms']):g}|{r['version_scope']}|{r['intent_kind']}"].append(r)
+    return {k: {"fpr": rate(sum(1 - int(r["gateway_released"]) for r in v), len(v)),
+                "achieved_update_rate_hz": float(v[0].get("achieved_update_rate_hz") or 0),
+                "validation_to_gate_ms": lat([float(r["validation_to_gate_ms"]) for r in v if r.get("validation_to_gate_ms")])}
+            for k, v in sorted(groups.items())}
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--results", type=Path, default=RESULTS_DIR)
-    parser.add_argument("--out", type=Path, default=None)
-    args = parser.parse_args()
-    R = args.results
-    out_path = args.out or R / "paper_metrics_summary.json"
+def build_summary(R: Path) -> dict:
+    summary = _build(R)
+    for sub in SUBSETS:
+        if (R / sub).is_dir():
+            summary[sub] = _build(R / sub)
+    return summary
 
-    summary: dict = {"results_dir": str(R)}
+
+def _build(R: Path) -> dict:
+    summary: dict = {}
     if (R / "e0_lifecycle.json").exists():
         e0 = json.loads((R / "e0_lifecycle.json").read_text())
         summary["e0"] = {"passed": e0["passed"], "total": e0["total"]}
@@ -305,9 +301,27 @@ def main() -> int:
     if rows := load(R / "e15_opcua_hil.csv"):
         summary["e15"] = {"by_mode": grouped_rate(rows, ("mode",), "stale_executed"),
                           "transport": sorted({r["transport"] for r in rows})}
-    if (R / LEGACY_DIR).is_dir():
-        summary["legacy_host_a"] = legacy(R / LEGACY_DIR)
+    if rows := load(R / "e10_toctou_atomic.csv"):
+        summary["e10_atomic"] = e10(rows)
+    if rows := load(R / "e10_natural_window.csv"):
+        summary["e10_natural"] = e10(rows)
+    if rows := load(R / "e10_natural_window_atomic.csv"):
+        summary["e10_natural_atomic"] = e10(rows)
+    if rows := load(R / "e16_trace_churn.csv"):
+        summary["e16_trace"] = e16_trace(rows)
+    reps = [load(p)[0] for p in sorted(R.glob("e4_load_http_rep*.csv")) if load(p)]
+    if reps:
+        summary["e4_reps"] = [{k: float(v) for k, v in r.items()} for r in reps]
+    return summary
 
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--results", type=Path, default=RESULTS_DIR)
+    parser.add_argument("--out", type=Path, default=None)
+    args = parser.parse_args()
+    out_path = args.out or args.results / "paper_metrics_summary.json"
+    summary = build_summary(args.results)
     out_path.write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
     return 0

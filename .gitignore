@@ -34,3 +34,4 @@ experiments/results/
 .vscode/
 *.swp
 .DS_Store
+experiments/.cache/
