@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xair.dev/schemas/action-intent-v1.json",
+  "title": "Action Intent Schema (AIS v1)",
+  "description": "XAIR action intent: a command together with the temporal bounds and context assumptions under which it may be released. Every field below is enforced or recorded by the XAIR runtime; unknown fields are rejected (fail closed). Versioning and compatibility rules: docs/AIS.md.",
+  "x-ais-revision": "1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "source",
+    "timestamp_decision",
+    "freshness_window_ms",
+    "payload"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique intent identifier; duplicates within the retention window return the retained record (idempotency) and are never released twice."
+    },
+    "source": {
+      "type": "string",
+      "enum": ["cv", "ai", "xr", "human", "mes", "composite"],
+      "description": "Producer class, recorded for audit and used as a tie-break in batch conflict resolution. Not authenticated (see the trust model in docs/AIS.md)."
+    },
+    "timestamp_decision": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Decision instant t_d (ISO 8601, with offset); anchor of every age check."
+    },
+    "freshness_window_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Maximum age (ms since timestamp_decision) at validation (t_v). An older intent is revoked without evaluating its predicates."
+    },
+    "deadline_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Maximum age (ms since timestamp_decision) at release: checked at validation, at the optimistic gate (t_g) or the atomic commit (t_c), and by the release guard or a version-conditional controller command where these are used. It does not bound the physical completion of the action. Defaults to freshness_window_ms when absent."
+    },
+    "preconditions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/predicate" },
+      "default": [],
+      "description": "Contextual preconditions P over the context snapshot, declared by the producer. XAIR appends operator-mandated predicates for the action type (server-side policy)."
+    },
+    "safety_constraints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/predicate" },
+      "default": [],
+      "description": "Hard constraints S declared by the producer, in the same predicate language and evaluated like preconditions; a false or unevaluable constraint revokes the intent. They are not certified safety functions, which remain in the PLC or safety controller."
+    },
+    "payload": { "$ref": "#/$defs/action_descriptor" },
+    "priority": {
+      "type": "integer",
+      "default": 0,
+      "description": "Higher values win conflicts on the same target in batch submissions and are dequeued first."
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Opaque identifier recorded with the intent for audit; XAIR does not use it for coordination."
+    }
+  },
+  "$defs": {
+    "predicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expr"],
+      "properties": {
+        "expr": {
+          "type": "string",
+          "description": "Comparison Path Op Literal over the context, e.g. line.state == 'RUN'. Empty, ill-typed, unparsable or timed-out expressions and missing paths fail closed."
+        }
+      }
+    },
+    "action_descriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_type", "target_entity"],
+      "properties": {
+        "action_type": {
+          "type": "string",
+          "description": "Requested action; selects the operator-mandated predicates of the server-side policy (matched case-insensitively)."
+        },
+        "target_entity": {
+          "type": "string",
+          "description": "Resource the action acts on; at most one authorized, not yet committed or released intent per target."
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Action-specific parameters, passed to the actuator unchanged except by a degradation policy."
+        },
+        "degradation_policy": {
+          "type": "string",
+          "enum": ["none", "reduce_speed"],
+          "default": "none",
+          "description": "Fallback applied before authorization: reduce_speed halves parameters.speed_factor (default 1.0) and the transformed intent is revalidated under the same id."
+        }
+      }
+    }
+  }
+}

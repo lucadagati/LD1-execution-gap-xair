@@ -1,0 +1,42 @@
+[
+ {
+  "scope": "global",
+  "rate_hz_per_var": 0,
+  "scan_mean_p99_max_us": "5.4:14.0:31.3"
+ },
+ {
+  "scope": "global",
+  "rate_hz_per_var": 20,
+  "scan_mean_p99_max_us": "4.4:15.1:192.3"
+ },
+ {
+  "scope": "global",
+  "rate_hz_per_var": 50,
+  "scan_mean_p99_max_us": "2.6:8.3:19.0"
+ },
+ {
+  "scope": "global",
+  "rate_hz_per_var": 100,
+  "scan_mean_p99_max_us": "1.6:6.0:57.5"
+ },
+ {
+  "scope": "line",
+  "rate_hz_per_var": 0,
+  "scan_mean_p99_max_us": "4.3:9.8:22.6"
+ },
+ {
+  "scope": "line",
+  "rate_hz_per_var": 20,
+  "scan_mean_p99_max_us": "4.9:11.6:32.4"
+ },
+ {
+  "scope": "line",
+  "rate_hz_per_var": 50,
+  "scan_mean_p99_max_us": "5.0:11.5:69.6"
+ },
+ {
+  "scope": "line",
+  "rate_hz_per_var": 100,
+  "scan_mean_p99_max_us": "4.6:11.6:56.7"
+ }
+]

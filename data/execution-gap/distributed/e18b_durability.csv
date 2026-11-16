@@ -1,0 +1,6 @@
+rep,n,kills_committer,kills_consumer,kills_redis,log_records,distinct_logged,missing_in_log,effects,missing_effects,extra_effects,apply_attempts,suppressed_replays
+0,1000,2,7,2,1000,1000,0,1000,0,0,1000,0
+1,1000,2,9,2,1000,1000,0,1000,0,0,1000,0
+2,1000,4,10,2,1000,1000,0,1000,0,0,1001,1
+3,1000,4,8,2,1000,1000,0,1000,0,0,1000,0
+4,1000,2,9,2,1000,1000,0,1000,0,0,1000,0

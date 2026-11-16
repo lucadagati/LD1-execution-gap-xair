@@ -1,0 +1,13 @@
+E17 (released / trials): without policy, drift 100/100, valid 100/100; with policy, drift 0/100, valid 100/100.
+
+E18 (10 repetitions of 100 commits per scenario; emulated crashes).
+\begin{center}\small\begin{tabular}{@{}lrrrr@{}}\toprule
+\textbf{Scenario} & \textbf{Committed} & \textbf{Effects} & \textbf{Duplicates} & \textbf{Lost} \\ \genrule
+\midrule
+8 concurrent committers & 1000 & 1000 & 0 & 0 \\ \genrule
+consumer crash after effect & 1000 & 1000 & 0 & 0 \\ \genrule
+consumer restarts & 1000 & 1000 & 0 & 0 \\ \genrule
+retried commit & 1000 & 1000 & 0 & 0 \\ \genrule
+gateway crash after commit & 1000 & 1000 & 0 & 0 \\ \genrule
+read-set change after commit & 1000 & 0 & 0 & 0 \\ \genrule
+\bottomrule\end{tabular}\end{center}

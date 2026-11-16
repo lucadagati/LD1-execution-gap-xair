@@ -1,0 +1,43 @@
+# Paper experiment identifiers -> artifact identifiers, scripts and data.
+# The paper's numbers (nine experiments E1-E9; variants are labels such as E3-ABA, E4-PLC, E4-updates, E5-trace, E9-crash) differ from the
+# historical identifiers in the script and file names, which are kept so that the SHA-256 manifest
+# of data/execution-gap stays valid. Resolve one with:  python scripts/reproduce.py E8
+# Data patterns are globs relative to data/execution-gap (all testbed subfolders included).
+E1:          {artifact: E1,  scripts: [experiments/run_e1_baselines.py, experiments/run_e1_fpr.py], data: ["**/e1_baselines*.csv", "**/e1_fpr*.csv"]}
+E1-classes:  {artifact: E14, scripts: [experiments/run_e14_variants.py], data: ["**/e14_variants*.csv"]}
+E1-ros2:     {artifact: E8,  scripts: [experiments/run_e8_gazebo_cell.py, experiments/run_e3_http_stack.py], data: ["e8_gazebo_*.csv", "e3_conflict_http*.csv"]}
+E1-policy:   {artifact: E17, scripts: [experiments/run_e17_policy.py], data: ["**/e17_policy*.csv"]}
+E2:          {artifact: "E9, E15", scripts: [experiments/run_e9_consistency_sweep.py, experiments/run_e15_opcua_hil.py], data: ["**/e9_consistency_sweep*.csv", "e15_opcua_hil*.csv"]}
+E3:          {artifact: E10, scripts: [experiments/run_e10_toctou.py], data: ["**/e10_toctou*.csv", "**/e10_natural_window*.csv"]}
+E3-deadline: {artifact: E10-deadline, scripts: [experiments/run_e10_deadline.py], data: ["**/e10_deadline*.csv"]}
+E3-stop:     {artifact: E27, scripts: [experiments/run_e27_stop_resume.py], data: ["e27_stop_resume*.csv"]}
+E3-ABA:      {artifact: E10-ABA,      scripts: [experiments/run_e10_aba.py],      data: ["**/e10_aba*.csv"]}
+E4:          {artifact: "E21, E22", scripts: [experiments/run_e21_cell.py, scripts/cell_controller.py, scripts/run_physical.sh, scripts/run_lan.sh], data: ["**/e21_cell_controller*.csv", "physical/*.csv", "lan/*.csv"]}
+E4-ABA:      {artifact: E21-ABA, scripts: [experiments/run_e21_cell.py], data: ["**/e21_cell_aba*.csv"]}
+E4-PLC:      {artifact: E24, scripts: [scripts/run_openplc.sh, experiments/run_e21_cell.py], data: ["openplc/*.csv"]}
+E4-updates:    {artifact: E26, scripts: [experiments/run_e26_controller_churn.py, scripts/cell_controller_multi.py], data: ["e26_controller_churn*"]}
+E5:          {artifact: E16, scripts: [experiments/run_e16_context_churn.py, experiments/run_e11_stratified.py], data: ["**/e16_context_churn*.csv", "**/e11_stratified*.csv"]}
+E5-scale:    {artifact: E28, scripts: [experiments/run_e28_truth_scale.py], data: ["e28_truth_scale*", "e28_touch01pct*", "e28_shard_touch10*"]}
+E5-trace:    {artifact: E16-trace, scripts: [experiments/run_e16_trace_churn.py], data: ["**/e16_trace_churn*.csv"]}
+E6:          {artifact: E20, scripts: [experiments/run_e20_mes.py, experiments/mes_trace.py], data: ["**/e20_mes*.csv", "distributed/e20_paired/*.csv"]}
+E7:          {artifact: E25, scripts: [scripts/run_embedded.sh, scripts/run_embedded_eq3.sh], data: ["embedded/*/*.csv", "embedded/*/chrony_*.txt"]}
+E8:          {artifact: "E4, E11, E12, E23", scripts: [experiments/run_e4_http_load.py, experiments/run_e11_stratified.py, experiments/run_e12_scaling.py, experiments/run_e23_truth_scaling.py], data: ["**/e4_load_http*.csv", "**/e11_stratified*.csv", "**/e12_scaling*.csv", "scaling/*.csv"]}
+E9-impair:   {artifact: E6,  scripts: [experiments/run_e6_network.py, scripts/run_e6_netns.sh], data: ["e6_network*.csv"]}
+E9-crash:    {artifact: E18, scripts: [experiments/run_e18_outbox_faults.py, experiments/run_e18b_durability.py], data: ["**/e18_outbox_faults*.csv", "**/e18b_durability*.csv"]}
+# Regression suites (not experiments of the paper): lifecycle E0, batch conflicts E3, malformed input E13
+Regress:     {artifact: "E0, E3, E13", scripts: [experiments/run_e0_lifecycle.py, experiments/run_e3_http_stack.py, experiments/run_e13_faults.py], data: ["e0_lifecycle.json", "e3_conflict_http*.csv", "e13_faults*.csv"]}
+# Analysis (not an experiment): Eq. (4) against the board churn cells
+Eq3:         {artifact: E25b, scripts: [experiments/analysis_eq3_empirical.py], data: ["eq3_empirical.json", "embedded/*/e16_eq3_seed*.csv"]}
+
+# Review round (2026-10-29/30): repeats on P, L and the boards, clock bound, sampled replica, fence cost, Eq. (fpr) check.
+# All data under data/execution-gap/review/ (same relative layout as experiments/results); tables with experiments/analyze_review.py.
+E3-stop-skew:   {artifact: E27, scripts: [experiments/run_e27_stop_resume.py], data: ["review/review/e27_eps*_prod*.csv"]}
+E3-deadline-eps: {artifact: E10-deadline, scripts: [experiments/run_e10_deadline.py, scripts/run_physical.sh, scripts/run_lan.sh], data: ["review/physical/campaigns/*/e10_deadline*.csv", "review/lan/campaigns/*/e10_deadline*.csv"]}
+E4-ABA-gap:     {artifact: E21-ABA, scripts: [experiments/run_e21_cell.py, scripts/run_distributed.sh], data: ["review/distributed/review/gaps/*.csv", "review/physical/campaigns/*/e21_cell_aba_gap*.csv", "review/lan/campaigns/*/e21_cell_aba_gap*.csv"]}
+E4-sampling:    {artifact: E21, scripts: [scripts/cell_controller.py, docker/distributed/compose.sampling50.yml, docker/distributed/compose.sampling200.yml], data: ["review/distributed/review/sampling*/*.csv"]}
+E4-PLC-epoch:   {artifact: E24, scripts: [scripts/run_plc_wrap.sh, experiments/run_plc_wrap.py, docker/openplc/cell_ctl.st], data: ["openplc/plc_wrap.json", "openplc/e24_openplc_epoch.csv", "review/openplc/campaigns/*/*.csv"]}
+Repeats:        {artifact: "E22, E25, E24, E26", scripts: [scripts/run_physical.sh, scripts/run_lan.sh, scripts/run_embedded.sh, scripts/run_openplc.sh], data: ["review/*/campaigns/*/*.csv", "review/embedded/*/campaigns/*/*.csv", "review/e26_campaigns/*.csv"]}
+E7-fence:       {artifact: E25, scripts: [scripts/run_embedded.sh], data: ["review/embedded/*/campaigns/fence*/e4_load_http_rep*.csv"]}
+Eq3-instrumented: {artifact: E25b, scripts: [scripts/run_embedded_eq3.sh, experiments/run_e16_context_churn.py], data: ["review/embedded_eq3_instr/*/*.csv"]}
+Eq3-legacy:    {artifact: E25b, scripts: [scripts/run_embedded_eq3.sh, experiments/run_e16_context_churn.py], data: ["review/embedded_eq3_legacy/*/*.csv"]}
+E9-lifecycle:   {artifact: E29, scripts: [experiments/run_e29_delay_degrade.py], data: ["review/review/e29_delay_degrade.csv"]}

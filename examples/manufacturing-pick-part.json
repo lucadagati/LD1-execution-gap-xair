@@ -1,0 +1,21 @@
+{
+  "id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+  "source": "ai",
+  "timestamp_decision": "2026-08-04T14:30:00.100Z",
+  "freshness_window_ms": 500,
+  "deadline_ms": 800,
+  "preconditions": [
+    {"expr": "line.state == 'RUN'"},
+    {"expr": "gripper.state == 'OPEN'"}
+  ],
+  "safety_constraints": [
+    {"expr": "human_proximity_m > 0.5"}
+  ],
+  "payload": {
+    "action_type": "PICK",
+    "target_entity": "robot_3",
+    "parameters": {"part": "P-1042", "speed_factor": 1.0},
+    "degradation_policy": "reduce_speed"
+  },
+  "priority": 10
+}

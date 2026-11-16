@@ -1,0 +1,5 @@
+# The stop fence of XAIR off, as in the campaigns that predate it (E27 is the experiment that needs it on).
+services:
+  xair:
+    environment:
+      XAIR_STOP_FENCE: "0"

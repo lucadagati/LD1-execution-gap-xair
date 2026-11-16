@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Unit tests + E0 lifecycle regressions
+        run: |
+          python -m pytest -q tests
+          python experiments/run_e0_lifecycle.py > /dev/null
+      - name: Redis-backed tests (store backends, idempotency after restart)
+        run: XAIR_TEST_REDIS_URL=redis://127.0.0.1:6379/0 python -m pytest -q tests
+      - name: Data manifests
+        run: python scripts/make_manifest.py --check data
+
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine@sha256:520775a41a63e77e06c73e35d2fd9cc15921a609516818796b4ecbb813078bc7
+        ports: ["6379:6379"]
+    env:
+      REDIS_URL: redis://127.0.0.1:6379/0
+      XAIR_RESULTS_DIR: ${{ github.workspace }}/ci-results
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Start stack (HTTP-only, no ROS)
+        run: ./scripts/start_full_stack.sh
+      - name: End-to-end checks
+        run: |
+          ./scripts/verify_e2e.sh
+          XAIR_INTEGRATION=1 python -m pytest -q tests/test_http_e2e.py
+      - name: Smoke reproduction
+        run: VERIFY_RESULTS_DIR="$XAIR_RESULTS_DIR" ./scripts/verify_reproduction.sh
+      - name: Upload smoke results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-results
+          path: ci-results/

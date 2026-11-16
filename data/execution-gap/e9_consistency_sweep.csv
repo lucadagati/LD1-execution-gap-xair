@@ -1,0 +1,241 @@
+policy,delay_ms,push_notified,run,outcome,reason,gateway_released,stale_executed
+local_stale,0,,0,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,1,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,2,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,3,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,4,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,5,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,6,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,7,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,8,EXECUTE,local_stale_guard_passed,1,1
+local_stale,0,,9,EXECUTE,local_stale_guard_passed,1,1
+local_push,0,0,0,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,1,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,2,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,3,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,4,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,5,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,6,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,7,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,8,EXECUTE,local_push_guard_passed,1,1
+local_push,0,0,9,EXECUTE,local_push_guard_passed,1,1
+local_authoritative,0,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,0,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,0,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_stale,10,,0,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,1,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,2,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,3,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,4,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,5,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,6,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,7,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,8,EXECUTE,local_stale_guard_passed,1,1
+local_stale,10,,9,EXECUTE,local_stale_guard_passed,1,1
+local_push,10,0,0,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,1,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,2,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,3,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,4,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,5,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,6,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,7,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,8,EXECUTE,local_push_guard_passed,1,1
+local_push,10,0,9,EXECUTE,local_push_guard_passed,1,1
+local_authoritative,10,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,10,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,10,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_stale,50,,0,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,1,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,2,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,3,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,4,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,5,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,6,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,7,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,8,EXECUTE,local_stale_guard_passed,1,1
+local_stale,50,,9,EXECUTE,local_stale_guard_passed,1,1
+local_push,50,1,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,50,1,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,50,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,50,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_stale,100,,0,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,1,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,2,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,3,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,4,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,5,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,6,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,7,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,8,EXECUTE,local_stale_guard_passed,1,1
+local_stale,100,,9,EXECUTE,local_stale_guard_passed,1,1
+local_push,100,1,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,100,1,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,100,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,100,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_stale,250,,0,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,1,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,2,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,3,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,4,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,5,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,6,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,7,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,8,EXECUTE,local_stale_guard_passed,1,1
+local_stale,250,,9,EXECUTE,local_stale_guard_passed,1,1
+local_push,250,1,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,250,1,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,250,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,250,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_stale,500,,0,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,1,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,2,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,3,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,4,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,5,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,6,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,7,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,8,EXECUTE,local_stale_guard_passed,1,1
+local_stale,500,,9,EXECUTE,local_stale_guard_passed,1,1
+local_push,500,1,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_push,500,1,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+local_authoritative,500,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,0,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,1,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,2,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,3,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,4,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,5,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,6,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,7,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,8,REVOKE,precondition_failed: line.state == 'RUN',0,0
+xair,500,,9,REVOKE,precondition_failed: line.state == 'RUN',0,0

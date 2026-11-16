@@ -1,0 +1,107 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/physical",
+  "kind": "retroactive",
+  "commands": [
+    "PHYS_HOST=user@host ./scripts/run_physical.sh"
+  ],
+  "seeds": [],
+  "files": [
+    {
+      "path": "e10_aba.csv",
+      "bytes": 34839,
+      "sha256": "ecac4b80ac43ba11f16e5e029669b29c8127244cecd3b31234589272de915295"
+    },
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 54024,
+      "sha256": "fcd986640d2c209cba6413f30a65af94a3cb097aee7c82a59311571e5f621e96"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 58702,
+      "sha256": "104df3155714064b4ac5a5851fc27d0bd2b9f6f8091f06c7270991cd97a0b783"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 242902,
+      "sha256": "3036f44f6d9dce2af4d61fadc68b727782ab342ddf83e48e58dc6b27e550b6d4"
+    },
+    {
+      "path": "e1_baselines.csv",
+      "bytes": 61201,
+      "sha256": "1dc654f8708b45e79e5b8d7dd4ceefb8ac2cd89e85f132d485e8214a84fc3e93"
+    },
+    {
+      "path": "e1_fpr.csv",
+      "bytes": 13266,
+      "sha256": "61215f3a25fdff4de21243582c193f5af1f5a8d72b208bf872fe4eba69ef0ef9"
+    },
+    {
+      "path": "e21_cell_aba.csv",
+      "bytes": 141314,
+      "sha256": "b28c2f3622205b4212c5d4d44667bd3210b04c627ff7d48d7b62a577c4460785"
+    },
+    {
+      "path": "e21_cell_controller.csv",
+      "bytes": 164755,
+      "sha256": "496dca9570c10c16089645e1c85f0b991349d048b708cea37bb197dbc6d73d79"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 352,
+      "sha256": "f8c279decfc01d5901bb7a269c762445ab0c709a2422787d593447451313be25"
+    },
+    {
+      "path": "environment_e10_aba.txt",
+      "bytes": 353,
+      "sha256": "6f7162a67ff1a7445f39779842f86d6e1c7ffbb3da4822fc3d92cc531fd19784"
+    },
+    {
+      "path": "environment_e10_aba_e16.txt",
+      "bytes": 352,
+      "sha256": "e4508451d1c97f816d1760b4b908108aa3ec8d3d65e0bb148ed607560551e333"
+    },
+    {
+      "path": "environment_e21_e21_aba.txt",
+      "bytes": 352,
+      "sha256": "604fb2319078c7d19f8c511a84cac0803f2cd7fb3f36338d83a2ffdf767ee7ac"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"topology\": \"producers+XAIR+Redis on 100.86.223.16 (this host); gateway+cell controller on 100.66.11.73 (separate physical machine, Tailscale)\", \"tcp_connect_rtt_ms_p50_p99\": {\"host->gateway\": [62.5, 66.98]}, \"local\": \"Linux-6.8.12-18-pve-x86_64-with-glibc2.35\", \"loadavg\": [\"18.89\", \"18.56\", \"18.54\"]}",
+      "Darwin 24.6.0 arm64",
+      "Apple M4",
+      "1790413191.9375849"
+    ],
+    "environment_e10_aba.txt": [
+      "{\"topology\": \"producers+XAIR+Redis on 100.86.223.16 (this host); gateway+cell controller on 100.66.11.73 (separate physical machine, Tailscale)\", \"tcp_connect_rtt_ms_p50_p99\": {\"host->gateway\": [59.34, 140.95]}, \"local\": \"Linux-6.8.12-18-pve-x86_64-with-glibc2.35\", \"loadavg\": [\"20.32\", \"20.39\", \"17.47\"]}",
+      "Darwin 24.6.0 arm64",
+      "Apple M4",
+      "1790811333.066587"
+    ],
+    "environment_e10_aba_e16.txt": [
+      "{\"topology\": \"producers+XAIR+Redis on 100.86.223.16 (this host); gateway+cell controller on 100.66.11.73 (separate physical machine, Tailscale)\", \"tcp_connect_rtt_ms_p50_p99\": {\"host->gateway\": [62.44, 64.49]}, \"local\": \"Linux-6.8.12-18-pve-x86_64-with-glibc2.35\", \"loadavg\": [\"18.36\", \"18.73\", \"18.44\"]}",
+      "Darwin 24.6.0 arm64",
+      "Apple M4",
+      "1790429541.701875"
+    ],
+    "environment_e21_e21_aba.txt": [
+      "{\"topology\": \"producers+XAIR+Redis on 100.86.223.16 (this host); gateway+cell controller on 100.66.11.73 (separate physical machine, Tailscale)\", \"tcp_connect_rtt_ms_p50_p99\": {\"host->gateway\": [68.55, 83.27]}, \"local\": \"Linux-6.8.12-18-pve-x86_64-with-glibc2.35\", \"loadavg\": [\"64.83\", \"39.84\", \"22.35\"]}",
+      "Darwin 24.6.0 arm64",
+      "Apple M4",
+      "1790932623.431795"
+    ]
+  },
+  "notes": [
+    "wide-area node (P); one environment file per suite group"
+  ],
+  "manifest_written": "2026-10-05T23:20:36+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

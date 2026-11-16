@@ -1,0 +1,841 @@
+mode,inject,stop_offset_ms,run,resume_released,resume_reason,stop_released,t_resume_ms,t_stop_ms,stale_after_stop,stop_fence,producer_offset_ms,eps_ms
+xair,1,60.0,0,1,published_after_gate_recheck,1,1793347205842.2136,1793347205848.4001,0,1,-55.0,60.0
+xair,2,0.0,1,0,precondition_failed: stop.b23 <= 1793347205751000,1,,1793347205864.994,0,1,-55.0,60.0
+xair,1,36.0,2,0,precondition_failed: stop.b23 <= 1793347205766000,1,,1793347205925.9556,0,1,-55.0,60.0
+xair,1,0.0,3,0,precondition_failed: stop.b59 <= 1793347205819000,1,,1793347205945.1643,0,1,-55.0,60.0
+xair,2,20.0,4,0,precondition_failed: stop.b42 <= 1793347205877000,1,,1793347205971.2844,0,1,-55.0,60.0
+xair,1,20.0,5,0,read_set_version_changed_at_gate,1,,1793347206035.827,0,1,-55.0,60.0
+xair,0,,6,1,published_after_gate_recheck,,1793347206143.0732,,0,1,-55.0,60.0
+xair,1,20.0,7,0,read_set_version_changed_at_gate,1,,1793347206181.8752,0,1,-55.0,60.0
+xair,2,0.0,8,0,precondition_failed: stop.b28 <= 1793347206120000,1,,1793347206233.8896,0,1,-55.0,60.0
+xair,1,50.0,9,1,published_after_gate_recheck,1,1793347206314.386,1793347206318.724,0,1,-55.0,60.0
+xair,1,20.0,10,0,read_set_version_changed_at_gate,1,,1793347206353.9133,0,1,-55.0,60.0
+xair,1,40.0,11,0,read_set_version_changed_at_gate,1,,1793347206447.3943,0,1,-55.0,60.0
+xair,2,0.0,12,0,precondition_failed: stop.b13 <= 1793347206366000,1,,1793347206480.6208,0,1,-55.0,60.0
+xair,1,40.0,13,0,read_set_version_changed_at_gate,1,,1793347206547.804,0,1,-55.0,60.0
+xair,1,30.0,14,0,read_set_version_changed_at_gate,1,,1793347206611.3083,0,1,-55.0,60.0
+xair,2,5.0,15,0,precondition_failed: stop.b48 <= 1793347206544000,1,,1793347206652.6868,0,1,-55.0,60.0
+xair,1,30.0,16,0,read_set_version_changed_at_gate,1,,1793347206715.8696,0,1,-55.0,60.0
+xair,1,20.0,17,0,read_set_version_changed_at_gate,1,,1793347206778.0305,0,1,-55.0,60.0
+xair,0,,18,1,published_after_gate_recheck,,1793347206884.6936,,0,1,-55.0,60.0
+xair,2,60.0,19,0,precondition_failed: stop.b52 <= 1793347206847000,1,,1793347206900.9424,0,1,-55.0,60.0
+xair,1,50.0,20,1,published_after_gate_recheck,1,1793347207043.5093,1793347207049.0857,0,1,-55.0,60.0
+xair,1,36.0,21,0,read_set_version_changed_at_gate,1,,1793347207103.2136,0,1,-55.0,60.0
+xair,1,50.0,22,1,published_after_gate_recheck,1,1793347207196.4592,1793347207203.1902,0,1,-55.0,60.0
+xair,1,20.0,23,0,read_set_version_changed_at_gate,1,,1793347207241.9246,0,1,-55.0,60.0
+xair,2,60.0,24,0,precondition_failed: stop.b33 <= 1793347207240000,1,,1793347207294.522,0,1,-55.0,60.0
+xair,1,0.0,25,0,precondition_failed: stop.b26 <= 1793347207260000,1,,1793347207389.5603,0,1,-55.0,60.0
+xair,2,20.0,26,0,precondition_failed: stop.b58 <= 1793347207324000,1,,1793347207418.7498,0,1,-55.0,60.0
+xair,2,0.0,27,0,precondition_failed: stop.b19 <= 1793347207352000,1,,1793347207465.556,0,1,-55.0,60.0
+xair,1,10.0,28,0,read_set_version_changed_at_gate,1,,1793347207502.3562,0,1,-55.0,60.0
+xair,2,20.0,29,0,precondition_failed: stop.b27 <= 1793347207469000,1,,1793347207563.4563,0,1,-55.0,60.0
+xair,1,10.0,30,0,read_set_version_changed_at_gate,1,,1793347207625.1287,0,1,-55.0,60.0
+xair,2,60.0,31,0,precondition_failed: stop.b0 <= 1793347207636000,1,,1793347207689.635,0,1,-55.0,60.0
+xair,2,120.0,32,1,published_after_gate_recheck,1,1793347207935.511,1793347207780.4153,0,1,-55.0,60.0
+xair,1,30.0,33,0,read_set_version_changed_at_gate,1,,1793347207987.9954,0,1,-55.0,60.0
+xair,1,36.0,34,0,read_set_version_changed_at_gate,1,,1793347208076.1414,0,1,-55.0,60.0
+xair,1,20.0,35,0,read_set_version_changed_at_gate,1,,1793347208137.7026,0,1,-55.0,60.0
+xair,1,10.0,36,0,read_set_version_changed_at_gate,1,,1793347208204.5518,0,1,-55.0,60.0
+xair,2,0.0,37,0,precondition_failed: stop.b18 <= 1793347208159000,1,,1793347208273.7334,0,1,-55.0,60.0
+xair,1,30.0,38,0,read_set_version_changed_at_gate,1,,1793347208335.8755,0,1,-55.0,60.0
+xair,1,60.0,39,1,published_after_gate_recheck,1,1793347208433.237,1793347208447.6865,0,1,-55.0,60.0
+xair,2,20.0,40,0,precondition_failed: stop.b40 <= 1793347208375000,1,,1793347208468.781,0,1,-55.0,60.0
+xair,2,0.0,41,0,precondition_failed: stop.b3 <= 1793347208400000,1,,1793347208514.071,0,1,-55.0,60.0
+xair,1,50.0,42,1,published_after_gate_recheck,1,1793347208593.4832,1793347208599.9983,0,1,-55.0,60.0
+xair,1,10.0,43,0,read_set_version_changed_at_gate,1,,1793347208628.744,0,1,-55.0,60.0
+xair,2,120.0,44,1,published_after_gate_recheck,1,1793347208836.4539,1793347208692.0684,0,1,-55.0,60.0
+xair,1,36.0,45,0,read_set_version_changed_at_gate,1,,1793347208894.022,0,1,-55.0,60.0
+xair,1,0.0,46,0,precondition_failed: stop.b3 <= 1793347208809000,1,,1793347208935.9412,0,1,-55.0,60.0
+xair,1,0.0,47,0,read_set_version_changed_at_gate,1,,1793347208972.5483,0,1,-55.0,60.0
+xair,2,60.0,48,0,precondition_failed: stop.b35 <= 1793347208984000,1,,1793347209037.712,0,1,-55.0,60.0
+xair,1,30.0,49,0,read_set_version_changed_at_gate,1,,1793347209162.1013,0,1,-55.0,60.0
+xair,1,60.0,50,1,published_after_gate_recheck,1,1793347209259.6538,1793347209272.306,0,1,-55.0,60.0
+xair,1,40.0,51,0,read_set_version_changed_at_gate,1,,1793347209335.5054,0,1,-55.0,60.0
+xair,2,60.0,52,0,precondition_failed: stop.b41 <= 1793347209317000,1,,1793347209370.719,0,1,-55.0,60.0
+xair,1,50.0,53,0,read_set_version_changed_at_gate,1,,1793347209534.266,0,1,-55.0,60.0
+xair,2,20.0,54,0,precondition_failed: stop.b59 <= 1793347209457000,1,,1793347209551.1536,0,1,-55.0,60.0
+xair,2,120.0,55,1,published_after_gate_recheck,1,1793347209746.4622,1793347209597.8235,0,1,-55.0,60.0
+xair,2,120.0,56,1,published_after_gate_recheck,1,1793347209914.1667,1793347209763.4668,0,1,-55.0,60.0
+xair,1,40.0,57,0,read_set_version_changed_at_gate,1,,1793347209977.7632,0,1,-55.0,60.0
+xair,1,20.0,58,0,read_set_version_changed_at_gate,1,,1793347210032.7961,0,1,-55.0,60.0
+xair,0,,59,1,published_after_gate_recheck,,1793347210140.5894,,0,1,-55.0,60.0
+xair,1,0.0,60,0,precondition_failed: stop.b4 <= 1793347210035000,1,,1793347210161.3967,0,1,-55.0,60.0
+xair,2,5.0,61,0,precondition_failed: stop.b9 <= 1793347210079000,1,,1793347210188.3997,0,1,-55.0,60.0
+xair,2,0.0,62,0,precondition_failed: stop.b14 <= 1793347210105000,1,,1793347210219.129,0,1,-55.0,60.0
+xair,1,10.0,63,0,precondition_failed: stop.b14 <= 1793347210121000,1,,1793347210254.8972,0,1,-55.0,60.0
+xair,1,36.0,64,0,read_set_version_changed_at_gate,1,,1793347210313.203,0,1,-55.0,60.0
+xair,2,5.0,65,0,precondition_failed: stop.b43 <= 1793347210241000,1,,1793347210350.33,0,1,-55.0,60.0
+xair,2,120.0,66,1,published_after_gate_recheck,1,1793347210522.358,1793347210378.7634,0,1,-55.0,60.0
+xair,1,40.0,67,0,read_set_version_changed_at_gate,1,,1793347210578.9648,0,1,-55.0,60.0
+xair,1,40.0,68,0,read_set_version_changed_at_gate,1,,1793347210650.1926,0,1,-55.0,60.0
+xair,1,30.0,69,0,read_set_version_changed_at_gate,1,,1793347210714.7554,0,1,-55.0,60.0
+xair,1,60.0,70,1,published_after_gate_recheck,1,1793347210813.319,1793347210822.8699,0,1,-55.0,60.0
+xair,0,,71,1,published_after_gate_recheck,,1793347210914.8738,,0,1,-55.0,60.0
+xair,1,60.0,72,1,published_after_gate_recheck,1,1793347210997.6333,1793347211005.8193,0,1,-55.0,60.0
+xair,1,40.0,73,0,read_set_version_changed_at_gate,1,,1793347211074.5708,0,1,-55.0,60.0
+xair,0,,74,1,published_after_gate_recheck,,1793347211168.411,,0,1,-55.0,60.0
+xair,2,20.0,75,0,precondition_failed: stop.b42 <= 1793347211091000,1,,1793347211184.762,0,1,-55.0,60.0
+xair,2,5.0,76,0,precondition_failed: stop.b11 <= 1793347211131000,1,,1793347211240.0671,0,1,-55.0,60.0
+xair,1,50.0,77,1,published_after_gate_recheck,1,1793347211327.3564,1793347211332.1855,0,1,-55.0,60.0
+xair,2,0.0,78,0,precondition_failed: stop.b17 <= 1793347211232000,1,,1793347211346.6836,0,1,-55.0,60.0
+xair,2,120.0,79,1,published_after_gate_recheck,1,1793347211518.1455,1793347211368.865,0,1,-55.0,60.0
+xair,1,60.0,80,1,published_after_gate_recheck,1,1793347211593.735,1793347211602.697,0,1,-55.0,60.0
+xair,1,30.0,81,0,read_set_version_changed_at_gate,1,,1793347211652.7065,0,1,-55.0,60.0
+xair,1,50.0,82,1,published_after_gate_recheck,1,1793347211745.4417,1793347211749.9785,0,1,-55.0,60.0
+xair,0,,83,1,published_after_gate_recheck,,1793347211820.5137,,0,1,-55.0,60.0
+xair,2,20.0,84,0,precondition_failed: stop.b19 <= 1793347211743000,1,,1793347211837.4963,0,1,-55.0,60.0
+xair,1,10.0,85,0,read_set_version_changed_at_gate,1,,1793347211893.1152,0,1,-55.0,60.0
+xair,1,0.0,86,0,precondition_failed: stop.b4 <= 1793347211831000,1,,1793347211956.1775,0,1,-55.0,60.0
+xair,0,,87,1,published_after_gate_recheck,,1793347212045.2727,,0,1,-55.0,60.0
+xair,0,,88,1,published_after_gate_recheck,,1793347212126.2578,,0,1,-55.0,60.0
+xair,0,,89,1,published_after_gate_recheck,,1793347212203.2778,,0,1,-55.0,60.0
+xair,2,5.0,90,0,precondition_failed: stop.b46 <= 1793347212117000,1,,1793347212225.7395,0,1,-55.0,60.0
+xair,1,0.0,91,0,precondition_failed: stop.b19 <= 1793347212140000,1,,1793347212267.5144,0,1,-55.0,60.0
+xair,0,,92,1,published_after_gate_recheck,,1793347212355.5305,,0,1,-55.0,60.0
+xair,1,50.0,93,1,published_after_gate_recheck,1,1793347212437.801,1793347212446.8315,0,1,-55.0,60.0
+xair,1,40.0,94,0,read_set_version_changed_at_gate,1,,1793347212507.5352,0,1,-55.0,60.0
+xair,1,36.0,95,0,read_set_version_changed_at_gate,1,,1793347212582.4658,0,1,-55.0,60.0
+xair,2,120.0,96,1,published_after_gate_recheck,1,1793347212773.9795,1793347212622.262,0,1,-55.0,60.0
+xair,0,,97,1,published_after_gate_recheck,,1793347212852.2617,,0,1,-55.0,60.0
+xair,2,20.0,98,0,precondition_failed: stop.b23 <= 1793347212775000,1,,1793347212869.2024,0,1,-55.0,60.0
+xair,2,60.0,99,0,precondition_failed: stop.b1 <= 1793347212866000,1,,1793347212920.4097,0,1,-55.0,60.0
+xair,1,20.0,100,0,read_set_version_changed_at_gate,1,,1793347213032.1548,0,1,-55.0,60.0
+xair,0,,101,1,published_after_gate_recheck,,1793347213144.6248,,0,1,-55.0,60.0
+xair,2,5.0,102,0,precondition_failed: stop.b48 <= 1793347213053000,1,,1793347213161.892,0,1,-55.0,60.0
+xair,2,0.0,103,0,precondition_failed: stop.b44 <= 1793347213084000,1,,1793347213198.2717,0,1,-55.0,60.0
+xair,2,60.0,104,0,precondition_failed: stop.b34 <= 1793347213184000,1,,1793347213237.8203,0,1,-55.0,60.0
+xair,1,50.0,105,1,published_after_gate_recheck,1,1793347213383.585,1793347213391.1584,0,1,-55.0,60.0
+xair,2,5.0,106,0,precondition_failed: stop.b10 <= 1793347213302000,1,,1793347213410.9204,0,1,-55.0,60.0
+xair,1,30.0,107,0,read_set_version_changed_at_gate,1,,1793347213475.5327,0,1,-55.0,60.0
+xair,1,40.0,108,0,read_set_version_changed_at_gate,1,,1793347213557.263,0,1,-55.0,60.0
+xair,1,50.0,109,1,published_after_gate_recheck,1,1793347213650.0356,1793347213654.274,0,1,-55.0,60.0
+xair,2,20.0,110,0,precondition_failed: stop.b56 <= 1793347213576000,1,,1793347213670.46,0,1,-55.0,60.0
+xair,1,36.0,111,0,read_set_version_changed_at_gate,1,,1793347213754.524,0,1,-55.0,60.0
+xair,1,60.0,112,1,published_after_gate_recheck,1,1793347213845.2,1793347213856.387,0,1,-55.0,60.0
+xair,2,120.0,113,1,published_after_gate_recheck,1,1793347214021.476,1793347213873.6707,0,1,-55.0,60.0
+xair,1,10.0,114,0,read_set_version_changed_at_gate,1,,1793347214049.4565,0,1,-55.0,60.0
+xair,2,20.0,115,0,precondition_failed: stop.b23 <= 1793347214017000,1,,1793347214110.8665,0,1,-55.0,60.0
+xair,1,20.0,116,0,read_set_version_changed_at_gate,1,,1793347214182.6777,0,1,-55.0,60.0
+xair,1,10.0,117,0,precondition_failed: stop.b10 <= 1793347214110000,1,,1793347214245.1768,0,1,-55.0,60.0
+xair,0,,118,1,published_after_gate_recheck,,1793347214317.962,,0,1,-55.0,60.0
+xair,2,60.0,119,0,precondition_failed: stop.b51 <= 1793347214282000,1,,1793347214335.9243,0,1,-55.0,60.0
+xair,2,20.0,120,0,precondition_failed: stop.b9 <= 1793347214329000,1,,1793347214423.4834,0,1,-55.0,60.0
+xair,1,30.0,121,0,read_set_version_changed_at_gate,1,,1793347214500.8457,0,1,-55.0,60.0
+xair,2,0.0,122,0,precondition_failed: stop.b23 <= 1793347214429000,1,,1793347214542.4634,0,1,-55.0,60.0
+xair,1,10.0,123,0,read_set_version_changed_at_gate,1,,1793347214581.598,0,1,-55.0,60.0
+xair,2,20.0,124,0,precondition_failed: stop.b63 <= 1793347214556000,1,,1793347214650.1558,0,1,-55.0,60.0
+xair,1,30.0,125,0,precondition_failed: stop.b63 <= 1793347214573000,1,,1793347214727.416,0,1,-55.0,60.0
+xair,2,60.0,126,0,precondition_failed: stop.b56 <= 1793347214690000,1,,1793347214744.2969,0,1,-55.0,60.0
+xair,1,36.0,127,0,precondition_failed: stop.b56 <= 1793347214717000,1,,1793347214877.6863,0,1,-55.0,60.0
+xair,1,0.0,128,0,precondition_failed: stop.b53 <= 1793347214771000,1,,1793347214898.359,0,1,-55.0,60.0
+xair,2,20.0,129,0,precondition_failed: stop.b54 <= 1793347214829000,1,,1793347214922.7327,0,1,-55.0,60.0
+xair,2,5.0,130,0,precondition_failed: stop.b48 <= 1793347214860000,1,,1793347214969.0864,0,1,-55.0,60.0
+xair,2,120.0,131,1,published_after_gate_recheck,1,1793347215146.9536,1793347215002.1025,0,1,-55.0,60.0
+xair,1,0.0,132,0,precondition_failed: stop.b58 <= 1793347215040000,1,,1793347215166.2756,0,1,-55.0,60.0
+xair,1,0.0,133,0,precondition_failed: stop.b46 <= 1793347215067000,1,,1793347215195.7954,0,1,-55.0,60.0
+xair,1,30.0,134,0,read_set_version_changed_at_gate,1,,1793347215249.3665,0,1,-55.0,60.0
+xair,1,36.0,135,0,read_set_version_changed_at_gate,1,,1793347215327.8508,0,1,-55.0,60.0
+xair,1,0.0,136,0,precondition_failed: stop.b27 <= 1793347215239000,1,,1793347215363.8472,0,1,-55.0,60.0
+xair,2,20.0,137,0,precondition_failed: stop.b26 <= 1793347215294000,1,,1793347215388.5095,0,1,-55.0,60.0
+xair,2,0.0,138,0,precondition_failed: stop.b16 <= 1793347215324000,1,,1793347215437.8936,0,1,-55.0,60.0
+xair,1,20.0,139,0,read_set_version_changed_at_gate,1,,1793347215484.482,0,1,-55.0,60.0
+xair,1,30.0,140,0,read_set_version_changed_at_gate,1,,1793347215567.1199,0,1,-55.0,60.0
+xair,1,20.0,141,0,read_set_version_changed_at_gate,1,,1793347215632.5938,0,1,-55.0,60.0
+xair,1,50.0,142,1,published_after_gate_recheck,1,1793347215746.7778,1793347215752.9277,0,1,-55.0,60.0
+xair,1,30.0,143,0,read_set_version_changed_at_gate,1,,1793347215808.1929,0,1,-55.0,60.0
+xair,2,5.0,144,0,precondition_failed: stop.b48 <= 1793347215746000,1,,1793347215854.7932,0,1,-55.0,60.0
+xair,1,20.0,145,0,read_set_version_changed_at_gate,1,,1793347215911.4531,0,1,-55.0,60.0
+xair,2,20.0,146,0,precondition_failed: stop.b13 <= 1793347215880000,1,,1793347215974.3384,0,1,-55.0,60.0
+xair,1,0.0,147,0,precondition_failed: stop.b16 <= 1793347215898000,1,,1793347216026.3364,0,1,-55.0,60.0
+xair,1,50.0,148,1,published_after_gate_recheck,1,1793347216108.4429,1793347216113.4812,0,1,-55.0,60.0
+xair,1,10.0,149,0,read_set_version_changed_at_gate,1,,1793347216141.1072,0,1,-55.0,60.0
+xair,1,50.0,150,1,published_after_gate_recheck,1,1793347216260.6926,1793347216265.451,0,1,-55.0,60.0
+xair,2,120.0,151,1,published_after_gate_recheck,1,1793347216429.4268,1793347216281.4485,0,1,-55.0,60.0
+xair,1,40.0,152,0,read_set_version_changed_at_gate,1,,1793347216491.181,0,1,-55.0,60.0
+xair,1,60.0,153,1,published_after_gate_recheck,1,1793347216586.47,1793347216592.722,0,1,-55.0,60.0
+xair,2,5.0,154,0,precondition_failed: stop.b12 <= 1793347216504000,1,,1793347216612.7307,0,1,-55.0,60.0
+xair,0,,155,1,published_after_gate_recheck,,1793347216703.298,,0,1,-55.0,60.0
+xair,2,20.0,156,0,precondition_failed: stop.b10 <= 1793347216629000,1,,1793347216723.1814,0,1,-55.0,60.0
+xair,1,36.0,157,0,read_set_version_changed_at_gate,1,,1793347216808.4417,0,1,-55.0,60.0
+xair,2,0.0,158,0,precondition_failed: stop.b0 <= 1793347216730000,1,,1793347216843.5405,0,1,-55.0,60.0
+xair,2,60.0,159,0,precondition_failed: stop.b29 <= 1793347216816000,1,,1793347216870.019,0,1,-55.0,60.0
+xair,2,120.0,160,1,published_after_gate_recheck,1,1793347217107.2903,1793347216959.6262,0,1,-55.0,60.0
+xair,1,50.0,161,0,read_set_version_changed_at_gate,1,,1793347217193.5552,0,1,-55.0,60.0
+xair,0,,162,1,published_after_gate_recheck,,1793347217269.768,,0,1,-55.0,60.0
+xair,2,5.0,163,0,precondition_failed: stop.b32 <= 1793347217179000,1,,1793347217288.3079,0,1,-55.0,60.0
+xair,1,60.0,164,1,published_after_gate_recheck,1,1793347217374.1965,1793347217385.144,0,1,-55.0,60.0
+xair,2,0.0,165,0,precondition_failed: stop.b52 <= 1793347217290000,1,,1793347217404.7925,0,1,-55.0,60.0
+xair,2,20.0,166,0,precondition_failed: stop.b47 <= 1793347217336000,1,,1793347217430.4739,0,1,-55.0,60.0
+xair,1,50.0,167,1,published_after_gate_recheck,1,1793347217537.163,1793347217542.1333,0,1,-55.0,60.0
+xair,1,36.0,168,0,read_set_version_changed_at_gate,1,,1793347217598.4678,0,1,-55.0,60.0
+xair,2,120.0,169,1,published_after_gate_recheck,1,1793347217787.3542,1793347217638.694,0,1,-55.0,60.0
+xair,2,60.0,170,0,precondition_failed: stop.b44 <= 1793347217753000,1,,1793347217806.7485,0,1,-55.0,60.0
+xair,2,120.0,171,1,published_after_gate_recheck,1,1793347218044.2214,1793347217895.8457,0,1,-55.0,60.0
+xair,1,10.0,172,0,read_set_version_changed_at_gate,1,,1793347218074.9878,0,1,-55.0,60.0
+xair,2,0.0,173,0,precondition_failed: stop.b50 <= 1793347218028000,1,,1793347218141.6345,0,1,-55.0,60.0
+xair,0,,174,1,published_after_gate_recheck,,1793347218227.1584,,0,1,-55.0,60.0
+xair,1,30.0,175,0,read_set_version_changed_at_gate,1,,1793347218275.4624,0,1,-55.0,60.0
+xair,1,0.0,176,0,precondition_failed: stop.b40 <= 1793347218194000,1,,1793347218319.9756,0,1,-55.0,60.0
+xair,1,60.0,177,1,published_after_gate_recheck,1,1793347218407.1365,1793347218412.3955,0,1,-55.0,60.0
+xair,1,36.0,178,0,read_set_version_changed_at_gate,1,,1793347218471.0134,0,1,-55.0,60.0
+xair,1,60.0,179,1,published_after_gate_recheck,1,1793347218576.2705,1793347218586.0117,0,1,-55.0,60.0
+xair,2,20.0,180,0,precondition_failed: stop.b43 <= 1793347218514000,1,,1793347218607.7092,0,1,-55.0,60.0
+xair,2,20.0,181,0,precondition_failed: stop.b24 <= 1793347218566000,1,,1793347218659.9155,0,1,-55.0,60.0
+xair,1,40.0,182,0,read_set_version_changed_at_gate,1,,1793347218756.2822,0,1,-55.0,60.0
+xair,1,50.0,183,1,published_after_gate_recheck,1,1793347218846.1306,1793347218850.9067,0,1,-55.0,60.0
+xair,1,60.0,184,1,published_after_gate_recheck,1,1793347218923.0747,1793347218937.0127,0,1,-55.0,60.0
+xair,1,36.0,185,0,read_set_version_changed_at_gate,1,,1793347218991.866,0,1,-55.0,60.0
+xair,1,0.0,186,0,read_set_version_changed_at_gate,1,,1793347219041.7617,0,1,-55.0,60.0
+xair,2,60.0,187,0,precondition_failed: stop.b54 <= 1793347219054000,1,,1793347219108.1797,0,1,-55.0,60.0
+xair,0,,188,1,published_after_gate_recheck,,1793347219256.2546,,0,1,-55.0,60.0
+xair,2,0.0,189,0,precondition_failed: stop.b33 <= 1793347219160000,1,,1793347219274.7134,0,1,-55.0,60.0
+xair,1,20.0,190,0,read_set_version_changed_at_gate,1,,1793347219320.7144,0,1,-55.0,60.0
+xair,0,,191,1,published_after_gate_recheck,,1793347219432.2686,,0,1,-55.0,60.0
+xair,2,0.0,192,0,precondition_failed: stop.b13 <= 1793347219344000,1,,1793347219457.8132,0,1,-55.0,60.0
+xair,0,,193,1,published_after_gate_recheck,,1793347219550.9963,,0,1,-55.0,60.0
+xair,1,50.0,194,1,published_after_gate_recheck,1,1793347219624.4568,1793347219629.8936,0,1,-55.0,60.0
+xair,1,60.0,195,1,published_after_gate_recheck,1,1793347219704.366,1793347219709.6826,0,1,-55.0,60.0
+xair,2,20.0,196,0,precondition_failed: stop.b46 <= 1793347219631000,1,,1793347219725.703,0,1,-55.0,60.0
+xair,2,5.0,197,0,precondition_failed: stop.b26 <= 1793347219662000,1,,1793347219771.3696,0,1,-55.0,60.0
+xair,1,20.0,198,0,read_set_version_changed_at_gate,1,,1793347219821.7869,0,1,-55.0,60.0
+xair,1,0.0,199,0,precondition_failed: stop.b43 <= 1793347219751000,1,,1793347219878.7092,0,1,-55.0,60.0
+xair,1,10.0,200,0,read_set_version_changed_at_gate,1,,1793347219909.11,0,1,-55.0,60.0
+xair,1,10.0,201,0,read_set_version_changed_at_gate,1,,1793347219977.5728,0,1,-55.0,60.0
+xair,1,40.0,202,0,read_set_version_changed_at_gate,1,,1793347220082.747,0,1,-55.0,60.0
+xair,2,120.0,203,1,published_after_gate_recheck,1,1793347220264.1597,1793347220120.0217,0,1,-55.0,60.0
+xair,1,10.0,204,0,read_set_version_changed_at_gate,1,,1793347220289.8044,0,1,-55.0,60.0
+xair,1,36.0,205,0,read_set_version_changed_at_gate,1,,1793347220386.0347,0,1,-55.0,60.0
+xair,1,40.0,206,0,read_set_version_changed_at_gate,1,,1793347220460.3577,0,1,-55.0,60.0
+xair,1,20.0,207,0,read_set_version_changed_at_gate,1,,1793347220510.2156,0,1,-55.0,60.0
+xair,2,0.0,208,0,precondition_failed: stop.b34 <= 1793347220446000,1,,1793347220560.7246,0,1,-55.0,60.0
+xair,1,60.0,209,1,published_after_gate_recheck,1,1793347220639.24,1793347220648.0664,0,1,-55.0,60.0
+xair,2,5.0,210,0,precondition_failed: stop.b0 <= 1793347220554000,1,,1793347220663.671,0,1,-55.0,60.0
+xair,2,5.0,211,0,precondition_failed: stop.b1 <= 1793347220584000,1,,1793347220693.1812,0,1,-55.0,60.0
+xair,2,5.0,212,0,precondition_failed: stop.b0 <= 1793347220621000,1,,1793347220730.095,0,1,-55.0,60.0
+xair,1,36.0,213,0,read_set_version_changed_at_gate,1,,1793347220800.3472,0,1,-55.0,60.0
+xair,1,0.0,214,0,precondition_failed: stop.b48 <= 1793347220709000,1,,1793347220834.5583,0,1,-55.0,60.0
+xair,1,10.0,215,0,read_set_version_changed_at_gate,1,,1793347220868.098,0,1,-55.0,60.0
+xair,1,36.0,216,0,read_set_version_changed_at_gate,1,,1793347220967.4917,0,1,-55.0,60.0
+xair,1,20.0,217,0,read_set_version_changed_at_gate,1,,1793347221023.701,0,1,-55.0,60.0
+xair,1,10.0,218,0,read_set_version_changed_at_gate,1,,1793347221086.4973,0,1,-55.0,60.0
+xair,0,,219,1,published_after_gate_recheck,,1793347221207.9172,,0,1,-55.0,60.0
+xair,2,5.0,220,0,precondition_failed: stop.b2 <= 1793347221117000,1,,1793347221226.639,0,1,-55.0,60.0
+xair,1,60.0,221,1,published_after_gate_recheck,1,1793347221313.6223,1793347221323.6309,0,1,-55.0,60.0
+xair,2,120.0,222,1,published_after_gate_recheck,1,1793347221486.877,1793347221340.1177,0,1,-55.0,60.0
+xair,1,50.0,223,1,published_after_gate_recheck,1,1793347221566.8093,1793347221573.5356,0,1,-55.0,60.0
+xair,1,36.0,224,0,read_set_version_changed_at_gate,1,,1793347221632.4587,0,1,-55.0,60.0
+xair,1,40.0,225,0,read_set_version_changed_at_gate,1,,1793347221715.7102,0,1,-55.0,60.0
+xair,1,36.0,226,0,read_set_version_changed_at_gate,1,,1793347221786.344,0,1,-55.0,60.0
+xair,1,0.0,227,0,precondition_failed: stop.b23 <= 1793347221702000,1,,1793347221826.9465,0,1,-55.0,60.0
+xair,1,30.0,228,0,read_set_version_changed_at_gate,1,,1793347221882.899,0,1,-55.0,60.0
+xair,1,10.0,229,0,read_set_version_changed_at_gate,1,,1793347221939.9016,0,1,-55.0,60.0
+xair,1,0.0,230,0,precondition_failed: stop.b19 <= 1793347221886000,1,,1793347222013.8008,0,1,-55.0,60.0
+xair,1,50.0,231,1,published_after_gate_recheck,1,1793347222099.206,1793347222105.0657,0,1,-55.0,60.0
+xair,2,0.0,232,0,precondition_failed: stop.b14 <= 1793347222017000,1,,1793347222130.5444,0,1,-55.0,60.0
+xair,1,36.0,233,0,read_set_version_changed_at_gate,1,,1793347222198.6772,0,1,-55.0,60.0
+xair,1,50.0,234,1,published_after_gate_recheck,1,1793347222300.4373,1793347222305.0913,0,1,-55.0,60.0
+xair,2,5.0,235,0,precondition_failed: stop.b43 <= 1793347222212000,1,,1793347222321.6697,0,1,-55.0,60.0
+xair,2,0.0,236,0,precondition_failed: stop.b54 <= 1793347222238000,1,,1793347222351.9226,0,1,-55.0,60.0
+xair,2,20.0,237,0,precondition_failed: stop.b9 <= 1793347222284000,1,,1793347222376.87,0,1,-55.0,60.0
+xair,1,30.0,238,0,read_set_version_changed_at_gate,1,,1793347222455.5952,0,1,-55.0,60.0
+xair,1,0.0,239,0,precondition_failed: stop.b63 <= 1793347222374000,1,,1793347222499.0261,0,1,-55.0,60.0
+xair,1,60.0,240,1,published_after_gate_recheck,1,1793347222578.8499,1793347222585.666,0,1,-55.0,60.0
+xair,1,30.0,241,0,read_set_version_changed_at_gate,1,,1793347222633.0813,0,1,-55.0,60.0
+xair,2,60.0,242,0,precondition_failed: stop.b28 <= 1793347222621000,1,,1793347222674.7197,0,1,-55.0,60.0
+xair,2,0.0,243,0,precondition_failed: stop.b41 <= 1793347222651000,1,,1793347222765.6118,0,1,-55.0,60.0
+xair,2,60.0,244,0,precondition_failed: stop.b41 <= 1793347222737000,1,,1793347222790.8477,0,1,-55.0,60.0
+xair,1,20.0,245,0,read_set_version_changed_at_gate,1,,1793347222896.3342,0,1,-55.0,60.0
+xair,1,20.0,246,0,read_set_version_changed_at_gate,1,,1793347222968.4192,0,1,-55.0,60.0
+xair,1,30.0,247,0,read_set_version_changed_at_gate,1,,1793347223050.7861,0,1,-55.0,60.0
+xair,1,20.0,248,0,read_set_version_changed_at_gate,1,,1793347223116.1262,0,1,-55.0,60.0
+xair,1,0.0,249,0,precondition_failed: stop.b40 <= 1793347223044000,1,,1793347223174.4976,0,1,-55.0,60.0
+xair,2,60.0,250,0,precondition_failed: stop.b57 <= 1793347223145000,1,,1793347223198.7698,0,1,-55.0,60.0
+xair,0,,251,1,published_after_gate_recheck,,1793347223341.8945,,0,1,-55.0,60.0
+xair,2,20.0,252,0,precondition_failed: stop.b32 <= 1793347223266000,1,,1793347223360.0803,0,1,-55.0,60.0
+xair,0,,253,1,published_after_gate_recheck,,1793347223465.774,,0,1,-55.0,60.0
+xair,1,36.0,254,0,read_set_version_changed_at_gate,1,,1793347223521.3704,0,1,-55.0,60.0
+xair,1,20.0,255,0,read_set_version_changed_at_gate,1,,1793347223576.5654,0,1,-55.0,60.0
+xair,2,0.0,256,0,precondition_failed: stop.b42 <= 1793347223516000,1,,1793347223629.9468,0,1,-55.0,60.0
+xair,2,5.0,257,0,precondition_failed: stop.b52 <= 1793347223546000,1,,1793347223655.4626,0,1,-55.0,60.0
+xair,2,120.0,258,1,published_after_gate_recheck,1,1793347223841.083,1793347223693.4353,0,1,-55.0,60.0
+xair,1,20.0,259,0,read_set_version_changed_at_gate,1,,1793347223879.1768,0,1,-55.0,60.0
+xair,1,30.0,260,0,read_set_version_changed_at_gate,1,,1793347223968.5706,0,1,-55.0,60.0
+xair,1,40.0,261,0,read_set_version_changed_at_gate,1,,1793347224051.8376,0,1,-55.0,60.0
+xair,1,60.0,262,0,precondition_failed: stop.b27 <= 1793347223964000,1,,1793347224151.1343,0,1,-55.0,60.0
+xair,1,30.0,263,0,read_set_version_changed_at_gate,1,,1793347224202.5156,0,1,-55.0,60.0
+xair,2,60.0,264,0,precondition_failed: stop.b5 <= 1793347224200000,1,,1793347224253.771,0,1,-55.0,60.0
+xair,1,40.0,265,0,read_set_version_changed_at_gate,1,,1793347224386.9382,0,1,-55.0,60.0
+xair,1,20.0,266,0,read_set_version_changed_at_gate,1,,1793347224441.602,0,1,-55.0,60.0
+xair,2,120.0,267,1,published_after_gate_recheck,1,1793347224642.945,1793347224497.1714,0,1,-55.0,60.0
+xair,1,0.0,268,0,precondition_failed: stop.b54 <= 1793347224538000,1,,1793347224664.6575,0,1,-55.0,60.0
+xair,1,36.0,269,0,read_set_version_changed_at_gate,1,,1793347224728.7043,0,1,-55.0,60.0
+xair,1,50.0,270,1,published_after_gate_recheck,1,1793347224829.4158,1793347224835.546,0,1,-55.0,60.0
+xair,2,60.0,271,0,precondition_failed: stop.b33 <= 1793347224798000,1,,1793347224851.2551,0,1,-55.0,60.0
+xair,1,10.0,272,0,read_set_version_changed_at_gate,1,,1793347224950.0728,0,1,-55.0,60.0
+xair,2,5.0,273,0,precondition_failed: stop.b0 <= 1793347224904000,1,,1793347225012.8826,0,1,-55.0,60.0
+xair,1,60.0,274,1,published_after_gate_recheck,1,1793347225102.9084,1793347225109.225,0,1,-55.0,60.0
+xair,2,60.0,275,0,precondition_failed: stop.b60 <= 1793347225074000,1,,1793347225128.2805,0,1,-55.0,60.0
+xair,1,30.0,276,0,read_set_version_changed_at_gate,1,,1793347225261.5408,0,1,-55.0,60.0
+xair,1,40.0,277,0,read_set_version_changed_at_gate,1,,1793347225348.501,0,1,-55.0,60.0
+xair,2,120.0,278,1,published_after_gate_recheck,1,1793347225544.1692,1793347225392.1306,0,1,-55.0,60.0
+xair,2,5.0,279,0,precondition_failed: stop.b34 <= 1793347225456000,1,,1793347225564.6606,0,1,-55.0,60.0
+xair,2,120.0,280,1,published_after_gate_recheck,1,1793347225744.5972,1793347225597.7654,0,1,-55.0,60.0
+xair,1,0.0,281,0,precondition_failed: stop.b46 <= 1793347225638000,1,,1793347225763.9045,0,1,-55.0,60.0
+xair,1,40.0,282,0,read_set_version_changed_at_gate,1,,1793347225837.9294,0,1,-55.0,60.0
+xair,1,10.0,283,0,read_set_version_changed_at_gate,1,,1793347225877.6514,0,1,-55.0,60.0
+xair,1,50.0,284,1,published_after_gate_recheck,1,1793347226000.0022,1793347226004.8452,0,1,-55.0,60.0
+xair,1,40.0,285,0,read_set_version_changed_at_gate,1,,1793347226064.4517,0,1,-55.0,60.0
+xair,1,30.0,286,0,read_set_version_changed_at_gate,1,,1793347226130.1704,0,1,-55.0,60.0
+xair,1,50.0,287,1,published_after_gate_recheck,1,1793347226231.1443,1793347226236.2012,0,1,-55.0,60.0
+xair,2,120.0,288,1,published_after_gate_recheck,1,1793347226403.8245,1793347226254.5222,0,1,-55.0,60.0
+xair,2,5.0,289,0,precondition_failed: stop.b38 <= 1793347226316000,1,,1793347226424.448,0,1,-55.0,60.0
+xair,2,20.0,290,0,precondition_failed: stop.b24 <= 1793347226365000,1,,1793347226459.738,0,1,-55.0,60.0
+xair,2,20.0,291,0,precondition_failed: stop.b1 <= 1793347226423000,1,,1793347226516.1301,0,1,-55.0,60.0
+xair,1,30.0,292,0,read_set_version_changed_at_gate,1,,1793347226608.8315,0,1,-55.0,60.0
+xair,2,5.0,293,0,precondition_failed: stop.b50 <= 1793347226541000,1,,1793347226650.5996,0,1,-55.0,60.0
+xair,2,60.0,294,0,precondition_failed: stop.b50 <= 1793347226627000,1,,1793347226681.6724,0,1,-55.0,60.0
+xair,1,60.0,295,1,published_after_gate_recheck,1,1793347226827.1719,1793347226833.3215,0,1,-55.0,60.0
+xair,1,60.0,296,1,published_after_gate_recheck,1,1793347226909.6746,1793347226916.064,0,1,-55.0,60.0
+xair,2,0.0,297,0,precondition_failed: stop.b29 <= 1793347226820000,1,,1793347226934.3184,0,1,-55.0,60.0
+xair,1,0.0,298,0,precondition_failed: stop.b49 <= 1793347226840000,1,,1793347226967.5344,0,1,-55.0,60.0
+xair,1,10.0,299,0,read_set_version_changed_at_gate,1,,1793347227002.058,0,1,-55.0,60.0
+xair,1,40.0,300,0,read_set_version_changed_at_gate,1,,1793347227107.52,0,1,-55.0,60.0
+xair,1,30.0,301,0,read_set_version_changed_at_gate,1,,1793347227170.026,0,1,-55.0,60.0
+xair,2,120.0,302,1,published_after_gate_recheck,1,1793347227367.539,1793347227219.9326,0,1,-55.0,60.0
+xair,2,5.0,303,0,precondition_failed: stop.b15 <= 1793347227287000,1,,1793347227395.998,0,1,-55.0,60.0
+xair,2,5.0,304,0,precondition_failed: stop.b63 <= 1793347227328000,1,,1793347227437.0142,0,1,-55.0,60.0
+xair,1,0.0,305,0,precondition_failed: stop.b7 <= 1793347227353000,1,,1793347227482.3005,0,1,-55.0,60.0
+xair,1,20.0,306,0,read_set_version_changed_at_gate,1,,1793347227533.0896,0,1,-55.0,60.0
+xair,2,0.0,307,0,precondition_failed: stop.b52 <= 1793347227477000,1,,1793347227591.7598,0,1,-55.0,60.0
+xair,2,0.0,308,0,precondition_failed: stop.b31 <= 1793347227502000,1,,1793347227616.455,0,1,-55.0,60.0
+xair,2,60.0,309,0,precondition_failed: stop.b14 <= 1793347227589000,1,,1793347227643.4744,0,1,-55.0,60.0
+xair,1,30.0,310,0,read_set_version_changed_at_gate,1,,1793347227763.2708,0,1,-55.0,60.0
+xair,2,5.0,311,0,precondition_failed: stop.b61 <= 1793347227698000,1,,1793347227807.1519,0,1,-55.0,60.0
+xair,1,0.0,312,0,precondition_failed: stop.b8 <= 1793347227717000,1,,1793347227844.0093,0,1,-55.0,60.0
+xair,2,0.0,313,0,precondition_failed: stop.b35 <= 1793347227757000,1,,1793347227871.232,0,1,-55.0,60.0
+xair,1,20.0,314,0,read_set_version_changed_at_gate,1,,1793347227918.0515,0,1,-55.0,60.0
+xair,0,,315,1,published_after_gate_recheck,,1793347228027.5908,,0,1,-55.0,60.0
+xair,1,36.0,316,0,read_set_version_changed_at_gate,1,,1793347228086.5942,0,1,-55.0,60.0
+xair,1,60.0,317,1,published_after_gate_recheck,1,1793347228177.2102,1793347228186.7844,0,1,-55.0,60.0
+xair,1,60.0,318,1,published_after_gate_recheck,1,1793347228261.5525,1793347228269.2712,0,1,-55.0,60.0
+xair,1,40.0,319,0,read_set_version_changed_at_gate,1,,1793347228330.2188,0,1,-55.0,60.0
+xair,1,10.0,320,0,read_set_version_changed_at_gate,1,,1793347228371.6736,0,1,-55.0,60.0
+xair,2,120.0,321,1,published_after_gate_recheck,1,1793347228578.1567,1793347228432.349,0,1,-55.0,60.0
+xair,2,120.0,322,1,published_after_gate_recheck,1,1793347228739.3586,1793347228594.5935,0,1,-55.0,60.0
+xair,2,60.0,323,0,precondition_failed: stop.b16 <= 1793347228703000,1,,1793347228756.9963,0,1,-55.0,60.0
+xair,1,10.0,324,0,read_set_version_changed_at_gate,1,,1793347228857.5083,0,1,-55.0,60.0
+xair,2,5.0,325,0,precondition_failed: stop.b25 <= 1793347228819000,1,,1793347228928.0525,0,1,-55.0,60.0
+xair,1,40.0,326,0,read_set_version_changed_at_gate,1,,1793347229004.434,0,1,-55.0,60.0
+xair,1,50.0,327,1,published_after_gate_recheck,1,1793347229102.3474,1793347229110.601,0,1,-55.0,60.0
+xair,1,0.0,328,0,precondition_failed: stop.b5 <= 1793347229004000,1,,1793347229128.458,0,1,-55.0,60.0
+xair,1,40.0,329,0,read_set_version_changed_at_gate,1,,1793347229196.6052,0,1,-55.0,60.0
+xair,1,40.0,330,0,read_set_version_changed_at_gate,1,,1793347229274.4363,0,1,-55.0,60.0
+xair,1,10.0,331,0,read_set_version_changed_at_gate,1,,1793347229318.3965,0,1,-55.0,60.0
+xair,2,0.0,332,0,precondition_failed: stop.b12 <= 1793347229268000,1,,1793347229381.901,0,1,-55.0,60.0
+xair,0,,333,1,published_after_gate_recheck,,1793347229460.9993,,0,1,-55.0,60.0
+xair,1,30.0,334,0,read_set_version_changed_at_gate,1,,1793347229507.4602,0,1,-55.0,60.0
+xair,2,60.0,335,0,precondition_failed: stop.b28 <= 1793347229502000,1,,1793347229555.476,0,1,-55.0,60.0
+xair,1,36.0,336,0,read_set_version_changed_at_gate,1,,1793347229685.3518,0,1,-55.0,60.0
+xair,2,20.0,337,0,precondition_failed: stop.b27 <= 1793347229627000,1,,1793347229721.8909,0,1,-55.0,60.0
+xair,1,10.0,338,0,read_set_version_changed_at_gate,1,,1793347229776.7104,0,1,-55.0,60.0
+xair,0,,339,1,published_after_gate_recheck,,1793347229904.1707,,0,1,-55.0,60.0
+xair,1,50.0,340,0,read_set_version_changed_at_gate,1,,1793347229996.6782,0,1,-55.0,60.0
+xair,0,,341,1,published_after_gate_recheck,,1793347230074.5715,,0,1,-55.0,60.0
+xair,1,30.0,342,0,read_set_version_changed_at_gate,1,,1793347230127.4111,0,1,-55.0,60.0
+xair,2,60.0,343,0,precondition_failed: stop.b6 <= 1793347230121000,1,,1793347230175.6023,0,1,-55.0,60.0
+xair,1,20.0,344,0,read_set_version_changed_at_gate,1,,1793347230290.7021,0,1,-55.0,60.0
+xair,1,50.0,345,1,published_after_gate_recheck,1,1793347230399.9524,1793347230406.7026,0,1,-55.0,60.0
+xair,2,60.0,346,0,precondition_failed: stop.b39 <= 1793347230369000,1,,1793347230423.3726,0,1,-55.0,60.0
+xair,1,50.0,347,1,published_after_gate_recheck,1,1793347230571.8264,1793347230576.1787,0,1,-55.0,60.0
+xair,1,60.0,348,1,published_after_gate_recheck,1,1793347230647.7368,1793347230658.074,0,1,-55.0,60.0
+xair,1,60.0,349,1,published_after_gate_recheck,1,1793347230733.9805,1793347230743.582,0,1,-55.0,60.0
+xair,1,40.0,350,0,read_set_version_changed_at_gate,1,,1793347230803.309,0,1,-55.0,60.0
+xair,2,120.0,351,1,published_after_gate_recheck,1,1793347230981.2715,1793347230834.098,0,1,-55.0,60.0
+xair,1,60.0,352,1,published_after_gate_recheck,1,1793347231059.6846,1793347231066.2034,0,1,-55.0,60.0
+xair,2,0.0,353,0,precondition_failed: stop.b58 <= 1793347230969000,1,,1793347231083.3105,0,1,-55.0,60.0
+xair,2,120.0,354,1,published_after_gate_recheck,1,1793347231257.754,1793347231110.1665,0,1,-55.0,60.0
+xair,1,40.0,355,0,read_set_version_changed_at_gate,1,,1793347231317.7908,0,1,-55.0,60.0
+xair,2,60.0,356,0,precondition_failed: stop.b11 <= 1793347231301000,1,,1793347231355.2368,0,1,-55.0,60.0
+xair,1,60.0,357,1,published_after_gate_recheck,1,1793347231501.8188,1793347231508.9736,0,1,-55.0,60.0
+xair,1,0.0,358,0,precondition_failed: stop.b17 <= 1793347231404000,1,,1793347231533.6436,0,1,-55.0,60.0
+xair,2,60.0,359,0,precondition_failed: stop.b11 <= 1793347231511000,1,,1793347231564.6802,0,1,-55.0,60.0
+xair,1,20.0,360,0,read_set_version_changed_at_gate,1,,1793347231680.2788,0,1,-55.0,60.0
+xair,2,120.0,361,1,published_after_gate_recheck,1,1793347231877.9058,1793347231732.609,0,1,-55.0,60.0
+xair,2,120.0,362,1,published_after_gate_recheck,1,1793347232042.0813,1793347231894.715,0,1,-55.0,60.0
+xair,1,36.0,363,0,read_set_version_changed_at_gate,1,,1793347232096.1775,0,1,-55.0,60.0
+xair,1,20.0,364,0,read_set_version_changed_at_gate,1,,1793347232154.8662,0,1,-55.0,60.0
+xair,2,60.0,365,0,precondition_failed: stop.b1 <= 1793347232156000,1,,1793347232210.5369,0,1,-55.0,60.0
+xair,1,60.0,366,1,published_after_gate_recheck,1,1793347232353.8853,1793347232360.4385,0,1,-55.0,60.0
+xair,1,20.0,367,0,read_set_version_changed_at_gate,1,,1793347232397.9856,0,1,-55.0,60.0
+xair,1,10.0,368,0,read_set_version_changed_at_gate,1,,1793347232469.526,0,1,-55.0,60.0
+xair,2,0.0,369,0,precondition_failed: stop.b55 <= 1793347232425000,1,,1793347232538.7366,0,1,-55.0,60.0
+xair,2,20.0,370,0,precondition_failed: stop.b2 <= 1793347232475000,1,,1793347232568.9873,0,1,-55.0,60.0
+xair,1,0.0,371,0,precondition_failed: stop.b52 <= 1793347232493000,1,,1793347232620.6707,0,1,-55.0,60.0
+xair,1,40.0,372,0,read_set_version_changed_at_gate,1,,1793347232692.3184,0,1,-55.0,60.0
+xair,1,50.0,373,0,read_set_version_changed_at_gate,1,,1793347232798.0547,0,1,-55.0,60.0
+xair,1,10.0,374,0,read_set_version_changed_at_gate,1,,1793347232827.8904,0,1,-55.0,60.0
+xair,1,20.0,375,0,read_set_version_changed_at_gate,1,,1793347232915.939,0,1,-55.0,60.0
+xair,0,,376,1,published_after_gate_recheck,,1793347233036.5747,,0,1,-55.0,60.0
+xair,2,60.0,377,0,precondition_failed: stop.b44 <= 1793347233001000,1,,1793347233055.0254,0,1,-55.0,60.0
+xair,1,30.0,378,0,read_set_version_changed_at_gate,1,,1793347233174.1711,0,1,-55.0,60.0
+xair,2,120.0,379,1,published_after_gate_recheck,1,1793347233360.3518,1793347233216.4167,0,1,-55.0,60.0
+xair,2,120.0,380,1,published_after_gate_recheck,1,1793347233527.5908,1793347233376.7397,0,1,-55.0,60.0
+xair,1,40.0,381,0,read_set_version_changed_at_gate,1,,1793347233586.0737,0,1,-55.0,60.0
+xair,2,5.0,382,0,precondition_failed: stop.b57 <= 1793347233509000,1,,1793347233618.4167,0,1,-55.0,60.0
+xair,1,20.0,383,0,read_set_version_changed_at_gate,1,,1793347233669.15,0,1,-55.0,60.0
+xair,2,120.0,384,1,published_after_gate_recheck,1,1793347233873.362,1793347233722.4985,0,1,-55.0,60.0
+xair,0,,385,1,published_after_gate_recheck,,1793347233955.7498,,0,1,-55.0,60.0
+xair,2,5.0,386,0,precondition_failed: stop.b24 <= 1793347233866000,1,,1793347233975.2927,0,1,-55.0,60.0
+xair,1,0.0,387,0,precondition_failed: stop.b53 <= 1793347233886000,1,,1793347234015.3643,0,1,-55.0,60.0
+xair,1,40.0,388,0,read_set_version_changed_at_gate,1,,1793347234087.5154,0,1,-55.0,60.0
+xair,1,60.0,389,1,published_after_gate_recheck,1,1793347234182.2979,1793347234186.4482,0,1,-55.0,60.0
+xair,2,20.0,390,0,precondition_failed: stop.b14 <= 1793347234109000,1,,1793347234203.041,0,1,-55.0,60.0
+xair,1,0.0,391,0,precondition_failed: stop.b2 <= 1793347234130000,1,,1793347234257.0972,0,1,-55.0,60.0
+xair,2,60.0,392,0,precondition_failed: stop.b33 <= 1793347234230000,1,,1793347234283.9949,0,1,-55.0,60.0
+xair,1,60.0,393,1,published_after_gate_recheck,1,1793347234435.7266,1793347234443.5457,0,1,-55.0,60.0
+xair,1,60.0,394,1,published_after_gate_recheck,1,1793347234528.5295,1793347234534.1526,0,1,-55.0,60.0
+xair,2,5.0,395,0,precondition_failed: stop.b11 <= 1793347234443000,1,,1793347234552.2212,0,1,-55.0,60.0
+xair,1,10.0,396,0,read_set_version_changed_at_gate,1,,1793347234593.9226,0,1,-55.0,60.0
+xair,2,20.0,397,0,precondition_failed: stop.b56 <= 1793347234568000,1,,1793347234662.407,0,1,-55.0,60.0
+xair,2,0.0,398,0,precondition_failed: stop.b19 <= 1793347234593000,1,,1793347234707.6836,0,1,-55.0,60.0
+xair,2,5.0,399,0,precondition_failed: stop.b25 <= 1793347234624000,1,,1793347234733.0918,0,1,-55.0,60.0
+xair,2,60.0,400,0,precondition_failed: stop.b17 <= 1793347234709000,1,,1793347234763.0835,0,1,-55.0,60.0
+xair,1,10.0,401,0,read_set_version_changed_at_gate,1,,1793347234861.857,0,1,-55.0,60.0
+xair,0,,402,1,published_after_gate_recheck,,1793347234994.471,,0,1,-55.0,60.0
+xair,1,36.0,403,0,read_set_version_changed_at_gate,1,,1793347235053.0627,0,1,-55.0,60.0
+xair,1,36.0,404,0,read_set_version_changed_at_gate,1,,1793347235144.296,0,1,-55.0,60.0
+xair,1,30.0,405,0,read_set_version_changed_at_gate,1,,1793347235214.6812,0,1,-55.0,60.0
+xair,1,50.0,406,1,published_after_gate_recheck,1,1793347235312.4749,1793347235316.8655,0,1,-55.0,60.0
+xair,1,50.0,407,1,published_after_gate_recheck,1,1793347235389.0874,1793347235393.8389,0,1,-55.0,60.0
+xair,1,36.0,408,0,read_set_version_changed_at_gate,1,,1793347235447.392,0,1,-55.0,60.0
+xair,1,40.0,409,0,read_set_version_changed_at_gate,1,,1793347235523.8052,0,1,-55.0,60.0
+xair,2,0.0,410,0,precondition_failed: stop.b15 <= 1793347235442000,1,,1793347235556.862,0,1,-55.0,60.0
+xair,1,36.0,411,0,read_set_version_changed_at_gate,1,,1793347235618.058,0,1,-55.0,60.0
+xair,1,10.0,412,0,read_set_version_changed_at_gate,1,,1793347235664.4324,0,1,-55.0,60.0
+xair,1,10.0,413,0,read_set_version_changed_at_gate,1,,1793347235742.8389,0,1,-55.0,60.0
+xair,1,30.0,414,0,read_set_version_changed_at_gate,1,,1793347235836.7844,0,1,-55.0,60.0
+xair,1,36.0,415,0,read_set_version_changed_at_gate,1,,1793347235919.047,0,1,-55.0,60.0
+xair,1,36.0,416,0,read_set_version_changed_at_gate,1,,1793347235997.0417,0,1,-55.0,60.0
+xair,2,20.0,417,0,precondition_failed: stop.b1 <= 1793347235946000,1,,1793347236040.6438,0,1,-55.0,60.0
+xair,0,,418,1,published_after_gate_recheck,,1793347236150.175,,0,1,-55.0,60.0
+xair,2,20.0,419,0,precondition_failed: stop.b26 <= 1793347236074000,1,,1793347236167.8396,0,1,-55.0,60.0
+xair_atomic,1,60.0,0,1,authorization_committed,1,1793347236274.0122,1793347236290.108,0,1,-55.0,60.0
+xair_atomic,2,0.0,1,0,precondition_failed: stop.b16 <= 1793347236197000,1,,1793347236310.7478,0,1,-55.0,60.0
+xair_atomic,1,36.0,2,0,read_set_version_changed_at_commit,1,,1793347236375.9722,0,1,-55.0,60.0
+xair_atomic,1,0.0,3,0,precondition_failed: stop.b36 <= 1793347236282000,1,,1793347236408.9658,0,1,-55.0,60.0
+xair_atomic,2,20.0,4,0,precondition_failed: stop.b38 <= 1793347236341000,1,,1793347236434.5017,0,1,-55.0,60.0
+xair_atomic,1,20.0,5,0,read_set_version_changed_at_commit,1,,1793347236504.1052,0,1,-55.0,60.0
+xair_atomic,0,,6,1,authorization_committed,,1793347236598.033,,0,1,-55.0,60.0
+xair_atomic,1,20.0,7,0,read_set_version_changed_at_commit,1,,1793347236636.2258,0,1,-55.0,60.0
+xair_atomic,2,0.0,8,0,precondition_failed: stop.b60 <= 1793347236568000,1,,1793347236682.1707,0,1,-55.0,60.0
+xair_atomic,1,50.0,9,1,authorization_committed,1,1793347236754.0146,1793347236761.6743,0,1,-55.0,60.0
+xair_atomic,1,20.0,10,0,read_set_version_changed_at_commit,1,,1793347236800.2783,0,1,-55.0,60.0
+xair_atomic,1,40.0,11,0,read_set_version_changed_at_commit,1,,1793347236886.3135,0,1,-55.0,60.0
+xair_atomic,2,0.0,12,0,precondition_failed: stop.b23 <= 1793347236799000,1,,1793347236913.1553,0,1,-55.0,60.0
+xair_atomic,1,40.0,13,0,read_set_version_changed_at_commit,1,,1793347236982.037,0,1,-55.0,60.0
+xair_atomic,1,30.0,14,0,read_set_version_changed_at_commit,1,,1793347237039.775,0,1,-55.0,60.0
+xair_atomic,2,5.0,15,0,precondition_failed: stop.b56 <= 1793347236964000,1,,1793347237072.9053,0,1,-55.0,60.0
+xair_atomic,1,30.0,16,0,read_set_version_changed_at_commit,1,,1793347237141.248,0,1,-55.0,60.0
+xair_atomic,1,20.0,17,0,read_set_version_changed_at_commit,1,,1793347237197.5205,0,1,-55.0,60.0
+xair_atomic,0,,18,1,authorization_committed,,1793347237288.5896,,0,1,-55.0,60.0
+xair_atomic,2,60.0,19,0,precondition_failed: stop.b35 <= 1793347237258000,1,,1793347237311.9597,0,1,-55.0,60.0
+xair_atomic,1,50.0,20,0,read_set_version_changed_at_commit,1,,1793347237467.2153,0,1,-55.0,60.0
+xair_atomic,1,36.0,21,0,read_set_version_changed_at_commit,1,,1793347237524.254,0,1,-55.0,60.0
+xair_atomic,1,50.0,22,0,read_set_version_changed_at_commit,1,,1793347237609.2588,0,1,-55.0,60.0
+xair_atomic,1,20.0,23,0,read_set_version_changed_at_commit,1,,1793347237649.364,0,1,-55.0,60.0
+xair_atomic,2,60.0,24,0,precondition_failed: stop.b61 <= 1793347237638000,1,,1793347237691.6548,0,1,-55.0,60.0
+xair_atomic,1,0.0,25,0,precondition_failed: stop.b18 <= 1793347237660000,1,,1793347237788.8115,0,1,-55.0,60.0
+xair_atomic,2,20.0,26,0,precondition_failed: stop.b6 <= 1793347237719000,1,,1793347237813.359,0,1,-55.0,60.0
+xair_atomic,2,0.0,27,0,precondition_failed: stop.b33 <= 1793347237746000,1,,1793347237860.3296,0,1,-55.0,60.0
+xair_atomic,1,10.0,28,0,read_set_version_changed_at_commit,1,,1793347237895.0815,0,1,-55.0,60.0
+xair_atomic,2,20.0,29,0,precondition_failed: stop.b37 <= 1793347237856000,1,,1793347237950.589,0,1,-55.0,60.0
+xair_atomic,1,10.0,30,0,precondition_failed: stop.b37 <= 1793347237873000,1,,1793347238006.559,0,1,-55.0,60.0
+xair_atomic,2,60.0,31,0,precondition_failed: stop.b57 <= 1793347237969000,1,,1793347238022.3887,0,1,-55.0,60.0
+xair_atomic,2,120.0,32,1,authorization_committed,1,1793347238252.3582,1793347238112.4048,0,1,-55.0,60.0
+xair_atomic,1,30.0,33,0,read_set_version_changed_at_commit,1,,1793347238299.1096,0,1,-55.0,60.0
+xair_atomic,1,36.0,34,0,read_set_version_changed_at_commit,1,,1793347238367.3982,0,1,-55.0,60.0
+xair_atomic,1,20.0,35,0,read_set_version_changed_at_commit,1,,1793347238413.5579,0,1,-55.0,60.0
+xair_atomic,1,10.0,36,0,read_set_version_changed_at_commit,1,,1793347238465.794,0,1,-55.0,60.0
+xair_atomic,2,0.0,37,0,precondition_failed: stop.b63 <= 1793347238403000,1,,1793347238517.2183,0,1,-55.0,60.0
+xair_atomic,1,30.0,38,0,read_set_version_changed_at_commit,1,,1793347238570.9937,0,1,-55.0,60.0
+xair_atomic,1,60.0,39,1,authorization_committed,1,1793347238648.7986,1793347238663.179,0,1,-55.0,60.0
+xair_atomic,2,20.0,40,0,precondition_failed: stop.b63 <= 1793347238585000,1,,1793347238679.3652,0,1,-55.0,60.0
+xair_atomic,2,0.0,41,0,precondition_failed: stop.b6 <= 1793347238611000,1,,1793347238725.1736,0,1,-55.0,60.0
+xair_atomic,1,50.0,42,1,authorization_committed,1,1793347238798.2593,1793347238805.2441,0,1,-55.0,60.0
+xair_atomic,1,10.0,43,0,read_set_version_changed_at_commit,1,,1793347238830.724,0,1,-55.0,60.0
+xair_atomic,2,120.0,44,1,authorization_committed,1,1793347239017.7578,1793347238881.332,0,1,-55.0,60.0
+xair_atomic,1,36.0,45,0,read_set_version_changed_at_commit,1,,1793347239070.5413,0,1,-55.0,60.0
+xair_atomic,1,0.0,46,0,precondition_failed: stop.b7 <= 1793347238974000,1,,1793347239098.8313,0,1,-55.0,60.0
+xair_atomic,1,0.0,47,0,precondition_failed: stop.b13 <= 1793347238998000,1,,1793347239122.0835,0,1,-55.0,60.0
+xair_atomic,2,60.0,48,0,precondition_failed: stop.b8 <= 1793347239090000,1,,1793347239144.6355,0,1,-55.0,60.0
+xair_atomic,1,30.0,49,0,read_set_version_changed_at_commit,1,,1793347239259.8008,0,1,-55.0,60.0
+xair_atomic,1,60.0,50,1,authorization_committed,1,1793347239339.5469,1793347239352.5327,0,1,-55.0,60.0
+xair_atomic,1,40.0,51,0,read_set_version_changed_at_commit,1,,1793347239410.1206,0,1,-55.0,60.0
+xair_atomic,2,60.0,52,0,precondition_failed: stop.b4 <= 1793347239376000,1,,1793347239430.018,0,1,-55.0,60.0
+xair_atomic,1,50.0,53,1,authorization_committed,1,1793347239562.5938,1793347239569.9182,0,1,-55.0,60.0
+xair_atomic,2,20.0,54,0,precondition_failed: stop.b41 <= 1793347239492000,1,,1793347239585.9883,0,1,-55.0,60.0
+xair_atomic,2,120.0,55,1,authorization_committed,1,1793347239768.2805,1793347239630.6218,0,1,-55.0,60.0
+xair_atomic,2,120.0,56,1,authorization_committed,1,1793347239925.1135,1793347239784.6785,0,1,-55.0,60.0
+xair_atomic,1,40.0,57,0,read_set_version_changed_at_commit,1,,1793347239983.6543,0,1,-55.0,60.0
+xair_atomic,1,20.0,58,0,read_set_version_changed_at_commit,1,,1793347240026.7668,0,1,-55.0,60.0
+xair_atomic,0,,59,1,authorization_committed,,1793347240163.8225,,0,1,-55.0,60.0
+xair_atomic,1,0.0,60,0,precondition_failed: stop.b10 <= 1793347240061000,1,,1793347240193.603,0,1,-55.0,60.0
+xair_atomic,2,5.0,61,0,precondition_failed: stop.b29 <= 1793347240125000,1,,1793347240233.2468,0,1,-55.0,60.0
+xair_atomic,2,0.0,62,0,precondition_failed: stop.b49 <= 1793347240160000,1,,1793347240274.0068,0,1,-55.0,60.0
+xair_atomic,1,10.0,63,0,read_set_version_changed_at_commit,1,,1793347240317.398,0,1,-55.0,60.0
+xair_atomic,1,36.0,64,0,read_set_version_changed_at_commit,1,,1793347240412.1768,0,1,-55.0,60.0
+xair_atomic,2,5.0,65,0,precondition_failed: stop.b11 <= 1793347240329000,1,,1793347240438.7148,0,1,-55.0,60.0
+xair_atomic,2,120.0,66,1,authorization_committed,1,1793347240614.9878,1793347240470.0474,0,1,-55.0,60.0
+xair_atomic,1,40.0,67,0,read_set_version_changed_at_commit,1,,1793347240682.18,0,1,-55.0,60.0
+xair_atomic,1,40.0,68,0,read_set_version_changed_at_commit,1,,1793347240757.2212,0,1,-55.0,60.0
+xair_atomic,1,30.0,69,0,read_set_version_changed_at_commit,1,,1793347240814.726,0,1,-55.0,60.0
+xair_atomic,1,60.0,70,1,authorization_committed,1,1793347240894.6565,1793347240908.5125,0,1,-55.0,60.0
+xair_atomic,0,,71,1,authorization_committed,,1793347240974.6692,,0,1,-55.0,60.0
+xair_atomic,1,60.0,72,1,authorization_committed,1,1793347241037.9517,1793347241051.4592,0,1,-55.0,60.0
+xair_atomic,1,40.0,73,0,read_set_version_changed_at_commit,1,,1793347241109.9956,0,1,-55.0,60.0
+xair_atomic,0,,74,1,authorization_committed,,1793347241180.8743,,0,1,-55.0,60.0
+xair_atomic,2,20.0,75,0,precondition_failed: stop.b23 <= 1793347241104000,1,,1793347241198.248,0,1,-55.0,60.0
+xair_atomic,2,5.0,76,0,precondition_failed: stop.b7 <= 1793347241137000,1,,1793347241245.6643,0,1,-55.0,60.0
+xair_atomic,1,50.0,77,1,authorization_committed,1,1793347241323.3555,1793347241330.8303,0,1,-55.0,60.0
+xair_atomic,2,0.0,78,0,precondition_failed: stop.b52 <= 1793347241234000,1,,1793347241348.7095,0,1,-55.0,60.0
+xair_atomic,2,120.0,79,1,authorization_committed,1,1793347241516.656,1793347241377.4797,0,1,-55.0,60.0
+xair_atomic,1,60.0,80,1,authorization_committed,1,1793347241581.0754,1793347241596.8489,0,1,-55.0,60.0
+xair_atomic,1,30.0,81,0,read_set_version_changed_at_commit,1,,1793347241646.8083,0,1,-55.0,60.0
+xair_atomic,1,50.0,82,1,authorization_committed,1,1793347241732.223,1793347241741.7292,0,1,-55.0,60.0
+xair_atomic,0,,83,1,authorization_committed,,1793347241808.973,,0,1,-55.0,60.0
+xair_atomic,2,20.0,84,0,precondition_failed: stop.b58 <= 1793347241732000,1,,1793347241826.3992,0,1,-55.0,60.0
+xair_atomic,1,10.0,85,0,read_set_version_changed_at_commit,1,,1793347241884.047,0,1,-55.0,60.0
+xair_atomic,1,0.0,86,0,precondition_failed: stop.b30 <= 1793347241815000,1,,1793347241940.4104,0,1,-55.0,60.0
+xair_atomic,0,,87,0,precondition_failed: stop.b25 <= 1793347241845000,,,,0,1,-55.0,60.0
+xair_atomic,0,,88,1,authorization_committed,,1793347242033.0752,,0,1,-55.0,60.0
+xair_atomic,0,,89,1,authorization_committed,,1793347242096.4917,,0,1,-55.0,60.0
+xair_atomic,2,5.0,90,0,precondition_failed: stop.b8 <= 1793347242004000,1,,1793347242113.396,0,1,-55.0,60.0
+xair_atomic,1,0.0,91,0,precondition_failed: stop.b5 <= 1793347242020000,1,,1793347242147.7166,0,1,-55.0,60.0
+xair_atomic,0,,92,1,authorization_committed,,1793347242225.6406,,0,1,-55.0,60.0
+xair_atomic,1,50.0,93,1,authorization_committed,1,1793347242292.0278,1793347242299.9614,0,1,-55.0,60.0
+xair_atomic,1,40.0,94,0,read_set_version_changed_at_commit,1,,1793347242359.931,0,1,-55.0,60.0
+xair_atomic,1,36.0,95,0,read_set_version_changed_at_commit,1,,1793347242421.13,0,1,-55.0,60.0
+xair_atomic,2,120.0,96,1,authorization_committed,1,1793347242590.7803,1793347242446.333,0,1,-55.0,60.0
+xair_atomic,0,,97,1,authorization_committed,,1793347242659.317,,0,1,-55.0,60.0
+xair_atomic,2,20.0,98,0,precondition_failed: stop.b44 <= 1793347242583000,1,,1793347242677.321,0,1,-55.0,60.0
+xair_atomic,2,60.0,99,0,precondition_failed: stop.b0 <= 1793347242674000,1,,1793347242727.7427,0,1,-55.0,60.0
+xair_atomic,1,20.0,100,0,read_set_version_changed_at_commit,1,,1793347242840.2012,0,1,-55.0,60.0
+xair_atomic,0,,101,1,authorization_committed,,1793347242933.0293,,0,1,-55.0,60.0
+xair_atomic,2,5.0,102,0,precondition_failed: stop.b30 <= 1793347242843000,1,,1793347242952.3538,0,1,-55.0,60.0
+xair_atomic,2,0.0,103,0,precondition_failed: stop.b39 <= 1793347242870000,1,,1793347242984.292,0,1,-55.0,60.0
+xair_atomic,2,60.0,104,0,precondition_failed: stop.b32 <= 1793347242954000,1,,1793347243008.3538,0,1,-55.0,60.0
+xair_atomic,1,50.0,105,1,authorization_committed,1,1793347243146.7573,1793347243158.947,0,1,-55.0,60.0
+xair_atomic,2,5.0,106,0,precondition_failed: stop.b33 <= 1793347243068000,1,,1793347243177.2695,0,1,-55.0,60.0
+xair_atomic,1,30.0,107,0,read_set_version_changed_at_commit,1,,1793347243242.2947,0,1,-55.0,60.0
+xair_atomic,1,40.0,108,0,read_set_version_changed_at_commit,1,,1793347243320.4048,0,1,-55.0,60.0
+xair_atomic,1,50.0,109,1,authorization_committed,1,1793347243394.324,1793347243406.465,0,1,-55.0,60.0
+xair_atomic,2,20.0,110,0,precondition_failed: stop.b52 <= 1793347243331000,1,,1793347243424.2373,0,1,-55.0,60.0
+xair_atomic,1,36.0,111,0,read_set_version_changed_at_commit,1,,1793347243511.411,0,1,-55.0,60.0
+xair_atomic,1,60.0,112,1,authorization_committed,1,1793347243592.546,1793347243609.5603,0,1,-55.0,60.0
+xair_atomic,2,120.0,113,1,authorization_committed,1,1793347243773.1597,1793347243632.741,0,1,-55.0,60.0
+xair_atomic,1,10.0,114,0,read_set_version_changed_at_commit,1,,1793347243805.3945,0,1,-55.0,60.0
+xair_atomic,2,20.0,115,0,precondition_failed: stop.b38 <= 1793347243764000,1,,1793347243858.2214,0,1,-55.0,60.0
+xair_atomic,1,20.0,116,0,read_set_version_changed_at_commit,1,,1793347243935.9106,0,1,-55.0,60.0
+xair_atomic,1,10.0,117,0,read_set_version_changed_at_commit,1,,1793347243992.999,0,1,-55.0,60.0
+xair_atomic,0,,118,1,authorization_committed,,1793347244100.1438,,0,1,-55.0,60.0
+xair_atomic,2,60.0,119,0,precondition_failed: stop.b40 <= 1793347244072000,1,,1793347244125.7651,0,1,-55.0,60.0
+xair_atomic,2,20.0,120,0,precondition_failed: stop.b7 <= 1793347244128000,1,,1793347244221.452,0,1,-55.0,60.0
+xair_atomic,1,30.0,121,0,read_set_version_changed_at_commit,1,,1793347244301.2107,0,1,-55.0,60.0
+xair_atomic,2,0.0,122,0,precondition_failed: stop.b33 <= 1793347244222000,1,,1793347244336.5322,0,1,-55.0,60.0
+xair_atomic,1,10.0,123,0,read_set_version_changed_at_commit,1,,1793347244375.1653,0,1,-55.0,60.0
+xair_atomic,2,20.0,124,0,precondition_failed: stop.b1 <= 1793347244338000,1,,1793347244431.708,0,1,-55.0,60.0
+xair_atomic,1,30.0,125,0,read_set_version_changed_at_commit,1,,1793347244510.1316,0,1,-55.0,60.0
+xair_atomic,2,60.0,126,0,precondition_failed: stop.b23 <= 1793347244488000,1,,1793347244542.2927,0,1,-55.0,60.0
+xair_atomic,1,36.0,127,0,read_set_version_changed_at_commit,1,,1793347244665.161,0,1,-55.0,60.0
+xair_atomic,1,0.0,128,0,precondition_failed: stop.b18 <= 1793347244568000,1,,1793347244703.1738,0,1,-55.0,60.0
+xair_atomic,2,20.0,129,0,precondition_failed: stop.b21 <= 1793347244641000,1,,1793347244732.5847,0,1,-55.0,60.0
+xair_atomic,2,5.0,130,0,precondition_failed: stop.b19 <= 1793347244685000,1,,1793347244794.2256,0,1,-55.0,60.0
+xair_atomic,2,120.0,131,1,authorization_committed,1,1793347244983.9272,1793347244837.8792,0,1,-55.0,60.0
+xair_atomic,1,0.0,132,0,precondition_failed: stop.b56 <= 1793347244881000,1,,1793347245009.779,0,1,-55.0,60.0
+xair_atomic,1,0.0,133,0,precondition_failed: stop.b4 <= 1793347244918000,1,,1793347245048.3174,0,1,-55.0,60.0
+xair_atomic,1,30.0,134,0,read_set_version_changed_at_commit,1,,1793347245108.3416,0,1,-55.0,60.0
+xair_atomic,1,36.0,135,0,read_set_version_changed_at_commit,1,,1793347245179.892,0,1,-55.0,60.0
+xair_atomic,1,0.0,136,0,precondition_failed: stop.b17 <= 1793347245083000,1,,1793347245211.0972,0,1,-55.0,60.0
+xair_atomic,2,20.0,137,0,precondition_failed: stop.b2 <= 1793347245148000,1,,1793347245242.498,0,1,-55.0,60.0
+xair_atomic,2,0.0,138,0,precondition_failed: stop.b49 <= 1793347245178000,1,,1793347245292.5237,0,1,-55.0,60.0
+xair_atomic,1,20.0,139,0,read_set_version_changed_at_commit,1,,1793347245344.4082,0,1,-55.0,60.0
+xair_atomic,1,30.0,140,0,read_set_version_changed_at_commit,1,,1793347245417.4832,0,1,-55.0,60.0
+xair_atomic,1,20.0,141,0,read_set_version_changed_at_commit,1,,1793347245470.8958,0,1,-55.0,60.0
+xair_atomic,1,50.0,142,1,authorization_committed,1,1793347245564.6692,1793347245575.534,0,1,-55.0,60.0
+xair_atomic,1,30.0,143,0,read_set_version_changed_at_commit,1,,1793347245625.903,0,1,-55.0,60.0
+xair_atomic,2,5.0,144,0,precondition_failed: stop.b4 <= 1793347245562000,1,,1793347245671.1304,0,1,-55.0,60.0
+xair_atomic,1,20.0,145,0,read_set_version_changed_at_commit,1,,1793347245726.3928,0,1,-55.0,60.0
+xair_atomic,2,20.0,146,0,precondition_failed: stop.b33 <= 1793347245679000,1,,1793347245773.266,0,1,-55.0,60.0
+xair_atomic,1,0.0,147,0,precondition_failed: stop.b62 <= 1793347245705000,1,,1793347245833.9692,0,1,-55.0,60.0
+xair_atomic,1,50.0,148,1,authorization_committed,1,1793347245912.8032,1793347245921.4514,0,1,-55.0,60.0
+xair_atomic,1,10.0,149,0,read_set_version_changed_at_commit,1,,1793347245948.602,0,1,-55.0,60.0
+xair_atomic,1,50.0,150,1,authorization_committed,1,1793347246052.308,1793347246060.7896,0,1,-55.0,60.0
+xair_atomic,2,120.0,151,1,authorization_committed,1,1793347246217.2607,1793347246076.7996,0,1,-55.0,60.0
+xair_atomic,1,40.0,152,0,read_set_version_changed_at_commit,1,,1793347246277.2043,0,1,-55.0,60.0
+xair_atomic,1,60.0,153,1,authorization_committed,1,1793347246348.5745,1793347246361.1208,0,1,-55.0,60.0
+xair_atomic,2,5.0,154,0,precondition_failed: stop.b14 <= 1793347246268000,1,,1793347246377.575,0,1,-55.0,60.0
+xair_atomic,0,,155,1,authorization_committed,,1793347246462.346,,0,1,-55.0,60.0
+xair_atomic,2,20.0,156,0,precondition_failed: stop.b42 <= 1793347246385000,1,,1793347246479.6194,0,1,-55.0,60.0
+xair_atomic,1,36.0,157,0,read_set_version_changed_at_commit,1,,1793347246564.0195,0,1,-55.0,60.0
+xair_atomic,2,0.0,158,0,precondition_failed: stop.b41 <= 1793347246481000,1,,1793347246594.9229,0,1,-55.0,60.0
+xair_atomic,2,60.0,159,0,precondition_failed: stop.b5 <= 1793347246570000,1,,1793347246624.2322,0,1,-55.0,60.0
+xair_atomic,2,120.0,160,1,authorization_committed,1,1793347246856.529,1793347246714.6753,0,1,-55.0,60.0
+xair_atomic,1,50.0,161,1,authorization_committed,1,1793347246922.482,1793347246932.0178,0,1,-55.0,60.0
+xair_atomic,0,,162,1,authorization_committed,,1793347247001.8923,,0,1,-55.0,60.0
+xair_atomic,2,5.0,163,0,precondition_failed: stop.b6 <= 1793347246914000,1,,1793347247023.173,0,1,-55.0,60.0
+xair_atomic,1,60.0,164,1,authorization_committed,1,1793347247110.6707,1793347247119.7554,0,1,-55.0,60.0
+xair_atomic,2,0.0,165,0,precondition_failed: stop.b13 <= 1793347247021000,1,,1793347247135.8076,0,1,-55.0,60.0
+xair_atomic,2,20.0,166,0,precondition_failed: stop.b24 <= 1793347247072000,1,,1793347247165.9094,0,1,-55.0,60.0
+xair_atomic,1,50.0,167,1,authorization_committed,1,1793347247269.7092,1793347247281.5317,0,1,-55.0,60.0
+xair_atomic,1,36.0,168,0,read_set_version_changed_at_commit,1,,1793347247338.8818,0,1,-55.0,60.0
+xair_atomic,2,120.0,169,1,authorization_committed,1,1793347247515.6396,1793347247371.8923,0,1,-55.0,60.0
+xair_atomic,2,60.0,170,0,precondition_failed: stop.b54 <= 1793347247481000,1,,1793347247534.6711,0,1,-55.0,60.0
+xair_atomic,2,120.0,171,1,authorization_committed,1,1793347247763.0146,1793347247622.435,0,1,-55.0,60.0
+xair_atomic,1,10.0,172,0,read_set_version_changed_at_commit,1,,1793347247791.616,0,1,-55.0,60.0
+xair_atomic,2,0.0,173,0,precondition_failed: stop.b33 <= 1793347247734000,1,,1793347247847.836,0,1,-55.0,60.0
+xair_atomic,0,,174,1,authorization_committed,,1793347247927.159,,0,1,-55.0,60.0
+xair_atomic,1,30.0,175,0,read_set_version_changed_at_commit,1,,1793347247979.7585,0,1,-55.0,60.0
+xair_atomic,1,0.0,176,0,precondition_failed: stop.b20 <= 1793347247887000,1,,1793347248017.5027,0,1,-55.0,60.0
+xair_atomic,1,60.0,177,1,authorization_committed,1,1793347248090.378,1793347248103.5842,0,1,-55.0,60.0
+xair_atomic,1,36.0,178,0,read_set_version_changed_at_commit,1,,1793347248157.5447,0,1,-55.0,60.0
+xair_atomic,1,60.0,179,1,authorization_committed,1,1793347248232.353,1793347248246.2488,0,1,-55.0,60.0
+xair_atomic,2,20.0,180,0,precondition_failed: stop.b39 <= 1793347248169000,1,,1793347248263.3013,0,1,-55.0,60.0
+xair_atomic,2,20.0,181,0,precondition_failed: stop.b38 <= 1793347248215000,1,,1793347248309.2246,0,1,-55.0,60.0
+xair_atomic,1,40.0,182,0,read_set_version_changed_at_commit,1,,1793347248394.0698,0,1,-55.0,60.0
+xair_atomic,1,50.0,183,1,authorization_committed,1,1793347248462.4995,1793347248469.602,0,1,-55.0,60.0
+xair_atomic,1,60.0,184,1,authorization_committed,1,1793347248534.5168,1793347248547.448,0,1,-55.0,60.0
+xair_atomic,1,36.0,185,0,read_set_version_changed_at_commit,1,,1793347248603.7153,0,1,-55.0,60.0
+xair_atomic,1,0.0,186,0,precondition_failed: stop.b27 <= 1793347248509000,1,,1793347248640.8872,0,1,-55.0,60.0
+xair_atomic,2,60.0,187,0,precondition_failed: stop.b15 <= 1793347248612000,1,,1793347248666.171,0,1,-55.0,60.0
+xair_atomic,0,,188,1,authorization_committed,,1793347248812.3118,,0,1,-55.0,60.0
+xair_atomic,2,0.0,189,0,precondition_failed: stop.b10 <= 1793347248721000,1,,1793347248834.4536,0,1,-55.0,60.0
+xair_atomic,1,20.0,190,0,read_set_version_changed_at_commit,1,,1793347248884.2488,0,1,-55.0,60.0
+xair_atomic,0,,191,1,authorization_committed,,1793347248985.934,,0,1,-55.0,60.0
+xair_atomic,2,0.0,192,0,precondition_failed: stop.b19 <= 1793347248893000,1,,1793347249007.211,0,1,-55.0,60.0
+xair_atomic,0,,193,1,authorization_committed,,1793347249084.412,,0,1,-55.0,60.0
+xair_atomic,1,50.0,194,1,authorization_committed,1,1793347249150.9941,1793347249158.759,0,1,-55.0,60.0
+xair_atomic,1,60.0,195,1,authorization_committed,1,1793347249225.8982,1793347249239.274,0,1,-55.0,60.0
+xair_atomic,2,20.0,196,0,precondition_failed: stop.b28 <= 1793347249163000,1,,1793347249257.1467,0,1,-55.0,60.0
+xair_atomic,2,5.0,197,0,precondition_failed: stop.b50 <= 1793347249196000,1,,1793347249304.7495,0,1,-55.0,60.0
+xair_atomic,1,20.0,198,0,read_set_version_changed_at_commit,1,,1793347249359.4988,0,1,-55.0,60.0
+xair_atomic,1,0.0,199,0,precondition_failed: stop.b23 <= 1793347249284000,1,,1793347249408.909,0,1,-55.0,60.0
+xair_atomic,1,10.0,200,0,read_set_version_changed_at_commit,1,,1793347249446.6062,0,1,-55.0,60.0
+xair_atomic,1,10.0,201,0,read_set_version_changed_at_commit,1,,1793347249512.827,0,1,-55.0,60.0
+xair_atomic,1,40.0,202,0,read_set_version_changed_at_commit,1,,1793347249617.0068,0,1,-55.0,60.0
+xair_atomic,2,120.0,203,1,authorization_committed,1,1793347249792.7048,1793347249641.6287,0,1,-55.0,60.0
+xair_atomic,1,10.0,204,0,read_set_version_changed_at_commit,1,,1793347249827.2764,0,1,-55.0,60.0
+xair_atomic,1,36.0,205,0,read_set_version_changed_at_commit,1,,1793347249919.572,0,1,-55.0,60.0
+xair_atomic,1,40.0,206,0,read_set_version_changed_at_commit,1,,1793347249991.271,0,1,-55.0,60.0
+xair_atomic,1,20.0,207,0,read_set_version_changed_at_commit,1,,1793347250034.0015,0,1,-55.0,60.0
+xair_atomic,2,0.0,208,0,precondition_failed: stop.b48 <= 1793347249961000,1,,1793347250075.1052,0,1,-55.0,60.0
+xair_atomic,1,60.0,209,1,authorization_committed,1,1793347250149.9932,1793347250162.64,0,1,-55.0,60.0
+xair_atomic,2,5.0,210,0,precondition_failed: stop.b51 <= 1793347250071000,1,,1793347250180.464,0,1,-55.0,60.0
+xair_atomic,2,5.0,211,0,precondition_failed: stop.b47 <= 1793347250109000,1,,1793347250218.2898,0,1,-55.0,60.0
+xair_atomic,2,5.0,212,0,precondition_failed: stop.b53 <= 1793347250142000,1,,1793347250251.761,0,1,-55.0,60.0
+xair_atomic,1,36.0,213,0,read_set_version_changed_at_commit,1,,1793347250321.8264,0,1,-55.0,60.0
+xair_atomic,1,0.0,214,0,precondition_failed: stop.b9 <= 1793347250225000,1,,1793347250351.0498,0,1,-55.0,60.0
+xair_atomic,1,10.0,215,0,read_set_version_changed_at_commit,1,,1793347250390.6313,0,1,-55.0,60.0
+xair_atomic,1,36.0,216,0,read_set_version_changed_at_commit,1,,1793347250482.503,0,1,-55.0,60.0
+xair_atomic,1,20.0,217,0,read_set_version_changed_at_commit,1,,1793347250533.9434,0,1,-55.0,60.0
+xair_atomic,1,10.0,218,0,read_set_version_changed_at_commit,1,,1793347250585.7078,0,1,-55.0,60.0
+xair_atomic,0,,219,1,authorization_committed,,1793347250689.7217,,0,1,-55.0,60.0
+xair_atomic,2,5.0,220,0,precondition_failed: stop.b9 <= 1793347250600000,1,,1793347250709.1394,0,1,-55.0,60.0
+xair_atomic,1,60.0,221,1,authorization_committed,1,1793347250789.4639,1793347250802.6704,0,1,-55.0,60.0
+xair_atomic,2,120.0,222,1,authorization_committed,1,1793347250958.2922,1793347250818.9553,0,1,-55.0,60.0
+xair_atomic,1,50.0,223,1,authorization_committed,1,1793347251022.978,1793347251035.8293,0,1,-55.0,60.0
+xair_atomic,1,36.0,224,0,read_set_version_changed_at_commit,1,,1793347251094.658,0,1,-55.0,60.0
+xair_atomic,1,40.0,225,0,read_set_version_changed_at_commit,1,,1793347251163.7756,0,1,-55.0,60.0
+xair_atomic,1,36.0,226,0,read_set_version_changed_at_commit,1,,1793347251224.8767,0,1,-55.0,60.0
+xair_atomic,1,0.0,227,0,precondition_failed: stop.b14 <= 1793347251127000,1,,1793347251254.971,0,1,-55.0,60.0
+xair_atomic,1,30.0,228,0,precondition_failed: stop.b8 <= 1793347251160000,1,,1793347251317.8792,0,1,-55.0,60.0
+xair_atomic,1,10.0,229,0,read_set_version_changed_at_commit,1,,1793347251348.5059,0,1,-55.0,60.0
+xair_atomic,1,0.0,230,0,precondition_failed: stop.b29 <= 1793347251292000,1,,1793347251426.2788,0,1,-55.0,60.0
+xair_atomic,1,50.0,231,1,authorization_committed,1,1793347251501.4094,1793347251511.6074,0,1,-55.0,60.0
+xair_atomic,2,0.0,232,0,precondition_failed: stop.b41 <= 1793347251415000,1,,1793347251529.3494,0,1,-55.0,60.0
+xair_atomic,1,36.0,233,0,read_set_version_changed_at_commit,1,,1793347251591.5676,0,1,-55.0,60.0
+xair_atomic,1,50.0,234,1,authorization_committed,1,1793347251666.082,1793347251675.6711,0,1,-55.0,60.0
+xair_atomic,2,5.0,235,0,precondition_failed: stop.b39 <= 1793347251583000,1,,1793347251692.1865,0,1,-55.0,60.0
+xair_atomic,2,0.0,236,0,precondition_failed: stop.b38 <= 1793347251610000,1,,1793347251723.8862,0,1,-55.0,60.0
+xair_atomic,2,20.0,237,0,precondition_failed: stop.b47 <= 1793347251655000,1,,1793347251749.244,0,1,-55.0,60.0
+xair_atomic,1,30.0,238,0,read_set_version_changed_at_commit,1,,1793347251825.5566,0,1,-55.0,60.0
+xair_atomic,1,0.0,239,0,read_set_version_changed_at_commit,1,,1793347251868.8103,0,1,-55.0,60.0
+xair_atomic,1,60.0,240,1,authorization_committed,1,1793347251970.2986,1793347251984.4841,0,1,-55.0,60.0
+xair_atomic,1,30.0,241,0,read_set_version_changed_at_commit,1,,1793347252032.2627,0,1,-55.0,60.0
+xair_atomic,2,60.0,242,0,precondition_failed: stop.b28 <= 1793347252010000,1,,1793347252064.442,0,1,-55.0,60.0
+xair_atomic,2,0.0,243,0,precondition_failed: stop.b1 <= 1793347252040000,1,,1793347252153.6353,0,1,-55.0,60.0
+xair_atomic,2,60.0,244,0,precondition_failed: stop.b22 <= 1793347252126000,1,,1793347252180.2288,0,1,-55.0,60.0
+xair_atomic,1,20.0,245,0,read_set_version_changed_at_commit,1,,1793347252290.554,0,1,-55.0,60.0
+xair_atomic,1,20.0,246,0,read_set_version_changed_at_commit,1,,1793347252355.3608,0,1,-55.0,60.0
+xair_atomic,1,30.0,247,0,read_set_version_changed_at_commit,1,,1793347252429.4531,0,1,-55.0,60.0
+xair_atomic,1,20.0,248,0,read_set_version_changed_at_commit,1,,1793347252483.4338,0,1,-55.0,60.0
+xair_atomic,1,0.0,249,0,precondition_failed: stop.b29 <= 1793347252402000,1,,1793347252531.1987,0,1,-55.0,60.0
+xair_atomic,2,60.0,250,0,precondition_failed: stop.b54 <= 1793347252504000,1,,1793347252558.1958,0,1,-55.0,60.0
+xair_atomic,0,,251,1,authorization_committed,,1793347252692.6572,,0,1,-55.0,60.0
+xair_atomic,2,20.0,252,0,precondition_failed: stop.b31 <= 1793347252616000,1,,1793347252710.1611,0,1,-55.0,60.0
+xair_atomic,0,,253,1,authorization_committed,,1793347252808.395,,0,1,-55.0,60.0
+xair_atomic,1,36.0,254,0,read_set_version_changed_at_commit,1,,1793347252866.0886,0,1,-55.0,60.0
+xair_atomic,1,20.0,255,0,read_set_version_changed_at_commit,1,,1793347252915.1492,0,1,-55.0,60.0
+xair_atomic,2,0.0,256,0,precondition_failed: stop.b45 <= 1793347252844000,1,,1793347252958.0845,0,1,-55.0,60.0
+xair_atomic,2,5.0,257,0,precondition_failed: stop.b28 <= 1793347252879000,1,,1793347252987.68,0,1,-55.0,60.0
+xair_atomic,2,120.0,258,1,authorization_committed,1,1793347253156.588,1793347253019.1875,0,1,-55.0,60.0
+xair_atomic,1,20.0,259,0,read_set_version_changed_at_commit,1,,1793347253195.2214,0,1,-55.0,60.0
+xair_atomic,1,30.0,260,0,read_set_version_changed_at_commit,1,,1793347253269.5874,0,1,-55.0,60.0
+xair_atomic,1,40.0,261,0,read_set_version_changed_at_commit,1,,1793347253343.0286,0,1,-55.0,60.0
+xair_atomic,1,60.0,262,1,authorization_committed,1,1793347253413.2605,1793347253426.2278,0,1,-55.0,60.0
+xair_atomic,1,30.0,263,0,read_set_version_changed_at_commit,1,,1793347253472.6758,0,1,-55.0,60.0
+xair_atomic,2,60.0,264,0,precondition_failed: stop.b38 <= 1793347253448000,1,,1793347253502.4453,0,1,-55.0,60.0
+xair_atomic,1,40.0,265,0,read_set_version_changed_at_commit,1,,1793347253627.65,0,1,-55.0,60.0
+xair_atomic,1,20.0,266,0,read_set_version_changed_at_commit,1,,1793347253667.9102,0,1,-55.0,60.0
+xair_atomic,2,120.0,267,1,authorization_committed,1,1793347253849.0798,1793347253709.9194,0,1,-55.0,60.0
+xair_atomic,1,0.0,268,0,precondition_failed: stop.b61 <= 1793347253742000,1,,1793347253869.5908,0,1,-55.0,60.0
+xair_atomic,1,36.0,269,0,read_set_version_changed_at_commit,1,,1793347253931.7207,0,1,-55.0,60.0
+xair_atomic,1,50.0,270,1,authorization_committed,1,1793347254005.1177,1793347254014.5364,0,1,-55.0,60.0
+xair_atomic,2,60.0,271,0,precondition_failed: stop.b29 <= 1793347253976000,1,,1793347254030.4575,0,1,-55.0,60.0
+xair_atomic,1,10.0,272,0,read_set_version_changed_at_commit,1,,1793347254128.0662,0,1,-55.0,60.0
+xair_atomic,2,5.0,273,0,precondition_failed: stop.b35 <= 1793347254077000,1,,1793347254186.5256,0,1,-55.0,60.0
+xair_atomic,1,60.0,274,1,authorization_committed,1,1793347254270.2144,1793347254282.691,0,1,-55.0,60.0
+xair_atomic,2,60.0,275,0,precondition_failed: stop.b61 <= 1793347254243000,1,,1793347254297.7986,0,1,-55.0,60.0
+xair_atomic,1,30.0,276,0,read_set_version_changed_at_commit,1,,1793347254416.2822,0,1,-55.0,60.0
+xair_atomic,1,40.0,277,0,read_set_version_changed_at_commit,1,,1793347254489.6558,0,1,-55.0,60.0
+xair_atomic,2,120.0,278,1,authorization_committed,1,1793347254647.2017,1793347254510.8677,0,1,-55.0,60.0
+xair_atomic,2,5.0,279,0,precondition_failed: stop.b60 <= 1793347254555000,1,,1793347254663.8433,0,1,-55.0,60.0
+xair_atomic,2,120.0,280,1,authorization_committed,1,1793347254834.488,1793347254695.8115,0,1,-55.0,60.0
+xair_atomic,1,0.0,281,0,read_set_version_changed_at_commit,1,,1793347254863.263,0,1,-55.0,60.0
+xair_atomic,1,40.0,282,0,read_set_version_changed_at_commit,1,,1793347254967.4028,0,1,-55.0,60.0
+xair_atomic,1,10.0,283,0,read_set_version_changed_at_commit,1,,1793347255000.2078,0,1,-55.0,60.0
+xair_atomic,1,50.0,284,1,authorization_committed,1,1793347255102.2078,1793347255110.3826,0,1,-55.0,60.0
+xair_atomic,1,40.0,285,0,read_set_version_changed_at_commit,1,,1793347255173.7026,0,1,-55.0,60.0
+xair_atomic,1,30.0,286,0,read_set_version_changed_at_commit,1,,1793347255233.9097,0,1,-55.0,60.0
+xair_atomic,1,50.0,287,1,authorization_committed,1,1793347255314.4963,1793347255325.7156,0,1,-55.0,60.0
+xair_atomic,2,120.0,288,1,authorization_committed,1,1793347255483.2737,1793347255343.2537,0,1,-55.0,60.0
+xair_atomic,2,5.0,289,0,precondition_failed: stop.b3 <= 1793347255392000,1,,1793347255501.278,0,1,-55.0,60.0
+xair_atomic,2,20.0,290,0,precondition_failed: stop.b57 <= 1793347255441000,1,,1793347255534.8257,0,1,-55.0,60.0
+xair_atomic,2,20.0,291,0,precondition_failed: stop.b1 <= 1793347255488000,1,,1793347255582.4973,0,1,-55.0,60.0
+xair_atomic,1,30.0,292,0,read_set_version_changed_at_commit,1,,1793347255658.815,0,1,-55.0,60.0
+xair_atomic,2,5.0,293,0,precondition_failed: stop.b23 <= 1793347255585000,1,,1793347255694.617,0,1,-55.0,60.0
+xair_atomic,2,60.0,294,0,precondition_failed: stop.b35 <= 1793347255683000,1,,1793347255736.8826,0,1,-55.0,60.0
+xair_atomic,1,60.0,295,1,authorization_committed,1,1793347255874.9917,1793347255890.0156,0,1,-55.0,60.0
+xair_atomic,1,60.0,296,1,authorization_committed,1,1793347255965.0867,1793347255974.0352,0,1,-55.0,60.0
+xair_atomic,2,0.0,297,0,precondition_failed: stop.b40 <= 1793347255879000,1,,1793347255993.0598,0,1,-55.0,60.0
+xair_atomic,1,0.0,298,0,precondition_failed: stop.b5 <= 1793347255899000,1,,1793347256032.17,0,1,-55.0,60.0
+xair_atomic,1,10.0,299,0,read_set_version_changed_at_commit,1,,1793347256068.9768,0,1,-55.0,60.0
+xair_atomic,1,40.0,300,0,read_set_version_changed_at_commit,1,,1793347256168.7378,0,1,-55.0,60.0
+xair_atomic,1,30.0,301,0,read_set_version_changed_at_commit,1,,1793347256225.5713,0,1,-55.0,60.0
+xair_atomic,2,120.0,302,1,authorization_committed,1,1793347256408.6584,1793347256260.4878,0,1,-55.0,60.0
+xair_atomic,2,5.0,303,0,precondition_failed: stop.b28 <= 1793347256327000,1,,1793347256435.7861,0,1,-55.0,60.0
+xair_atomic,2,5.0,304,0,precondition_failed: stop.b63 <= 1793347256371000,1,,1793347256480.3765,0,1,-55.0,60.0
+xair_atomic,1,0.0,305,0,precondition_failed: stop.b32 <= 1793347256397000,1,,1793347256524.7483,0,1,-55.0,60.0
+xair_atomic,1,20.0,306,0,read_set_version_changed_at_commit,1,,1793347256579.6206,0,1,-55.0,60.0
+xair_atomic,2,0.0,307,0,precondition_failed: stop.b6 <= 1793347256513000,1,,1793347256626.5796,0,1,-55.0,60.0
+xair_atomic,2,0.0,308,0,precondition_failed: stop.b48 <= 1793347256550000,1,,1793347256664.1208,0,1,-55.0,60.0
+xair_atomic,2,60.0,309,0,precondition_failed: stop.b43 <= 1793347256637000,1,,1793347256691.0864,0,1,-55.0,60.0
+xair_atomic,1,30.0,310,0,read_set_version_changed_at_commit,1,,1793347256812.3716,0,1,-55.0,60.0
+xair_atomic,2,5.0,311,0,precondition_failed: stop.b35 <= 1793347256741000,1,,1793347256850.5242,0,1,-55.0,60.0
+xair_atomic,1,0.0,312,0,precondition_failed: stop.b2 <= 1793347256760000,1,,1793347256886.036,0,1,-55.0,60.0
+xair_atomic,2,0.0,313,0,precondition_failed: stop.b62 <= 1793347256799000,1,,1793347256912.8477,0,1,-55.0,60.0
+xair_atomic,1,20.0,314,0,read_set_version_changed_at_commit,1,,1793347256962.4788,0,1,-55.0,60.0
+xair_atomic,0,,315,1,authorization_committed,,1793347257055.7104,,0,1,-55.0,60.0
+xair_atomic,1,36.0,316,0,read_set_version_changed_at_commit,1,,1793347257118.2295,0,1,-55.0,60.0
+xair_atomic,1,60.0,317,1,authorization_committed,1,1793347257189.278,1793347257205.6284,0,1,-55.0,60.0
+xair_atomic,1,60.0,318,1,authorization_committed,1,1793347257267.8972,1793347257282.6968,0,1,-55.0,60.0
+xair_atomic,1,40.0,319,0,read_set_version_changed_at_commit,1,,1793347257340.5342,0,1,-55.0,60.0
+xair_atomic,1,10.0,320,0,read_set_version_changed_at_commit,1,,1793347257381.976,0,1,-55.0,60.0
+xair_atomic,2,120.0,321,1,authorization_committed,1,1793347257577.9495,1793347257439.1846,0,1,-55.0,60.0
+xair_atomic,2,120.0,322,1,authorization_committed,1,1793347257733.4478,1793347257594.8518,0,1,-55.0,60.0
+xair_atomic,2,60.0,323,0,precondition_failed: stop.b33 <= 1793347257696000,1,,1793347257750.1406,0,1,-55.0,60.0
+xair_atomic,1,10.0,324,0,read_set_version_changed_at_commit,1,,1793347257849.054,0,1,-55.0,60.0
+xair_atomic,2,5.0,325,0,precondition_failed: stop.b45 <= 1793347257804000,1,,1793347257912.0884,0,1,-55.0,60.0
+xair_atomic,1,40.0,326,0,read_set_version_changed_at_commit,1,,1793347257995.2856,0,1,-55.0,60.0
+xair_atomic,1,50.0,327,0,read_set_version_changed_at_commit,1,,1793347258083.582,0,1,-55.0,60.0
+xair_atomic,1,0.0,328,0,precondition_failed: stop.b57 <= 1793347257979000,1,,1793347258106.2463,0,1,-55.0,60.0
+xair_atomic,1,40.0,329,0,read_set_version_changed_at_commit,1,,1793347258172.8735,0,1,-55.0,60.0
+xair_atomic,1,40.0,330,0,read_set_version_changed_at_commit,1,,1793347258239.1123,0,1,-55.0,60.0
+xair_atomic,1,10.0,331,0,read_set_version_changed_at_commit,1,,1793347258272.4502,0,1,-55.0,60.0
+xair_atomic,2,0.0,332,0,precondition_failed: stop.b17 <= 1793347258212000,1,,1793347258326.516,0,1,-55.0,60.0
+xair_atomic,0,,333,1,authorization_committed,,1793347258396.5735,,0,1,-55.0,60.0
+xair_atomic,1,30.0,334,0,read_set_version_changed_at_commit,1,,1793347258444.2158,0,1,-55.0,60.0
+xair_atomic,2,60.0,335,0,precondition_failed: stop.b9 <= 1793347258430000,1,,1793347258484.318,0,1,-55.0,60.0
+xair_atomic,1,36.0,336,0,read_set_version_changed_at_commit,1,,1793347258609.0977,0,1,-55.0,60.0
+xair_atomic,2,20.0,337,0,precondition_failed: stop.b0 <= 1793347258541000,1,,1793347258635.7078,0,1,-55.0,60.0
+xair_atomic,1,10.0,338,0,read_set_version_changed_at_commit,1,,1793347258693.714,0,1,-55.0,60.0
+xair_atomic,0,,339,1,authorization_committed,,1793347258792.8623,,0,1,-55.0,60.0
+xair_atomic,1,50.0,340,1,authorization_committed,1,1793347258856.3857,1793347258863.681,0,1,-55.0,60.0
+xair_atomic,0,,341,1,authorization_committed,,1793347258929.4548,,0,1,-55.0,60.0
+xair_atomic,1,30.0,342,0,read_set_version_changed_at_commit,1,,1793347258983.5154,0,1,-55.0,60.0
+xair_atomic,2,60.0,343,0,precondition_failed: stop.b4 <= 1793347258965000,1,,1793347259018.5488,0,1,-55.0,60.0
+xair_atomic,1,20.0,344,0,read_set_version_changed_at_commit,1,,1793347259128.8792,0,1,-55.0,60.0
+xair_atomic,1,50.0,345,1,authorization_committed,1,1793347259221.6277,1793347259232.4312,0,1,-55.0,60.0
+xair_atomic,2,60.0,346,0,precondition_failed: stop.b7 <= 1793347259196000,1,,1793347259250.317,0,1,-55.0,60.0
+xair_atomic,1,50.0,347,0,precondition_failed: stop.b37 <= 1793347259216000,1,,1793347259392.6995,0,1,-55.0,60.0
+xair_atomic,1,60.0,348,1,authorization_committed,1,1793347259459.9243,1793347259480.1406,0,1,-55.0,60.0
+xair_atomic,1,60.0,349,1,authorization_committed,1,1793347259549.704,1793347259565.8667,0,1,-55.0,60.0
+xair_atomic,1,40.0,350,0,read_set_version_changed_at_commit,1,,1793347259628.2976,0,1,-55.0,60.0
+xair_atomic,2,120.0,351,1,authorization_committed,1,1793347259802.8171,1793347259654.6628,0,1,-55.0,60.0
+xair_atomic,1,60.0,352,1,authorization_committed,1,1793347259876.8645,1793347259889.9978,0,1,-55.0,60.0
+xair_atomic,2,0.0,353,0,precondition_failed: stop.b19 <= 1793347259794000,1,,1793347259907.2585,0,1,-55.0,60.0
+xair_atomic,2,120.0,354,1,authorization_committed,1,1793347260077.1587,1793347259934.9583,0,1,-55.0,60.0
+xair_atomic,1,40.0,355,0,read_set_version_changed_at_commit,1,,1793347260149.1125,0,1,-55.0,60.0
+xair_atomic,2,60.0,356,0,precondition_failed: stop.b30 <= 1793347260118000,1,,1793347260171.1829,0,1,-55.0,60.0
+xair_atomic,1,60.0,357,1,authorization_committed,1,1793347260316.0315,1793347260325.8184,0,1,-55.0,60.0
+xair_atomic,1,0.0,358,0,precondition_failed: stop.b17 <= 1793347260220000,1,,1793347260346.817,0,1,-55.0,60.0
+xair_atomic,2,60.0,359,0,precondition_failed: stop.b62 <= 1793347260322000,1,,1793347260375.5159,0,1,-55.0,60.0
+xair_atomic,1,20.0,360,0,read_set_version_changed_at_commit,1,,1793347260486.576,0,1,-55.0,60.0
+xair_atomic,2,120.0,361,1,authorization_committed,1,1793347260676.4404,1793347260537.1665,0,1,-55.0,60.0
+xair_atomic,2,120.0,362,1,authorization_committed,1,1793347260832.0015,1793347260694.1245,0,1,-55.0,60.0
+xair_atomic,1,36.0,363,0,read_set_version_changed_at_commit,1,,1793347260886.4856,0,1,-55.0,60.0
+xair_atomic,1,20.0,364,0,precondition_failed: stop.b14 <= 1793347260791000,1,,1793347260935.273,0,1,-55.0,60.0
+xair_atomic,2,60.0,365,0,precondition_failed: stop.b15 <= 1793347260898000,1,,1793347260952.2134,0,1,-55.0,60.0
+xair_atomic,1,60.0,366,1,authorization_committed,1,1793347261085.4749,1793347261100.5474,0,1,-55.0,60.0
+xair_atomic,1,20.0,367,0,read_set_version_changed_at_commit,1,,1793347261140.3955,0,1,-55.0,60.0
+xair_atomic,1,10.0,368,0,read_set_version_changed_at_commit,1,,1793347261198.504,0,1,-55.0,60.0
+xair_atomic,2,0.0,369,0,precondition_failed: stop.b41 <= 1793347261140000,1,,1793347261254.1824,0,1,-55.0,60.0
+xair_atomic,2,20.0,370,0,precondition_failed: stop.b29 <= 1793347261193000,1,,1793347261285.6243,0,1,-55.0,60.0
+xair_atomic,1,0.0,371,0,precondition_failed: stop.b3 <= 1793347261212000,1,,1793347261346.1982,0,1,-55.0,60.0
+xair_atomic,1,40.0,372,0,read_set_version_changed_at_commit,1,,1793347261418.296,0,1,-55.0,60.0
+xair_atomic,1,50.0,373,1,authorization_committed,1,1793347261491.2705,1793347261499.6777,0,1,-55.0,60.0
+xair_atomic,1,10.0,374,0,precondition_failed: stop.b48 <= 1793347261393000,1,,1793347261528.2092,0,1,-55.0,60.0
+xair_atomic,1,20.0,375,0,read_set_version_changed_at_commit,1,,1793347261565.4746,0,1,-55.0,60.0
+xair_atomic,0,,376,1,authorization_committed,,1793347261654.4065,,0,1,-55.0,60.0
+xair_atomic,2,60.0,377,0,precondition_failed: stop.b19 <= 1793347261616000,1,,1793347261670.4756,0,1,-55.0,60.0
+xair_atomic,1,30.0,378,0,read_set_version_changed_at_commit,1,,1793347261788.6047,0,1,-55.0,60.0
+xair_atomic,2,120.0,379,1,authorization_committed,1,1793347261968.6145,1793347261823.6733,0,1,-55.0,60.0
+xair_atomic,2,120.0,380,1,authorization_committed,1,1793347262130.5369,1793347261988.7964,0,1,-55.0,60.0
+xair_atomic,1,40.0,381,0,read_set_version_changed_at_commit,1,,1793347262190.4941,0,1,-55.0,60.0
+xair_atomic,2,5.0,382,0,precondition_failed: stop.b47 <= 1793347262106000,1,,1793347262215.1743,0,1,-55.0,60.0
+xair_atomic,1,20.0,383,0,read_set_version_changed_at_commit,1,,1793347262269.4832,0,1,-55.0,60.0
+xair_atomic,2,120.0,384,1,authorization_committed,1,1793347262465.099,1793347262318.7964,0,1,-55.0,60.0
+xair_atomic,0,,385,1,authorization_committed,,1793347262540.2207,,0,1,-55.0,60.0
+xair_atomic,2,5.0,386,0,precondition_failed: stop.b14 <= 1793347262452000,1,,1793347262561.3489,0,1,-55.0,60.0
+xair_atomic,1,0.0,387,0,precondition_failed: stop.b3 <= 1793347262478000,1,,1793347262609.0386,0,1,-55.0,60.0
+xair_atomic,1,40.0,388,0,read_set_version_changed_at_commit,1,,1793347262678.4158,0,1,-55.0,60.0
+xair_atomic,1,60.0,389,1,authorization_committed,1,1793347262750.7156,1793347262765.8853,0,1,-55.0,60.0
+xair_atomic,2,20.0,390,0,precondition_failed: stop.b32 <= 1793347262696000,1,,1793347262790.553,0,1,-55.0,60.0
+xair_atomic,1,0.0,391,0,precondition_failed: stop.b51 <= 1793347262713000,1,,1793347262838.8662,0,1,-55.0,60.0
+xair_atomic,2,60.0,392,0,precondition_failed: stop.b23 <= 1793347262812000,1,,1793347262865.9475,0,1,-55.0,60.0
+xair_atomic,1,60.0,393,1,authorization_committed,1,1793347263001.48,1793347263013.7625,0,1,-55.0,60.0
+xair_atomic,1,60.0,394,1,authorization_committed,1,1793347263076.92,1793347263091.0603,0,1,-55.0,60.0
+xair_atomic,2,5.0,395,0,precondition_failed: stop.b19 <= 1793347262998000,1,,1793347263107.1707,0,1,-55.0,60.0
+xair_atomic,1,10.0,396,0,read_set_version_changed_at_commit,1,,1793347263149.3318,0,1,-55.0,60.0
+xair_atomic,2,20.0,397,0,precondition_failed: stop.b62 <= 1793347263108000,1,,1793347263202.3665,0,1,-55.0,60.0
+xair_atomic,2,0.0,398,0,precondition_failed: stop.b16 <= 1793347263135000,1,,1793347263248.6548,0,1,-55.0,60.0
+xair_atomic,2,5.0,399,0,precondition_failed: stop.b28 <= 1793347263165000,1,,1793347263274.5173,0,1,-55.0,60.0
+xair_atomic,2,60.0,400,0,precondition_failed: stop.b28 <= 1793347263258000,1,,1793347263312.3916,0,1,-55.0,60.0
+xair_atomic,1,10.0,401,0,read_set_version_changed_at_commit,1,,1793347263412.728,0,1,-55.0,60.0
+xair_atomic,0,,402,1,authorization_committed,,1793347263511.6614,,0,1,-55.0,60.0
+xair_atomic,1,36.0,403,0,read_set_version_changed_at_commit,1,,1793347263570.7217,0,1,-55.0,60.0
+xair_atomic,1,36.0,404,0,read_set_version_changed_at_commit,1,,1793347263636.9172,0,1,-55.0,60.0
+xair_atomic,1,30.0,405,0,read_set_version_changed_at_commit,1,,1793347263693.7603,0,1,-55.0,60.0
+xair_atomic,1,50.0,406,1,authorization_committed,1,1793347263772.9065,1793347263783.3215,0,1,-55.0,60.0
+xair_atomic,1,50.0,407,1,authorization_committed,1,1793347263849.814,1793347263860.3064,0,1,-55.0,60.0
+xair_atomic,1,36.0,408,0,read_set_version_changed_at_commit,1,,1793347263914.2993,0,1,-55.0,60.0
+xair_atomic,1,40.0,409,0,read_set_version_changed_at_commit,1,,1793347263980.2275,0,1,-55.0,60.0
+xair_atomic,2,0.0,410,0,precondition_failed: stop.b63 <= 1793347263898000,1,,1793347264011.7747,0,1,-55.0,60.0
+xair_atomic,1,36.0,411,0,read_set_version_changed_at_commit,1,,1793347264074.3267,0,1,-55.0,60.0
+xair_atomic,1,10.0,412,0,read_set_version_changed_at_commit,1,,1793347264110.73,0,1,-55.0,60.0
+xair_atomic,1,10.0,413,0,read_set_version_changed_at_commit,1,,1793347264174.6558,0,1,-55.0,60.0
+xair_atomic,1,30.0,414,0,read_set_version_changed_at_commit,1,,1793347264267.179,0,1,-55.0,60.0
+xair_atomic,1,36.0,415,0,read_set_version_changed_at_commit,1,,1793347264342.5344,0,1,-55.0,60.0
+xair_atomic,1,36.0,416,0,read_set_version_changed_at_commit,1,,1793347264409.8906,0,1,-55.0,60.0
+xair_atomic,2,20.0,417,0,precondition_failed: stop.b1 <= 1793347264346000,1,,1793347264440.2693,0,1,-55.0,60.0
+xair_atomic,0,,418,1,authorization_committed,,1793347264549.5193,,0,1,-55.0,60.0
+xair_atomic,2,20.0,419,0,precondition_failed: stop.b24 <= 1793347264480000,1,,1793347264574.409,0,1,-55.0,60.0

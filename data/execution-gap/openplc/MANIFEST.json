@@ -1,0 +1,47 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/openplc",
+  "kind": "retroactive",
+  "commands": [
+    "./scripts/run_openplc.sh; scripts/run_plc_wrap.sh"
+  ],
+  "seeds": [],
+  "files": [
+    {
+      "path": "e24_openplc.csv",
+      "bytes": 184635,
+      "sha256": "d5122122f81b8a6ce68dee7ad9eada0ae1e75b2c3286335df4384ca55ed1ab1b"
+    },
+    {
+      "path": "e24_openplc_epoch.csv",
+      "bytes": 180438,
+      "sha256": "dfd347bcc10b2af7040edcf081fddc8f5c65c9c7c67a103a4ec419a34ccb38b6"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 149,
+      "sha256": "5263b655ab02dd090df4d8135f340d03a3dc8003c437399f0f10caf6cc5ba167"
+    },
+    {
+      "path": "plc_wrap.json",
+      "bytes": 279,
+      "sha256": "b2de6c6b5ba797c8a577802b11bfa1647168e09b3076a05c42d1660ab47e8c44"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"runtime\": \"OpenPLC v3 (b5d4135), task interval 10 ms, Modbus TCP\",",
+      " \"bridge\": \"Modbus polling every 5 ms -> XAIR\", \"loadavg\": \"47.60 26.66 16.39\"}"
+    ]
+  },
+  "notes": [
+    "e24_openplc_epoch.csv and plc_wrap.json added 2026-10-29 for the epoch version of cell_ctl.st"
+  ],
+  "manifest_written": "2026-10-30T08:55:55+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

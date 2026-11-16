@@ -1,0 +1,2 @@
+{"runtime": "OpenPLC v3 (b5d4135), task interval 10 ms, Modbus TCP",
+ "bridge": "Modbus polling every 5 ms -> XAIR", "loadavg": "47.60 26.66 16.39"}

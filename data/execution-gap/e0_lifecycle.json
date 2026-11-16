@@ -1,0 +1,81 @@
+{
+  "passed": 14,
+  "total": 14,
+  "cases": [
+    {
+      "case": "EXECUTE",
+      "outcome": "EXECUTE",
+      "pass": true
+    },
+    {
+      "case": "REVOKE_precondition",
+      "outcome": "REVOKE",
+      "pass": true
+    },
+    {
+      "case": "deadline_exceeded",
+      "outcome": "REVOKE",
+      "lifecycle_state": "EXPIRED",
+      "pass": true
+    },
+    {
+      "case": "REVOKE_freshness",
+      "outcome": "REVOKE",
+      "pass": true
+    },
+    {
+      "case": "DELAY_busy_target",
+      "outcome": "DELAY",
+      "pass": true
+    },
+    {
+      "case": "DEGRADE",
+      "outcome": "DEGRADE",
+      "pass": true
+    },
+    {
+      "case": "DEGRADE_then_EXECUTE_same_intent",
+      "degrade_outcome": "DEGRADE",
+      "execute_outcome": "EXECUTE",
+      "same_intent_id": true,
+      "speed_factor": 0.5,
+      "pass": true
+    },
+    {
+      "case": "publish_after_revoke_refused",
+      "pass": true
+    },
+    {
+      "case": "version_mismatch_at_publish_blocks",
+      "release_decision": "WITHHOLD",
+      "pass": true
+    },
+    {
+      "case": "duplicate_not_rereleased",
+      "pass": true
+    },
+    {
+      "case": "commit_is_not_release",
+      "lifecycle_state": "COMMITTED",
+      "pass": true
+    },
+    {
+      "case": "release_then_effect_confirmed",
+      "states": [
+        "RELEASED",
+        "EFFECT_CONFIRMED"
+      ],
+      "pass": true
+    },
+    {
+      "case": "controller_refusal_is_failed_effect",
+      "lifecycle_state": "FAILED",
+      "pass": true
+    },
+    {
+      "case": "refused_commit_withholds",
+      "lifecycle_state": "WITHHELD",
+      "pass": true
+    }
+  ]
+}

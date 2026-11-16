@@ -1,0 +1,4 @@
+{"topology": "producers+XAIR+Redis on 100.86.223.16 (this host); gateway+cell controller on 100.66.11.73 (separate physical machine, Tailscale)", "tcp_connect_rtt_ms_p50_p99": {"host->gateway": [55.77, 57.7]}, "local": "Linux-6.8.12-18-pve-x86_64-with-glibc2.35", "loadavg": ["25.87", "24.09", "23.63"]}
+Darwin 24.6.0 arm64
+Apple M4
+1793347592.0351858

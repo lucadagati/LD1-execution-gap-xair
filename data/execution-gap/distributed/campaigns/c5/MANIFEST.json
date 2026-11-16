@@ -1,0 +1,81 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/distributed/campaigns/c5",
+  "kind": "retroactive",
+  "commands": [
+    "SUITES=\"e10_boundary e10_atomic e10_natural e10_natural_atomic e10_deadline e10_aba e21 e21_aba e16 e16_trace\" SEED_OFFSET=4 OUT_SUB=distributed/campaigns/c5 sudo ./scripts/run_distributed.sh 0.5ms 0.1ms"
+  ],
+  "seeds": [
+    "per suite in scripts/run_distributed.sh: e1 42+S, e10 boundary/atomic 43+S, e10 natural 44+S, e10-deadline 10+S, e10-aba 11+S, e21 21+S, e21-aba 31+S, e16 42+S, e16-trace 16+S, e20 20+S, e18 18+S (S = SEED_OFFSET in environment.txt); S=4"
+  ],
+  "files": [
+    {
+      "path": "e10_aba.csv",
+      "bytes": 47728,
+      "sha256": "72d6efaacf86384cf0dce29621c7e2fd668177c37cc9bc1d5587756954c4aa7c"
+    },
+    {
+      "path": "e10_deadline.csv",
+      "bytes": 203599,
+      "sha256": "2f643be589c2ec413a72d87a344e74e24c5fbfa18ac64922f254ab926119c235"
+    },
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 45209,
+      "sha256": "35248187aac381a142bba0a4042d7296f0ac6f606cf8e9884417ca712b5d1afa"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 48746,
+      "sha256": "6f79726edff995374f24e20bb38fe27586fc369405068d3f8d852d3d821966f5"
+    },
+    {
+      "path": "e10_toctou_atomic.csv",
+      "bytes": 118791,
+      "sha256": "ae05a12c21b23f94d011a5fe695ade0c9ecabc787948c06c646f89572271943a"
+    },
+    {
+      "path": "e10_toctou_boundary.csv",
+      "bytes": 110711,
+      "sha256": "e8d6249e8c4220072ab27dc60e87bb6f16209426407b72c57661bf6519944768"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 524041,
+      "sha256": "0176d76ce50e3124ef28ecf79c5c1967740d36ed1ce188ad62266161087be689"
+    },
+    {
+      "path": "e16_trace_churn.csv",
+      "bytes": 375480,
+      "sha256": "c9c8cee2a8c5c15e90d1fd5c63cc76c1026dbe87c9e761bdbb6d2829fb74af2d"
+    },
+    {
+      "path": "e21_cell_aba.csv",
+      "bytes": 197748,
+      "sha256": "66cccfe8460f3517cfd5de384a8c4c5fee8d5930475c66fe31652df95c04f52e"
+    },
+    {
+      "path": "e21_cell_controller.csv",
+      "bytes": 212044,
+      "sha256": "7ece6dec91e19aa3386307778c926a090b49eb855e5343828ba0a8a490899339"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 444,
+      "sha256": "32c9fcef1a7f4f14aa5e3387fca682e5db1c2ae4ffef27b716f4951b61cc7d7b"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"netem_one_way_delay\": \"0.5ms\", \"netem_jitter\": \"0.1ms\", \"suites\": \"e10_boundary e10_atomic e10_natural e10_natural_atomic e10_deadline e10_aba e21 e21_aba e16 e16_trace\", \"seed_offset\": 4, \"compose_extra\": \"\", \"trace_phase\": \"random\", \"tcp_connect_rtt_ms_p50_p99\": {\"bench->xair\": [1.251, 2.748], \"bench->gateway\": [1.238, 2.199], \"bench->redis\": [1.281, 2.064]}, \"shared_monotonic_clock_check\": \"50/50\", \"loadavg\": [\"5.84\", \"5.63\", \"5.75\"]}"
+    ]
+  },
+  "notes": [],
+  "manifest_written": "2026-10-05T23:20:35+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

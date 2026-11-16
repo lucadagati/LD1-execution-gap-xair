@@ -1,0 +1,101 @@
+run,seed,baseline,pause_ms,predicate_count,predicates_evaluated,source,drifted,expected_release,gateway_released,outcome,reason,correct,stale_executed,wrongful_revoke,validation_latency_ms
+0,1,xair,97.03,2,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10912900324910879
+1,1,xair,207.32,16,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10938799823634326
+2,1,xair,362.66,16,16,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.21681300131604075
+3,1,xair,50.74,16,16,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19797901040874422
+4,1,xair,85.78,8,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10294400271959603
+5,1,xair,239.49,16,16,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19297999097034335
+6,1,xair,304.05,32,32,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.2841459936462343
+7,1,xair,243.5,8,8,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.14951699995435774
+8,1,xair,383.29,2,2,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1666280149947852
+9,1,xair,85.0,8,8,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.15066599007695913
+10,1,xair,390.64,32,32,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.30668199178762734
+11,1,xair,284.61,8,8,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.14922101399861276
+12,1,xair,224.78,32,32,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.28147900593467057
+13,1,xair,218.08,16,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10394302080385387
+14,1,xair,358.96,8,8,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.170462008100003
+15,1,xair,87.78,4,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10207301238551736
+16,1,xair,306.47,16,16,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19549799617379904
+17,1,xair,394.12,32,32,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.30529400100931525
+18,1,xair,109.01,4,4,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.12936900020577013
+19,1,xair,351.1,4,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10370201198384166
+20,1,xair,346.61,8,8,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1501280057709664
+21,1,xair,263.13,2,2,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.11348101543262601
+22,1,xair,231.54,32,32,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.274108984740451
+23,1,xair,218.39,8,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.14590600039809942
+24,1,xair,226.65,16,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10579501395113766
+25,1,xair,238.47,32,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10272199870087206
+26,1,xair,59.79,4,4,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.12857301044277847
+27,1,xair,113.27,2,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1037210167851299
+28,1,xair,380.25,2,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1279809803236276
+29,1,xair,313.95,8,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1065359974745661
+30,1,xair,268.68,8,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10353699326515198
+31,1,xair,139.33,4,4,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1308690116275102
+32,1,xair,153.07,8,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10386898065917194
+33,1,xair,159.2,8,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10414698044769466
+34,1,xair,138.71,32,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1048319973051548
+35,1,xair,391.44,4,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1024060184136033
+36,1,xair,301.59,4,4,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.12833200162276626
+37,1,xair,240.65,4,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1320730079896748
+38,1,xair,233.36,2,2,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1130729797296226
+39,1,xair,280.94,16,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.12620200868695974
+40,1,xair,124.25,2,2,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.11403599637560546
+41,1,xair,158.63,8,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1048700069077313
+42,1,xair,138.33,2,2,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.11055398499593139
+43,1,xair,126.16,32,32,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.27775700436905026
+44,1,xair,354.46,32,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10440699406899512
+45,1,xair,171.43,4,4,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1517580240033567
+46,1,xair,222.32,16,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10531398584134877
+47,1,xair,163.87,16,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10466601816006005
+48,1,xair,350.14,32,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10501799988560379
+49,1,xair,143.29,2,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10979498620145023
+50,1,xair,358.84,32,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1054250169545412
+51,1,xair,303.91,2,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10455498704686761
+52,1,xair,238.37,8,8,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1510920119471848
+53,1,xair,139.35,8,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1080359797924757
+54,1,xair,353.6,32,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10573997860774398
+55,1,xair,242.91,2,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.14405400725081563
+56,1,xair,183.08,4,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10646201553754508
+57,1,xair,255.59,16,16,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19933198927901685
+58,1,xair,248.09,8,8,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.15168398385867476
+59,1,xair,373.77,16,16,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1937389897648245
+60,1,xair,339.72,2,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1037590263877064
+61,1,xair,90.29,2,2,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.11209101649001241
+62,1,xair,255.38,4,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10192501940764487
+63,1,xair,134.5,2,2,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1139810192398727
+64,1,xair,240.02,8,8,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.15055399853736162
+65,1,xair,160.06,4,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10457300231792033
+66,1,xair,53.68,8,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.12605401570908725
+67,1,xair,186.94,16,16,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1934979809448123
+68,1,xair,389.43,16,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10285098687745631
+69,1,xair,266.23,32,32,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.2814600011333823
+70,1,xair,140.68,32,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10618398664519191
+71,1,xair,176.16,8,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1035550085362047
+72,1,xair,251.02,8,8,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1805720094125718
+73,1,xair,64.37,4,4,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.12875799438916147
+74,1,xair,155.98,8,8,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.15075798728503287
+75,1,xair,332.65,2,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10500001371838152
+76,1,xair,135.32,2,2,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.13401801697909832
+77,1,xair,305.21,2,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10438798926770687
+78,1,xair,327.26,16,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10362800094299018
+79,1,xair,322.21,8,8,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.15351700130850077
+80,1,xair,110.63,4,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10294400271959603
+81,1,xair,298.26,32,32,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.30649799737147987
+82,1,xair,99.59,2,2,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.11427700519561768
+83,1,xair,367.5,4,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10477699106559157
+84,1,xair,105.26,4,4,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1291290100198239
+85,1,xair,206.34,16,16,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19522098591551185
+86,1,xair,347.95,16,16,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19542500376701355
+87,1,xair,110.03,16,16,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.2361639926675707
+88,1,xair,56.62,8,8,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.15125802019611
+89,1,xair,98.47,8,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10583197581581771
+90,1,xair,264.36,4,1,xr,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.13062800280749798
+91,1,xair,161.03,16,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10460999328643084
+92,1,xair,223.28,16,1,ai,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10246300371363759
+93,1,xair,263.95,8,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10342500172555447
+94,1,xair,75.04,32,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.10500001371838152
+95,1,xair,318.11,4,4,xr,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.1533319882582873
+96,1,xair,347.15,8,8,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.14840697986073792
+97,1,xair,349.7,32,1,mes,1,0,0,REVOKE,precondition_failed: line.state == 'RUN',1,0,0,0.1054809836205095
+98,1,xair,104.52,16,16,ai,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19753599190153182
+99,1,xair,323.79,16,16,mes,0,1,1,EXECUTE,published_after_gate_recheck,1,0,0,0.19023899221792817

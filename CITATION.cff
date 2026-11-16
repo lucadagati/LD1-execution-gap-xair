@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "XAIR: eXecution-time Action Intent Runtime"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "D'Agati"
+    given-names: "Luca"
+    affiliation: "University of Messina"
+  - family-names: "Tricomi"
+    given-names: "Giuseppe"
+    affiliation: "University of Messina"
+  - family-names: "Mirto"
+    given-names: "Fabio Orazio"
+    affiliation: "University of Messina"
+  - family-names: "Merlino"
+    given-names: "Giovanni"
+    affiliation: "University of Messina"
+license: Apache-2.0
+repository-code: "https://github.com/ProSoDiAC/LD1-execution-gap-xair"
+version: "1.7.0"
+keywords:
+  - runtime assurance
+  - execution-time validation
+  - action intent
+  - ROS 2
+  - cyber-physical systems

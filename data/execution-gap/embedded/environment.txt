@@ -1,0 +1,1 @@
+{"subset": "E25 embedded boards; one directory per board (rpi4, vf2), each with its own environment.txt; runner scripts/run_embedded.sh"}

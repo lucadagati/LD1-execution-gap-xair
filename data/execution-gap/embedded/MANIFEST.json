@@ -1,0 +1,31 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/embedded",
+  "kind": "retroactive",
+  "commands": [
+    "BOARD=<rpi4|vf2> ./scripts/run_embedded.sh"
+  ],
+  "seeds": [],
+  "files": [
+    {
+      "path": "environment.txt",
+      "bytes": 138,
+      "sha256": "a57ff344f047ae2ab060a608f3b66f738c170bb8e455c3404e618af4a0cceff5"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"subset\": \"E25 embedded boards; one directory per board (rpi4, vf2), each with its own environment.txt; runner scripts/run_embedded.sh\"}"
+    ]
+  },
+  "notes": [
+    "board-independent environment record of E25"
+  ],
+  "manifest_written": "2026-10-05T23:20:36+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

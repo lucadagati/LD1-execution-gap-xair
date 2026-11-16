@@ -1,0 +1,43 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/scaling",
+  "kind": "retroactive",
+  "commands": [
+    "(cd experiments && python run_e23_truth_scaling.py)"
+  ],
+  "seeds": [
+    "23"
+  ],
+  "files": [
+    {
+      "path": "e23_retirement.csv",
+      "bytes": 73,
+      "sha256": "3b4eec988b846f40594b62073780f7c9315467e017522f71b8b960e5776ea434"
+    },
+    {
+      "path": "e23_truth_scaling.csv",
+      "bytes": 18208,
+      "sha256": "4e36e9e121167a14d69e9dd971dc4960173e41f9e954562d0b688f0b7ffea782"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 265,
+      "sha256": "df08005c80d43b12ace922f91e8d6eaf26c596998222cd506c616caa979db388"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"suite\": \"E23 predicate-truth scaling\", \"store\": \"Redis 7 (docker, no persistence)\", \"client\": \"single process pinned to cores 28-31\", \"loadavg\": \"15.87 16.53 16.62\", \"note\": \"three repetitions; the host load average rose to 40-53 during the run (other tenants)\"}"
+    ]
+  },
+  "notes": [
+    "E23; dedicated Redis container redis:7-alpine"
+  ],
+  "manifest_written": "2026-10-05T23:20:36+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}
