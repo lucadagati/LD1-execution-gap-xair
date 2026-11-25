@@ -1,0 +1,1 @@
+{"topology": "producers+XAIR+Redis on 192.168.0.101 (rpi4); gateway+cell controller on 192.168.0.179 (coralmac); same Wi-Fi LAN", "tcp_connect_rtt_ms core->gateway": {"p50": 5.87, "p90": 6.98, "p99": 10.57}, "core": "Linux-7.0.0-1020-raspi-realtime-aarch64-with-glibc2.43", "loadavg": ["0.71", "1.12", "1.33"]}

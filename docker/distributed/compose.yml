@@ -1,0 +1,61 @@
+# Distributed testbed: each component is a separate network node (own network
+# namespace and IP) on a dedicated bridge, with pinned CPU sets. Link delay is
+# applied per node by scripts/run_distributed.sh (tc netem on each eth0).
+# The cpuset values are those of the host used for the paper (the CPUs its Docker
+# daemon allows); adjust them to disjoint sets available on your machine.
+name: xair-dist
+networks:
+  plant:
+    driver: bridge
+    ipam:
+      config: [{subnet: 172.31.40.0/24}]
+x-node: &node
+  image: xair-node
+  volumes: ["../..:/repo"]
+  networks: [plant]
+services:
+  redis:
+    image: redis:7-alpine@sha256:520775a41a63e77e06c73e35d2fd9cc15921a609516818796b4ecbb813078bc7
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    cpuset: "3,6"
+    networks: [plant]
+  opa:
+    # external baseline: policy engine (Open Policy Agent) with the same predicates
+    image: openpolicyagent/opa:1.21.0@sha256:9e0010512cf405e66bfd7b89394f514e56fe0464822df0527e780344ab151450
+    command: ["run", "--server", "--addr=0.0.0.0:8181", "--log-level=error", "/policy/xair.rego"]
+    volumes: ["../opa:/policy:ro"]
+    cpuset: "7,8,9,12"
+    networks: [plant]
+  xair:
+    <<: *node
+    cpuset: "7,8,9,12"
+    environment: {REDIS_URL: "redis://redis:6379/0", OPA_URL: "http://opa:8181"}
+    command: ["python", "-m", "uvicorn", "xair.adapters.http_server:app", "--host", "0.0.0.0", "--port", "8080"]
+    depends_on: [redis, opa]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/v1/metrics', timeout=2)"]
+      interval: 2s
+      retries: 30
+  gateway:
+    <<: *node
+    cpuset: "13,14,25,27"
+    environment: {XAIR_URL: "http://xair:8080", OPA_URL: "http://opa:8181", CELL_URL: "opc.tcp://cell:4840/cell/"}
+    command: ["python", "scripts/actuator_gateway.py", "9091", "9092"]
+    depends_on: {xair: {condition: service_healthy}, cell: {condition: service_started}}
+  cell:
+    # emulated cell controller (OPC UA), owner of the line state
+    <<: *node
+    cpuset: "54,55"
+    command: ["python", "scripts/cell_controller.py", "--port", "4840", "--scan-ms", "10", "--xair", "http://xair:8080"]
+    depends_on: {xair: {condition: service_healthy}}
+  bench:
+    <<: *node
+    cpuset: "39,41,45,57"
+    environment:
+      XAIR_URL: "http://xair:8080"
+      ADAPTER_URL: "http://gateway:9092"
+      XAIR_RESULTS_DIR: "/repo/experiments/results/distributed"
+      XAIR_DATA_CACHE: "/repo/experiments/.cache"
+      CELL_URL: "opc.tcp://cell:4840/cell/"
+    command: ["sleep", "infinity"]
+    depends_on: [gateway]

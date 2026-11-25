@@ -1,0 +1,58 @@
+ Network xair-dist_plant Creating 
+ Network xair-dist_plant Creating 
+ Network xair-dist_plant Created 
+ Network xair-dist_plant Created 
+ Container xair-dist-opa-1 Creating 
+ Container xair-dist-redis-1 Creating 
+ Container xair-dist-opa-1 Created 
+ Container xair-dist-redis-1 Created 
+ Container xair-dist-xair-1 Creating 
+ Container xair-dist-xair-1 Created 
+ Container xair-dist-cell-1 Creating 
+ Container xair-dist-cell-1 Created 
+ Container xair-dist-gateway-1 Creating 
+ Container xair-dist-gateway-1 Created 
+ Container xair-dist-bench-1 Creating 
+ Container xair-dist-bench-1 Created 
+ Container xair-dist-opa-1 Starting 
+ Container xair-dist-redis-1 Starting 
+ Container xair-dist-opa-1 Started 
+ Container xair-dist-redis-1 Started 
+ Container xair-dist-xair-1 Starting 
+ Container xair-dist-xair-1 Started 
+ Container xair-dist-xair-1 Waiting 
+ Container xair-dist-xair-1 Healthy 
+ Container xair-dist-cell-1 Starting 
+ Container xair-dist-cell-1 Started 
+ Container xair-dist-xair-1 Waiting 
+ Container xair-dist-xair-1 Healthy 
+ Container xair-dist-gateway-1 Starting 
+ Container xair-dist-gateway-1 Started 
+ Container xair-dist-bench-1 Starting 
+ Container xair-dist-bench-1 Started 
+ Container xair-dist-opa-1 Waiting 
+ Container xair-dist-xair-1 Waiting 
+ Container xair-dist-gateway-1 Waiting 
+ Container xair-dist-cell-1 Waiting 
+ Container xair-dist-bench-1 Waiting 
+ Container xair-dist-redis-1 Waiting 
+ Container xair-dist-bench-1 Healthy 
+ Container xair-dist-redis-1 Healthy 
+ Container xair-dist-opa-1 Healthy 
+ Container xair-dist-cell-1 Healthy 
+ Container xair-dist-xair-1 Healthy 
+ Container xair-dist-gateway-1 Healthy 
+{"offline": [{"latency_s": 1, "exact_obsolete_fraction": 1.2694479347497673e-05, "idle_machine_seconds": 197093550.0, "exact_interior_fraction": 2.238206741156504e-05, "interior_idle_machine_seconds": 110490240.0, "mc_decisions": 100000, "mc_obsolete": 0, "mc_fraction": 0.0, "mc_ci95_lo": 0.0, "mc_ci95_hi": 3.8414524267635735e-05, "decisions": 100000, "obsolete": 0, "obsolete_fraction": 1.2694479347497673e-05}, {"latency_s": 10, "exact_obsolete_fraction": 0.0001269449673778832, "idle_machine_seconds": 197093280.0, "exact_interior_fraction": 0.0002238206741156504, "interior_idle_machine_seconds": 110490240.0, "mc_decisions": 100000, "mc_obsolete": 12, "mc_fraction": 0.00012, "mc_ci95_lo": 6.864819397889047e-05, "mc_ci95_hi": 0.00020975711080292104, "decisions": 100000, "obsolete": 12, "obsolete_fraction": 0.0001269449673778832}, {"latency_s": 60, "exact_obsolete_fraction": 0.0007616756010829066, "idle_machine_seconds": 197091780.0, "exact_interior_fraction": 0.0013429240446939023, "interior_idle_machine_seconds": 110490240.0, "mc_decisions": 100000, "mc_obsolete": 88, "mc_fraction": 0.00088, "mc_ci95_lo": 0.0007143961464759013, "mc_ci95_hi": 0.0010839507682290233, "decisions": 100000, "obsolete": 88, "obsolete_fraction": 0.0007616756010829066}, {"latency_s": 300, "exact_obsolete_fraction": 0.003293712780573701, "idle_machine_seconds": 197084580.0, "exact_interior_fraction": 0.0057963490711939805, "interior_idle_machine_seconds": 110490240.0, "mc_decisions": 100000, "mc_obsolete": 346, "mc_fraction": 0.00346, "mc_ci95_lo": 0.0031146320322874683, "mc_ci95_hi": 0.003843516663472236, "decisions": 100000, "obsolete": 346, "obsolete_fraction": 0.003293712780573701}, {"latency_s": 1800, "exact_obsolete_fraction": 0.01703657711816073, "idle_machine_seconds": 197039580.0, "exact_interior_fraction": 0.029909248092863223, "interior_idle_machine_seconds": 110490240.0, "mc_decisions": 100000, "mc_obsolete": 1743, "mc_fraction": 0.01743, "mc_ci95_lo": 0.0166372188425848, "mc_ci95_hi": 0.01825985655136687, "decisions": 100000, "obsolete": 1743, "obsolete_fraction": 0.01703657711816073}, {"latency_s": 3600, "exact_obsolete_fraction": 0.030975363780435097, "idle_machine_seconds": 196985580.0, "exact_interior_fraction": 0.054279002380662765, "interior_idle_machine_seconds": 110490240.0, "mc_decisions": 100000, "mc_obsolete": 3183, "mc_fraction": 0.03183, "mc_ci95_lo": 0.030759803422644796, "mc_ci95_hi": 0.032936165633007955, "decisions": 100000, "obsolete": 3183, "obsolete_fraction": 0.030975363780435097}]}
+{"paired": {"30.0": {"decisions": 2000, "label_discordant": 2, "obsolete": 35, "valid": 1963, "gates": {"direct": {"stale_released": 35, "false_revocations": 0}, "xair/global": {"stale_released": 0, "false_revocations": 41}, "xair/readset": {"stale_released": 0, "false_revocations": 0}, "xair/truth": {"stale_released": 0, "false_revocations": 0}, "xair_atomic/truth": {"stale_released": 0, "false_revocations": 0}}}, "240.0": {"decisions": 2000, "label_discordant": 1, "obsolete": 147, "valid": 1852, "gates": {"direct": {"stale_released": 147, "false_revocations": 0}, "xair/global": {"stale_released": 0, "false_revocations": 39}, "xair/readset": {"stale_released": 0, "false_revocations": 0}, "xair/truth": {"stale_released": 0, "false_revocations": 0}, "xair_atomic/truth": {"stale_released": 0, "false_revocations": 0}}}}}
+{"L_min": 30.0, "gate": "direct/None", "n": 2000, "obsolete": 35, "stale_released": 35, "false_revocations": "0/1965"}
+{"L_min": 30.0, "gate": "xair/global", "n": 2000, "obsolete": 35, "stale_released": 0, "false_revocations": "42/1965"}
+{"L_min": 30.0, "gate": "xair/readset", "n": 2000, "obsolete": 37, "stale_released": 0, "false_revocations": "0/1963"}
+{"L_min": 30.0, "gate": "xair/truth", "n": 2000, "obsolete": 36, "stale_released": 0, "false_revocations": "0/1964"}
+{"L_min": 30.0, "gate": "xair_atomic/truth", "n": 2000, "obsolete": 36, "stale_released": 0, "false_revocations": "1/1964"}
+{"L_min": 240.0, "gate": "direct/None", "n": 2000, "obsolete": 147, "stale_released": 147, "false_revocations": "0/1853"}
+{"L_min": 240.0, "gate": "xair/global", "n": 2000, "obsolete": 147, "stale_released": 0, "false_revocations": "39/1853"}
+{"L_min": 240.0, "gate": "xair/readset", "n": 2000, "obsolete": 147, "stale_released": 0, "false_revocations": "0/1853"}
+{"L_min": 240.0, "gate": "xair/truth", "n": 2000, "obsolete": 148, "stale_released": 0, "false_revocations": "0/1852"}
+{"L_min": 240.0, "gate": "xair_atomic/truth", "n": 2000, "obsolete": 148, "stale_released": 0, "false_revocations": "0/1852"}
+Distributed campaign complete -> /home/ml/ResearchActivities/LD1/experiments/results/distributed/e20_paired
+rc=0

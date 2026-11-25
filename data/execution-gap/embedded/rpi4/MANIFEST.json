@@ -1,0 +1,103 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/embedded/rpi4",
+  "kind": "retroactive",
+  "commands": [
+    "BOARD=rpi4 ./scripts/run_embedded.sh",
+    "BOARD=rpi4 ./scripts/run_embedded_eq3.sh"
+  ],
+  "seeds": [],
+  "files": [
+    {
+      "path": "chrony_after.txt",
+      "bytes": 476,
+      "sha256": "a9d0ad995c0424645b6484d2b315d0a4dddcc75e0bd04b9c04e2332d538ae253"
+    },
+    {
+      "path": "chrony_before.txt",
+      "bytes": 476,
+      "sha256": "507b001ad93224bad9cc3a672ea75fe55582ac8d28ba68b947245209d2e872ae"
+    },
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 45948,
+      "sha256": "ed5101409959f595be4bd9b1baa1d71f5b42db71cca5688d04895ea9bb13156d"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 49069,
+      "sha256": "554ef8c37fe03e36d6656c72160bd463353aadfdcd409bafb1e4d85fd1037e19"
+    },
+    {
+      "path": "e11_stratified_seed1.csv",
+      "bytes": 10161,
+      "sha256": "4a1cfdb6090a753f281a36c843452bfc321145924d94dded01c9f729371a75e0"
+    },
+    {
+      "path": "e11_stratified_seed2.csv",
+      "bytes": 10156,
+      "sha256": "89f844af741e11ac60ec9c2fe4da654350f8f20a15841a8d6649eca717d951c6"
+    },
+    {
+      "path": "e11_stratified_seed3.csv",
+      "bytes": 10269,
+      "sha256": "f333b9f6ed0afb40f9b2025dce29eb7ab6feb5b88e6b91ea45a2074a7e4b7e82"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 243717,
+      "sha256": "b5c52e403e6ff9ca28ab3d5333494a83278f9c021120e9ff33e265fadf68e6f3"
+    },
+    {
+      "path": "e16_eq3_seed1.csv",
+      "bytes": 343959,
+      "sha256": "f30c046d2ef1f95c506b0e570bec2f75d57eaf523a0d9bc50b0be4227837d247"
+    },
+    {
+      "path": "e16_eq3_seed2.csv",
+      "bytes": 344350,
+      "sha256": "e8cb88cfadc1389ce46008c6de8c5af88bf99d707131077684ae6afc35115d60"
+    },
+    {
+      "path": "e16_eq3_seed3.csv",
+      "bytes": 345275,
+      "sha256": "2afee7e36385483551bb7297616ff2c7a4cc8a6dfd7a71b575bb0e83a0ca453b"
+    },
+    {
+      "path": "e4_load_http_rep1.csv",
+      "bytes": 290,
+      "sha256": "bad5584eaa1851200435312d0ccfa70176c32e391e4365abde72959665a56e44"
+    },
+    {
+      "path": "e4_load_http_rep2.csv",
+      "bytes": 291,
+      "sha256": "8615832008758f461ee32a8ac0a00f9744279ec4e2d265a0e85bcb04af3c73e2"
+    },
+    {
+      "path": "e4_load_http_rep3.csv",
+      "bytes": 291,
+      "sha256": "997e5ebbb3389f4437871e679791ec3b908059a4c80608e543bb4a00ec1a4d42"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 435,
+      "sha256": "82722e3b2b587e7765a353b51c66e9de5a456b7365eb2f8507739739cc8cba0c"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"board\": \"rpi4\", \"platform\": \"Linux-7.0.0-1020-raspi-realtime-aarch64-with-glibc2.43\", \"python\": \"3.12.14\", \"cpu\": \"Raspberry Pi 4 Model B Rev 1.5\", \"cores\": 4, \"kernel\": \"#20-Ubuntu SMP PREEMPT_RT Fri Sep 11 17:25:38 UTC 2026\", \"loadavg\": [\"0.70\", \"0.19\", \"0.06\"], \"pinning\": \"redis core 3, XAIR core 2, gateway core 1, harness core 0\"}",
+      "{\"rss_mb\": {\"xair\": 96, \"gateway\": 34, \"redis\": null}, \"loadavg_end\": [\"2.59\", \"1.19\", \"0.48\"]}"
+    ]
+  },
+  "notes": [
+    "E25; pinning recorded in environment.txt; e16_eq3_seed*.csv and chrony_*.txt from run_embedded_eq3.sh (2026-10-15)"
+  ],
+  "manifest_written": "2026-10-15T21:33:29+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

@@ -1,0 +1,1 @@
+{"suite": "E23 predicate-truth scaling", "store": "Redis 7 (docker, no persistence)", "client": "single process pinned to cores 28-31", "loadavg": "15.87 16.53 16.62", "note": "three repetitions; the host load average rose to 40-53 during the run (other tenants)"}

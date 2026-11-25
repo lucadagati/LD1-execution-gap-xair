@@ -1,0 +1,409 @@
+mode,deadline_ms,induced_delay_ms,gateway_released,reason,age_at_check_ms,age_at_middleware_ms,late_at_check,late_at_middleware
+atomic_margin3,1000,825.0,0,age_bound_exceeded_at_commit,1111.99609375,,0,0
+atomic_guard,1000,750.0,0,age_bound_exceeded_at_commit,1041.99609375,,0,0
+atomic_margin3,1000,800.0,0,age_bound_exceeded_at_commit,1092.14404296875,,0,0
+atomic_margin3,1000,787.5,0,age_bound_exceeded_at_commit,1077.94116210938,,0,0
+atomic_margin3,1000,725.0,0,age_bound_exceeded_at_commit,1008.68310546875,,0,0
+atomic_guard,1000,700.0,1,authorization_committed,982.744140625,882.528076171875,0,0
+atomic_margin3,1000,812.5,0,age_bound_exceeded_at_commit,1102.43701171875,,0,0
+atomic,1000,825.0,0,age_bound_exceeded_at_commit,1115.5439453125,,0,0
+atomic_guard,1000,737.5,0,age_bound_exceeded_at_commit,1028.5703125,,0,0
+atomic_guard,1000,875.0,0,age_bound_exceeded_at_commit,1162.1259765625,,0,0
+atomic,1000,787.5,0,age_bound_exceeded_at_commit,1077.66381835938,,0,0
+optimistic,1000,800.0,0,deadline exceeded: elapsed 1058.6ms > 1000ms at release_at_publish,991.957763671875,,0,0
+atomic,1000,712.5,0,age_bound_exceeded_at_commit,995.06909179688,,0,0
+atomic_guard,1000,900.0,0,age_bound_exceeded_at_commit,1190.2490234375,,0,0
+optimistic,1000,862.5,0,deadline exceeded: elapsed 1110.4ms > 1000ms at release_at_publish,1043.751953125,,0,0
+optimistic,1000,700.0,1,published_after_gate_recheck,892.45068359375,892.548828125,0,0
+atomic_margin3,1000,762.5,0,age_bound_exceeded_at_commit,1045.7958984375,,0,0
+atomic_margin3,1000,850.0,0,age_bound_exceeded_at_commit,1130.783203125,,0,0
+atomic_guard,1000,775.0,0,age_bound_exceeded_at_commit,1059.65795898438,,0,0
+atomic_guard,1000,812.5,0,age_bound_exceeded_at_commit,1090.55200195312,,0,0
+optimistic,1000,900.0,0,deadline exceeded: elapsed 1151.4ms > 1000ms at release_at_publish,1084.769775390625,,0,0
+atomic_guard,1000,837.5,0,age_bound_exceeded_at_commit,1122.46484375,,0,0
+optimistic,1000,787.5,0,deadline exceeded: elapsed 1038.2ms > 1000ms at release_at_publish,971.60888671875,,0,0
+atomic_margin3,1000,712.5,0,age_bound_exceeded_at_commit,1009.54296875,,0,0
+atomic,1000,900.0,0,age_bound_exceeded_at_commit,1196.4768066406,,0,0
+atomic,1000,900.0,0,age_bound_exceeded_at_commit,1191.5119628906,,0,0
+optimistic,1000,787.5,0,deadline exceeded: elapsed 1038.4ms > 1000ms at release_at_publish,971.806884765625,,0,0
+optimistic,1000,875.0,0,deadline exceeded: elapsed 1124.7ms > 1000ms at release_at_publish,1058.0830078125,,0,0
+optimistic,1000,762.5,0,deadline exceeded: elapsed 1027.1ms > 1000ms at release_at_publish,960.497802734375,,0,0
+atomic_guard,1000,825.0,0,age_bound_exceeded_at_commit,1111.1799316406,,0,0
+optimistic,1000,750.0,1,published_after_gate_recheck,932.868896484375,932.95458984375,0,0
+atomic,1000,900.0,0,age_bound_exceeded_at_commit,1188.080078125,,0,0
+atomic_guard,1000,750.0,0,age_bound_exceeded_at_commit,1034.36889648438,,0,0
+atomic_guard,1000,775.0,0,age_bound_exceeded_at_commit,1061.455078125,,0,0
+atomic_margin3,1000,837.5,0,age_bound_exceeded_at_commit,1130.5910644531,,0,0
+atomic_guard,1000,812.5,0,age_bound_exceeded_at_commit,1100.82495117188,,0,0
+optimistic,1000,812.5,0,deadline exceeded: elapsed 1067.0ms > 1000ms at release_at_publish,1000.353759765625,,0,0
+atomic_guard,1000,800.0,0,age_bound_exceeded_at_commit,1090.4521484375,,0,0
+atomic_margin3,1000,787.5,0,age_bound_exceeded_at_commit,1076.67895507812,,0,0
+atomic,1000,837.5,0,age_bound_exceeded_at_commit,1125.7561035156,,0,0
+atomic_margin3,1000,862.5,0,age_bound_exceeded_at_commit,1151.5219726562,,0,0
+atomic,1000,700.0,1,authorization_committed,981.328125,880.5068359375,0,0
+optimistic,1000,812.5,0,deadline exceeded: elapsed 1062.5ms > 1000ms at release_at_publish,995.93115234375,,0,0
+atomic_margin3,1000,887.5,0,age_bound_exceeded_at_commit,1173.7790527344,,0,0
+atomic_guard,1000,900.0,0,age_bound_exceeded_at_commit,1178.8618164062,,0,0
+atomic_margin3,1000,900.0,0,age_bound_exceeded_at_commit,1179.619140625,,0,0
+atomic_margin3,1000,875.0,0,age_bound_exceeded_at_commit,1167.3149414062,,0,0
+atomic_guard,1000,800.0,0,age_bound_exceeded_at_commit,1080.541015625,,0,0
+atomic_guard,1000,825.0,0,age_bound_exceeded_at_commit,1111.6201171875,,0,0
+atomic_margin3,1000,725.0,0,age_bound_exceeded_at_commit,1017.5341796875,,0,0
+atomic,1000,700.0,1,authorization_committed,979.421875,878.982177734375,0,0
+atomic_guard,1000,712.5,0,age_bound_exceeded_at_commit,1004.16088867188,,0,0
+atomic_guard,1000,812.5,0,age_bound_exceeded_at_commit,1099.06982421875,,0,0
+optimistic,1000,825.0,0,deadline exceeded: elapsed 1084.9ms > 1000ms at release_at_publish,1018.2587890625,,0,0
+atomic_margin3,1000,812.5,0,age_bound_exceeded_at_commit,1092.15795898438,,0,0
+atomic,1000,700.0,1,authorization_committed,987.92309570312,887.331787109375,0,0
+optimistic,1000,725.0,1,published_after_gate_recheck,902.60791015625,902.677978515625,0,0
+atomic,1000,862.5,0,age_bound_exceeded_at_commit,1143.54296875,,0,0
+atomic,1000,887.5,0,age_bound_exceeded_at_commit,1182.8369140625,,0,0
+atomic_guard,1000,762.5,0,age_bound_exceeded_at_commit,1046.6259765625,,0,0
+atomic_margin3,1000,837.5,0,age_bound_exceeded_at_commit,1124.6760253906,,0,0
+atomic,1000,850.0,0,age_bound_exceeded_at_commit,1131.580078125,,0,0
+optimistic,1000,787.5,0,deadline exceeded: elapsed 1040.0ms > 1000ms at release_at_publish,973.3896484375,,0,0
+optimistic,1000,712.5,1,published_after_gate_recheck,904.886962890625,904.965087890625,0,0
+atomic_guard,1000,875.0,0,age_bound_exceeded_at_commit,1157.9172363281,,0,0
+atomic,1000,725.0,0,age_bound_exceeded_at_commit,1003.625,,0,0
+atomic,1000,837.5,0,age_bound_exceeded_at_commit,1125.2360839844,,0,0
+atomic_margin3,1000,700.0,0,age_bound_exceeded_at_commit,988.25903320312,,0,0
+atomic,1000,775.0,0,age_bound_exceeded_at_commit,1069.47485351562,,0,0
+atomic,1000,837.5,0,age_bound_exceeded_at_commit,1125.6750488281,,0,0
+atomic_guard,1000,737.5,0,age_bound_exceeded_at_commit,1020.6669921875,,0,0
+atomic_margin3,1000,875.0,0,age_bound_exceeded_at_commit,1156.7629394531,,0,0
+atomic,1000,812.5,0,age_bound_exceeded_at_commit,1097.93603515625,,0,0
+atomic,1000,787.5,0,age_bound_exceeded_at_commit,1069.703125,,0,0
+optimistic,1000,875.0,0,deadline exceeded: elapsed 1129.4ms > 1000ms at release_at_publish,1062.76904296875,,0,0
+atomic,1000,850.0,0,age_bound_exceeded_at_commit,1131.6179199219,,0,0
+atomic_margin3,1000,712.5,0,age_bound_exceeded_at_commit,1007.86181640625,,0,0
+atomic,1000,750.0,0,age_bound_exceeded_at_commit,1038.35522460938,,0,0
+atomic_margin3,1000,712.5,0,age_bound_exceeded_at_commit,1011.51025390625,,0,0
+atomic,1000,862.5,0,age_bound_exceeded_at_commit,1144.7922363281,,0,0
+atomic_guard,1000,725.0,0,age_bound_exceeded_at_commit,1007.26318359375,,0,0
+atomic_guard,1000,725.0,0,age_bound_exceeded_at_commit,1012.32202148438,,0,0
+atomic_guard,1000,800.0,0,age_bound_exceeded_at_commit,1087.1630859375,,0,0
+atomic_margin3,1000,762.5,0,age_bound_exceeded_at_commit,1050.212890625,,0,0
+atomic_guard,1000,850.0,0,age_bound_exceeded_at_commit,1140.0310058594,,0,0
+atomic_guard,1000,812.5,0,age_bound_exceeded_at_commit,1096.27416992188,,0,0
+optimistic,1000,700.0,1,published_after_gate_recheck,878.39599609375,878.466796875,0,0
+atomic_guard,1000,762.5,0,age_bound_exceeded_at_commit,1042.32690429688,,0,0
+atomic_margin3,1000,700.0,0,age_bound_exceeded_at_commit,989.24194335938,,0,0
+atomic_margin3,1000,750.0,0,age_bound_exceeded_at_commit,1038.53466796875,,0,0
+atomic_guard,1000,787.5,0,age_bound_exceeded_at_commit,1071.99096679688,,0,0
+atomic_guard,1000,812.5,0,age_bound_exceeded_at_commit,1098.84399414062,,0,0
+atomic_guard,1000,862.5,0,age_bound_exceeded_at_commit,1156.3049316406,,0,0
+atomic,1000,750.0,0,age_bound_exceeded_at_commit,1030.55297851562,,0,0
+atomic_margin3,1000,700.0,0,age_bound_exceeded_at_commit,995.23095703125,,0,0
+atomic,1000,825.0,0,age_bound_exceeded_at_commit,1112.7829589844,,0,0
+atomic,1000,750.0,0,age_bound_exceeded_at_commit,1040.2509765625,,0,0
+optimistic,1000,812.5,0,deadline exceeded: elapsed 1069.3ms > 1000ms at release_at_publish,1002.738525390625,,0,0
+atomic_margin3,1000,887.5,0,age_bound_exceeded_at_commit,1171.0668945312,,0,0
+atomic,1000,875.0,0,age_bound_exceeded_at_commit,1162.951171875,,0,0
+atomic_guard,1000,762.5,0,age_bound_exceeded_at_commit,1045.251953125,,0,0
+atomic_margin3,1000,762.5,0,age_bound_exceeded_at_commit,1053.58325195312,,0,0
+atomic,1000,700.0,1,authorization_committed,987.81103515625,888.396728515625,0,0
+optimistic,1000,900.0,0,deadline exceeded: elapsed 1162.6ms > 1000ms at release_at_publish,1095.973876953125,,0,0
+optimistic,1000,737.5,1,published_after_gate_recheck,929.759033203125,929.832763671875,0,0
+optimistic,1000,800.0,0,deadline exceeded: elapsed 1047.5ms > 1000ms at release_at_publish,980.94091796875,,0,0
+atomic_guard,1000,850.0,0,age_bound_exceeded_at_commit,1137.8298339844,,0,0
+optimistic,1000,762.5,0,deadline exceeded: elapsed 1016.5ms > 1000ms at release_at_publish,949.915771484375,,0,0
+atomic_margin3,1000,762.5,0,age_bound_exceeded_at_commit,1044.13500976562,,0,0
+atomic_margin3,1000,812.5,0,age_bound_exceeded_at_commit,1101.44091796875,,0,0
+atomic_guard,1000,737.5,0,age_bound_exceeded_at_commit,1027.10205078125,,0,0
+atomic_guard,1000,887.5,0,age_bound_exceeded_at_commit,1170.1899414062,,0,0
+optimistic,1000,837.5,0,deadline exceeded: elapsed 1090.0ms > 1000ms at release_at_publish,1023.384033203125,,0,0
+atomic,1000,775.0,0,age_bound_exceeded_at_commit,1057.6591796875,,0,0
+atomic,1000,837.5,0,age_bound_exceeded_at_commit,1125.7021484375,,0,0
+optimistic,1000,700.0,1,published_after_gate_recheck,889.921875,889.98876953125,0,0
+atomic,1000,787.5,0,age_bound_exceeded_at_commit,1069.34887695312,,0,0
+atomic_guard,1000,875.0,0,age_bound_exceeded_at_commit,1158.6489257812,,0,0
+atomic_margin3,1000,737.5,0,age_bound_exceeded_at_commit,1024.67504882812,,0,0
+atomic_guard,1000,850.0,0,age_bound_exceeded_at_commit,1147.24609375,,0,0
+atomic_margin3,1000,800.0,0,age_bound_exceeded_at_commit,1088.5400390625,,0,0
+optimistic,1000,762.5,0,deadline exceeded: elapsed 1019.9ms > 1000ms at release_at_publish,953.32470703125,,0,0
+atomic,1000,737.5,0,age_bound_exceeded_at_commit,1023.04614257812,,0,0
+atomic,1000,825.0,0,age_bound_exceeded_at_commit,1109.4638671875,,0,0
+atomic,1000,812.5,0,age_bound_exceeded_at_commit,1091.45190429688,,0,0
+optimistic,1000,800.0,0,deadline exceeded: elapsed 1044.4ms > 1000ms at release_at_publish,977.77099609375,,0,0
+atomic_guard,1000,837.5,0,age_bound_exceeded_at_commit,1115.0866699219,,0,0
+optimistic,1000,750.0,0,deadline exceeded: elapsed 1004.3ms > 1000ms at release_at_publish,937.69384765625,,0,0
+atomic_guard,1000,700.0,0,age_bound_exceeded_at_commit,989.2939453125,,0,0
+optimistic,1000,712.5,1,published_after_gate_recheck,893.72998046875,893.798828125,0,0
+atomic_guard,1000,725.0,0,age_bound_exceeded_at_commit,1014.06005859375,,0,0
+optimistic,1000,775.0,0,deadline exceeded: elapsed 1032.1ms > 1000ms at release_at_publish,965.520751953125,,0,0
+atomic_guard,1000,750.0,0,age_bound_exceeded_at_commit,1034.01391601562,,0,0
+atomic_guard,1000,712.5,0,age_bound_exceeded_at_commit,1006.9990234375,,0,0
+optimistic,1000,737.5,1,published_after_gate_recheck,925.365966796875,925.43310546875,0,0
+atomic_margin3,1000,800.0,0,age_bound_exceeded_at_commit,1087.14282226562,,0,0
+atomic_margin3,1000,762.5,0,age_bound_exceeded_at_commit,1054.11987304688,,0,0
+optimistic,1000,750.0,0,deadline exceeded: elapsed 1007.6ms > 1000ms at release_at_publish,940.964599609375,,0,0
+optimistic,1000,700.0,1,published_after_gate_recheck,883.483642578125,883.544921875,0,0
+atomic,1000,862.5,0,age_bound_exceeded_at_commit,1146.8239746094,,0,0
+atomic_margin3,1000,850.0,0,age_bound_exceeded_at_commit,1135.4650878906,,0,0
+atomic,1000,800.0,0,age_bound_exceeded_at_commit,1085.09716796875,,0,0
+atomic_guard,1000,825.0,0,age_bound_exceeded_at_commit,1111.3188476562,,0,0
+atomic,1000,837.5,0,age_bound_exceeded_at_commit,1124.6391601562,,0,0
+atomic_guard,1000,787.5,0,age_bound_exceeded_at_commit,1071.80590820312,,0,0
+atomic_margin3,1000,900.0,0,age_bound_exceeded_at_commit,1192.9899902344,,0,0
+atomic_margin3,1000,700.0,1,authorization_committed,983.40209960938,884.3642578125,0,0
+atomic_guard,1000,787.5,0,age_bound_exceeded_at_commit,1068.53686523438,,0,0
+optimistic,1000,850.0,0,deadline exceeded: elapsed 1099.3ms > 1000ms at release_at_publish,1032.73193359375,,0,0
+atomic_margin3,1000,850.0,0,age_bound_exceeded_at_commit,1135.3640136719,,0,0
+atomic,1000,800.0,0,age_bound_exceeded_at_commit,1085.1650390625,,0,0
+atomic_guard,1000,700.0,1,authorization_committed,984.76391601562,886.802978515625,0,0
+atomic,1000,862.5,0,age_bound_exceeded_at_commit,1156.0847167969,,0,0
+atomic_guard,1000,700.0,1,authorization_committed,986.9931640625,888.7841796875,0,0
+optimistic,1000,750.0,0,deadline exceeded: elapsed 1003.0ms > 1000ms at release_at_publish,936.342529296875,,0,0
+atomic,1000,812.5,0,age_bound_exceeded_at_commit,1093.6611328125,,0,0
+atomic,1000,775.0,0,age_bound_exceeded_at_commit,1060.75415039062,,0,0
+atomic_guard,1000,700.0,0,age_bound_exceeded_at_commit,988.412109375,,0,0
+atomic,1000,812.5,0,age_bound_exceeded_at_commit,1098.68408203125,,0,0
+optimistic,1000,900.0,0,deadline exceeded: elapsed 1150.8ms > 1000ms at release_at_publish,1084.15185546875,,0,0
+atomic,1000,787.5,0,age_bound_exceeded_at_commit,1078.794921875,,0,0
+optimistic,1000,800.0,0,deadline exceeded: elapsed 1061.5ms > 1000ms at release_at_publish,994.929931640625,,0,0
+atomic,1000,712.5,0,age_bound_exceeded_at_commit,1005.4111328125,,0,0
+atomic,1000,762.5,0,age_bound_exceeded_at_commit,1058.57104492188,,0,0
+optimistic,1000,825.0,0,deadline exceeded: elapsed 1082.2ms > 1000ms at release_at_publish,1015.55810546875,,0,0
+atomic_guard,1000,775.0,0,age_bound_exceeded_at_commit,1068.19604492188,,0,0
+atomic_margin3,1000,825.0,0,age_bound_exceeded_at_commit,1110.4609375,,0,0
+optimistic,1000,812.5,0,deadline exceeded: elapsed 1062.1ms > 1000ms at release_at_publish,995.443115234375,,0,0
+atomic_margin3,1000,812.5,0,age_bound_exceeded_at_commit,1095.90893554688,,0,0
+atomic,1000,887.5,0,age_bound_exceeded_at_commit,1165.8830566406,,0,0
+atomic_guard,1000,850.0,0,age_bound_exceeded_at_commit,1141.2150878906,,0,0
+atomic_margin3,1000,875.0,0,age_bound_exceeded_at_commit,1154.5090332031,,0,0
+atomic,1000,737.5,0,age_bound_exceeded_at_commit,1021.81396484375,,0,0
+atomic_guard,1000,750.0,0,age_bound_exceeded_at_commit,1033.1630859375,,0,0
+optimistic,1000,775.0,0,deadline exceeded: elapsed 1025.9ms > 1000ms at release_at_publish,959.3388671875,,0,0
+atomic_guard,1000,887.5,0,age_bound_exceeded_at_commit,1177.1999511719,,0,0
+optimistic,1000,825.0,0,deadline exceeded: elapsed 1092.2ms > 1000ms at release_at_publish,1025.64111328125,,0,0
+atomic_margin3,1000,837.5,0,age_bound_exceeded_at_commit,1120.3779296875,,0,0
+atomic,1000,887.5,0,age_bound_exceeded_at_commit,1171.3830566406,,0,0
+atomic,1000,775.0,0,age_bound_exceeded_at_commit,1068.0419921875,,0,0
+optimistic,1000,787.5,0,deadline exceeded: elapsed 1041.1ms > 1000ms at release_at_publish,974.514892578125,,0,0
+optimistic,1000,862.5,0,deadline exceeded: elapsed 1119.2ms > 1000ms at release_at_publish,1052.620849609375,,0,0
+optimistic,1000,725.0,1,published_after_gate_recheck,914.68994140625,914.760009765625,0,0
+optimistic,1000,762.5,0,deadline exceeded: elapsed 1011.7ms > 1000ms at release_at_publish,945.048583984375,,0,0
+atomic_margin3,1000,875.0,0,age_bound_exceeded_at_commit,1166.4350585938,,0,0
+atomic,1000,762.5,0,age_bound_exceeded_at_commit,1049.70288085938,,0,0
+atomic_guard,1000,762.5,0,age_bound_exceeded_at_commit,1045.02319335938,,0,0
+atomic_guard,1000,862.5,0,age_bound_exceeded_at_commit,1145.7412109375,,0,0
+atomic_margin3,1000,837.5,0,age_bound_exceeded_at_commit,1119.5690917969,,0,0
+atomic_margin3,1000,887.5,0,age_bound_exceeded_at_commit,1178.1228027344,,0,0
+atomic,1000,787.5,0,age_bound_exceeded_at_commit,1073.34814453125,,0,0
+atomic,1000,712.5,0,age_bound_exceeded_at_commit,1003.76416015625,,0,0
+atomic,1000,737.5,0,age_bound_exceeded_at_commit,1018.02905273438,,0,0
+optimistic,1000,887.5,0,deadline exceeded: elapsed 1131.3ms > 1000ms at release_at_publish,1064.652099609375,,0,0
+optimistic,1000,750.0,0,deadline exceeded: elapsed 1008.4ms > 1000ms at release_at_publish,941.78271484375,,0,0
+optimistic,1000,762.5,0,deadline exceeded: elapsed 1018.4ms > 1000ms at release_at_publish,951.78369140625,,0,0
+optimistic,1000,875.0,0,deadline exceeded: elapsed 1133.1ms > 1000ms at release_at_publish,1066.4677734375,,0,0
+optimistic,1000,712.5,1,published_after_gate_recheck,902.675048828125,902.73486328125,0,0
+atomic_guard,1000,712.5,0,age_bound_exceeded_at_commit,1000.4150390625,,0,0
+atomic_guard,1000,712.5,0,age_bound_exceeded_at_commit,996.5830078125,,0,0
+atomic_guard,1000,837.5,0,age_bound_exceeded_at_commit,1128.0148925781,,0,0
+optimistic,1000,850.0,0,deadline exceeded: elapsed 1100.5ms > 1000ms at release_at_publish,1033.86083984375,,0,0
+atomic_margin3,1000,800.0,0,age_bound_exceeded_at_commit,1089.65405273438,,0,0
+atomic_guard,1000,787.5,0,age_bound_exceeded_at_commit,1078.673828125,,0,0
+optimistic,1000,775.0,0,deadline exceeded: elapsed 1019.6ms > 1000ms at release_at_publish,952.970703125,,0,0
+optimistic,1000,887.5,0,deadline exceeded: elapsed 1146.1ms > 1000ms at release_at_publish,1079.511962890625,,0,0
+optimistic,1000,750.0,0,deadline exceeded: elapsed 1010.9ms > 1000ms at release_at_publish,944.31982421875,,0,0
+optimistic,1000,725.0,1,published_after_gate_recheck,915.162841796875,915.230712890625,0,0
+atomic_guard,1000,800.0,0,age_bound_exceeded_at_commit,1076.12670898438,,0,0
+atomic_guard,1000,862.5,0,age_bound_exceeded_at_commit,1147.6079101562,,0,0
+atomic,1000,712.5,0,age_bound_exceeded_at_commit,1001.28881835938,,0,0
+atomic,1000,762.5,0,age_bound_exceeded_at_commit,1049.14599609375,,0,0
+optimistic,1000,850.0,0,deadline exceeded: elapsed 1096.3ms > 1000ms at release_at_publish,1029.660888671875,,0,0
+atomic_margin3,1000,862.5,0,age_bound_exceeded_at_commit,1154.3190917969,,0,0
+atomic_margin3,1000,825.0,0,age_bound_exceeded_at_commit,1108.1252441406,,0,0
+atomic_margin3,1000,887.5,0,age_bound_exceeded_at_commit,1168.8100585938,,0,0
+atomic_margin3,1000,850.0,0,age_bound_exceeded_at_commit,1142.4919433594,,0,0
+atomic,1000,737.5,0,age_bound_exceeded_at_commit,1026.6337890625,,0,0
+atomic_margin3,1000,750.0,0,age_bound_exceeded_at_commit,1032.72924804688,,0,0
+optimistic,1000,800.0,0,deadline exceeded: elapsed 1047.6ms > 1000ms at release_at_publish,980.979736328125,,0,0
+optimistic,1000,862.5,0,deadline exceeded: elapsed 1118.0ms > 1000ms at release_at_publish,1051.382080078125,,0,0
+atomic,1000,900.0,0,age_bound_exceeded_at_commit,1192.29296875,,0,0
+atomic,1000,825.0,0,age_bound_exceeded_at_commit,1111.1440429688,,0,0
+atomic_guard,1000,862.5,0,age_bound_exceeded_at_commit,1149.1899414062,,0,0
+atomic,1000,800.0,0,age_bound_exceeded_at_commit,1081.98803710938,,0,0
+optimistic,1000,712.5,1,published_after_gate_recheck,904.26806640625,904.3427734375,0,0
+atomic,1000,887.5,0,age_bound_exceeded_at_commit,1170.3312988281,,0,0
+optimistic,1000,725.0,1,published_after_gate_recheck,910.866943359375,910.93115234375,0,0
+atomic_margin3,1000,725.0,0,age_bound_exceeded_at_commit,1007.51098632812,,0,0
+atomic,1000,725.0,0,age_bound_exceeded_at_commit,1010.0458984375,,0,0
+optimistic,1000,900.0,0,deadline exceeded: elapsed 1163.0ms > 1000ms at release_at_publish,1096.34619140625,,0,0
+atomic_margin3,1000,800.0,0,age_bound_exceeded_at_commit,1089.22802734375,,0,0
+optimistic,1000,712.5,1,published_after_gate_recheck,895.052001953125,895.1259765625,0,0
+atomic_guard,1000,775.0,0,age_bound_exceeded_at_commit,1066.93994140625,,0,0
+optimistic,1000,875.0,0,deadline exceeded: elapsed 1140.8ms > 1000ms at release_at_publish,1074.188720703125,,0,0
+atomic,1000,825.0,0,age_bound_exceeded_at_commit,1111.5690917969,,0,0
+optimistic,1000,800.0,0,deadline exceeded: elapsed 1052.5ms > 1000ms at release_at_publish,985.880615234375,,0,0
+atomic_margin3,1000,875.0,0,age_bound_exceeded_at_commit,1162.6511230469,,0,0
+optimistic,1000,850.0,0,deadline exceeded: elapsed 1107.8ms > 1000ms at release_at_publish,1041.24072265625,,0,0
+atomic_guard,1000,812.5,0,age_bound_exceeded_at_commit,1097.416015625,,0,0
+atomic_guard,1000,837.5,0,age_bound_exceeded_at_commit,1122.6049804688,,0,0
+atomic,1000,887.5,0,age_bound_exceeded_at_commit,1174.4538574219,,0,0
+atomic_margin3,1000,775.0,0,age_bound_exceeded_at_commit,1061.22290039062,,0,0
+atomic_margin3,1000,812.5,0,age_bound_exceeded_at_commit,1096.70385742188,,0,0
+atomic_margin3,1000,775.0,0,age_bound_exceeded_at_commit,1068.3759765625,,0,0
+atomic_margin3,1000,900.0,0,age_bound_exceeded_at_commit,1187.5830078125,,0,0
+atomic_guard,1000,800.0,0,age_bound_exceeded_at_commit,1084.80200195312,,0,0
+optimistic,1000,812.5,0,deadline exceeded: elapsed 1074.6ms > 1000ms at release_at_publish,1008.007080078125,,0,0
+atomic_margin3,1000,725.0,0,age_bound_exceeded_at_commit,1019.11694335938,,0,0
+atomic_guard,1000,712.5,0,age_bound_exceeded_at_commit,997.77978515625,,0,0
+atomic_margin3,1000,750.0,0,age_bound_exceeded_at_commit,1035.40087890625,,0,0
+atomic_guard,1000,900.0,0,age_bound_exceeded_at_commit,1185.0219726562,,0,0
+atomic_margin3,1000,812.5,0,age_bound_exceeded_at_commit,1100.51000976562,,0,0
+atomic_margin3,1000,737.5,0,age_bound_exceeded_at_commit,1031.2900390625,,0,0
+atomic,1000,875.0,0,age_bound_exceeded_at_commit,1165.0681152344,,0,0
+optimistic,1000,862.5,0,deadline exceeded: elapsed 1119.2ms > 1000ms at release_at_publish,1052.585693359375,,0,0
+atomic,1000,887.5,0,age_bound_exceeded_at_commit,1164.9370117188,,0,0
+optimistic,1000,725.0,1,published_after_gate_recheck,916.759033203125,916.826904296875,0,0
+atomic_guard,1000,887.5,0,age_bound_exceeded_at_commit,1168.0810546875,,0,0
+atomic,1000,700.0,1,authorization_committed,987.51586914062,888.134765625,0,0
+atomic,1000,725.0,0,age_bound_exceeded_at_commit,1015.77978515625,,0,0
+atomic_guard,1000,775.0,0,age_bound_exceeded_at_commit,1060.05419921875,,0,0
+atomic_guard,1000,900.0,0,age_bound_exceeded_at_commit,1191.8200683594,,0,0
+optimistic,1000,862.5,0,deadline exceeded: elapsed 1109.3ms > 1000ms at release_at_publish,1042.734619140625,,0,0
+atomic,1000,837.5,0,age_bound_exceeded_at_commit,1125.9230957031,,0,0
+atomic,1000,825.0,0,age_bound_exceeded_at_commit,1111.0070800781,,0,0
+optimistic,1000,700.0,1,published_after_gate_recheck,888.406982421875,888.47509765625,0,0
+optimistic,1000,737.5,1,published_after_gate_recheck,918.65869140625,918.7294921875,0,0
+atomic_margin3,1000,737.5,0,age_bound_exceeded_at_commit,1023.25024414062,,0,0
+atomic_margin3,1000,775.0,0,age_bound_exceeded_at_commit,1058.19995117188,,0,0
+atomic_guard,1000,775.0,0,age_bound_exceeded_at_commit,1058.38793945312,,0,0
+optimistic,1000,775.0,0,deadline exceeded: elapsed 1029.3ms > 1000ms at release_at_publish,962.723876953125,,0,0
+atomic,1000,762.5,0,age_bound_exceeded_at_commit,1053.46313476562,,0,0
+atomic,1000,800.0,0,age_bound_exceeded_at_commit,1085.48706054688,,0,0
+atomic_guard,1000,700.0,0,age_bound_exceeded_at_commit,990.20703125,,0,0
+optimistic,1000,825.0,0,deadline exceeded: elapsed 1082.7ms > 1000ms at release_at_publish,1016.07080078125,,0,0
+atomic,1000,812.5,0,age_bound_exceeded_at_commit,1101.1650390625,,0,0
+atomic_margin3,1000,862.5,0,age_bound_exceeded_at_commit,1151.7570800781,,0,0
+atomic_margin3,1000,725.0,0,age_bound_exceeded_at_commit,1013.4267578125,,0,0
+atomic_guard,1000,825.0,0,age_bound_exceeded_at_commit,1109.0603027344,,0,0
+optimistic,1000,787.5,0,deadline exceeded: elapsed 1036.4ms > 1000ms at release_at_publish,969.77490234375,,0,0
+atomic,1000,850.0,0,age_bound_exceeded_at_commit,1202.1037597656,,0,0
+atomic_margin3,1000,787.5,0,age_bound_exceeded_at_commit,1071.52197265625,,0,0
+atomic_guard,1000,887.5,0,age_bound_exceeded_at_commit,1175.4790039062,,0,0
+atomic_guard,1000,850.0,0,age_bound_exceeded_at_commit,1146.4931640625,,0,0
+atomic_guard,1000,900.0,0,age_bound_exceeded_at_commit,1189.8308105469,,0,0
+atomic_margin3,1000,825.0,0,age_bound_exceeded_at_commit,1106.97094726562,,0,0
+optimistic,1000,762.5,0,deadline exceeded: elapsed 1014.1ms > 1000ms at release_at_publish,947.53564453125,,0,0
+optimistic,1000,875.0,0,deadline exceeded: elapsed 1123.4ms > 1000ms at release_at_publish,1056.814208984375,,0,0
+atomic_margin3,1000,712.5,0,age_bound_exceeded_at_commit,992.1298828125,,0,0
+optimistic,1000,812.5,0,deadline exceeded: elapsed 1061.6ms > 1000ms at release_at_publish,995.02880859375,,0,0
+atomic_guard,1000,862.5,0,age_bound_exceeded_at_commit,1146.7700195312,,0,0
+optimistic,1000,875.0,0,deadline exceeded: elapsed 1127.0ms > 1000ms at release_at_publish,1060.36376953125,,0,0
+optimistic,1000,900.0,0,deadline exceeded: elapsed 1154.8ms > 1000ms at release_at_publish,1088.158935546875,,0,0
+atomic,1000,800.0,0,age_bound_exceeded_at_commit,1082.05493164062,,0,0
+optimistic,1000,887.5,0,deadline exceeded: elapsed 1138.7ms > 1000ms at release_at_publish,1072.045166015625,,0,0
+atomic,1000,850.0,0,age_bound_exceeded_at_commit,1135.8039550781,,0,0
+atomic_guard,1000,875.0,0,age_bound_exceeded_at_commit,1160.33984375,,0,0
+atomic,1000,862.5,0,age_bound_exceeded_at_commit,1144.6938476562,,0,0
+optimistic,1000,737.5,1,published_after_gate_recheck,922.52392578125,922.59375,0,0
+atomic_guard,1000,887.5,0,age_bound_exceeded_at_commit,1175.3623046875,,0,0
+optimistic,1000,737.5,1,published_after_gate_recheck,921.3369140625,921.408203125,0,0
+atomic,1000,712.5,0,age_bound_exceeded_at_commit,1000.48608398438,,0,0
+atomic_margin3,1000,712.5,0,age_bound_exceeded_at_commit,1002.35400390625,,0,0
+atomic,1000,737.5,0,age_bound_exceeded_at_commit,1033.7109375,,0,0
+optimistic,1000,837.5,0,deadline exceeded: elapsed 1082.9ms > 1000ms at release_at_publish,1016.287109375,,0,0
+atomic_guard,1000,825.0,0,age_bound_exceeded_at_commit,1112.5070800781,,0,0
+atomic,1000,875.0,0,age_bound_exceeded_at_commit,1165.1989746094,,0,0
+atomic_margin3,1000,787.5,0,age_bound_exceeded_at_commit,1077.44921875,,0,0
+atomic,1000,850.0,0,age_bound_exceeded_at_commit,1132.4958496094,,0,0
+atomic,1000,750.0,0,age_bound_exceeded_at_commit,1036.65893554688,,0,0
+atomic_guard,1000,712.5,0,age_bound_exceeded_at_commit,992.71899414062,,0,0
+optimistic,1000,862.5,0,deadline exceeded: elapsed 1111.5ms > 1000ms at release_at_publish,1044.935791015625,,0,0
+atomic_margin3,1000,775.0,0,age_bound_exceeded_at_commit,1055.26000976562,,0,0
+atomic_margin3,1000,862.5,0,age_bound_exceeded_at_commit,1151.794921875,,0,0
+atomic_guard,1000,800.0,0,age_bound_exceeded_at_commit,1088.52880859375,,0,0
+optimistic,1000,850.0,0,deadline exceeded: elapsed 1104.1ms > 1000ms at release_at_publish,1037.5390625,,0,0
+atomic_margin3,1000,887.5,0,age_bound_exceeded_at_commit,1166.5842285156,,0,0
+optimistic,1000,737.5,1,published_after_gate_recheck,918.88818359375,918.9619140625,0,0
+atomic_guard,1000,725.0,0,age_bound_exceeded_at_commit,1010.88208007812,,0,0
+optimistic,1000,700.0,1,published_after_gate_recheck,891.294921875,891.357177734375,0,0
+atomic,1000,900.0,0,age_bound_exceeded_at_commit,1190.6708984375,,0,0
+atomic_guard,1000,762.5,0,age_bound_exceeded_at_commit,1045.32788085938,,0,0
+atomic_margin3,1000,725.0,0,age_bound_exceeded_at_commit,1003.94091796875,,0,0
+atomic_margin3,1000,825.0,0,age_bound_exceeded_at_commit,1111.8461914062,,0,0
+optimistic,1000,775.0,0,deadline exceeded: elapsed 1030.6ms > 1000ms at release_at_publish,964.035888671875,,0,0
+optimistic,1000,837.5,0,deadline exceeded: elapsed 1090.3ms > 1000ms at release_at_publish,1023.703125,,0,0
+atomic,1000,875.0,0,age_bound_exceeded_at_commit,1161.1530761719,,0,0
+optimistic,1000,900.0,0,deadline exceeded: elapsed 1146.4ms > 1000ms at release_at_publish,1079.829833984375,,0,0
+atomic_margin3,1000,750.0,0,age_bound_exceeded_at_commit,1031.76611328125,,0,0
+atomic_guard,1000,875.0,0,age_bound_exceeded_at_commit,1168.4440917969,,0,0
+atomic,1000,737.5,0,age_bound_exceeded_at_commit,1019.93603515625,,0,0
+atomic_margin3,1000,825.0,0,age_bound_exceeded_at_commit,1111.1818847656,,0,0
+atomic_guard,1000,787.5,0,age_bound_exceeded_at_commit,1076.84594726562,,0,0
+atomic_guard,1000,887.5,0,age_bound_exceeded_at_commit,1243.2958984375,,0,0
+atomic_margin3,1000,875.0,0,age_bound_exceeded_at_commit,1162.9519042969,,0,0
+atomic,1000,900.0,0,age_bound_exceeded_at_commit,1187.072265625,,0,0
+atomic,1000,775.0,0,age_bound_exceeded_at_commit,1059.80395507812,,0,0
+atomic_margin3,1000,700.0,0,age_bound_exceeded_at_commit,992.57885742188,,0,0
+atomic_margin3,1000,800.0,0,age_bound_exceeded_at_commit,1080.49096679688,,0,0
+atomic_guard,1000,762.5,0,age_bound_exceeded_at_commit,1043.85791015625,,0,0
+atomic,1000,875.0,0,age_bound_exceeded_at_commit,1158.9340820312,,0,0
+atomic,1000,750.0,0,age_bound_exceeded_at_commit,1038.53588867188,,0,0
+atomic_margin3,1000,837.5,0,age_bound_exceeded_at_commit,1122.0170898438,,0,0
+atomic_guard,1000,825.0,0,age_bound_exceeded_at_commit,1112.1799316406,,0,0
+optimistic,1000,887.5,0,deadline exceeded: elapsed 1151.2ms > 1000ms at release_at_publish,1084.571044921875,,0,0
+atomic,1000,700.0,1,authorization_committed,986.60302734375,886.9267578125,0,0
+atomic_margin3,1000,862.5,0,age_bound_exceeded_at_commit,1149.1059570312,,0,0
+optimistic,1000,887.5,0,deadline exceeded: elapsed 1141.4ms > 1000ms at release_at_publish,1074.807861328125,,0,0
+atomic_guard,1000,837.5,0,age_bound_exceeded_at_commit,1118.4091796875,,0,0
+atomic_guard,1000,737.5,0,age_bound_exceeded_at_commit,1023.05078125,,0,0
+atomic_margin3,1000,775.0,0,age_bound_exceeded_at_commit,1074.36401367188,,0,0
+atomic_guard,1000,737.5,0,age_bound_exceeded_at_commit,1017.19799804688,,0,0
+optimistic,1000,837.5,0,deadline exceeded: elapsed 1105.3ms > 1000ms at release_at_publish,1038.705810546875,,0,0
+atomic_margin3,1000,712.5,0,age_bound_exceeded_at_commit,992.76708984375,,0,0
+atomic_guard,1000,862.5,0,age_bound_exceeded_at_commit,1150.9499511719,,0,0
+atomic_guard,1000,750.0,0,age_bound_exceeded_at_commit,1037.11303710938,,0,0
+atomic_margin3,1000,787.5,0,age_bound_exceeded_at_commit,1074.9111328125,,0,0
+atomic_margin3,1000,850.0,0,age_bound_exceeded_at_commit,1137.6110839844,,0,0
+atomic_margin3,1000,737.5,0,age_bound_exceeded_at_commit,1026.125,,0,0
+atomic_guard,1000,900.0,0,age_bound_exceeded_at_commit,1182.9030761719,,0,0
+atomic,1000,850.0,0,age_bound_exceeded_at_commit,1131.8479003906,,0,0
+optimistic,1000,825.0,0,deadline exceeded: elapsed 1073.3ms > 1000ms at release_at_publish,1006.644775390625,,0,0
+atomic_margin3,1000,750.0,0,age_bound_exceeded_at_commit,1040.3759765625,,0,0
+atomic,1000,812.5,0,age_bound_exceeded_at_commit,1100.67993164062,,0,0
+atomic_margin3,1000,737.5,0,age_bound_exceeded_at_commit,1022.48291015625,,0,0
+atomic_margin3,1000,862.5,0,age_bound_exceeded_at_commit,1150.7448730469,,0,0
+atomic,1000,875.0,0,age_bound_exceeded_at_commit,1161.3239746094,,0,0
+atomic_margin3,1000,775.0,0,age_bound_exceeded_at_commit,1068.17114257812,,0,0
+atomic_guard,1000,725.0,0,age_bound_exceeded_at_commit,1015.048828125,,0,0
+atomic_guard,1000,875.0,0,age_bound_exceeded_at_commit,1161.5688476562,,0,0
+atomic_guard,1000,850.0,0,age_bound_exceeded_at_commit,1136.6069335938,,0,0
+atomic_guard,1000,787.5,0,age_bound_exceeded_at_commit,1074.03002929688,,0,0
+atomic,1000,725.0,0,age_bound_exceeded_at_commit,1015.56811523438,,0,0
+atomic,1000,862.5,0,age_bound_exceeded_at_commit,1147.1091308594,,0,0
+atomic,1000,750.0,0,age_bound_exceeded_at_commit,1039.12182617188,,0,0
+optimistic,1000,837.5,0,deadline exceeded: elapsed 1097.6ms > 1000ms at release_at_publish,1030.98681640625,,0,0
+atomic_guard,1000,737.5,0,age_bound_exceeded_at_commit,1026.31494140625,,0,0
+atomic_guard,1000,750.0,0,age_bound_exceeded_at_commit,1036.19702148438,,0,0
+atomic,1000,762.5,0,age_bound_exceeded_at_commit,1051.45703125,,0,0
+optimistic,1000,787.5,0,deadline exceeded: elapsed 1039.8ms > 1000ms at release_at_publish,973.167724609375,,0,0
+atomic_margin3,1000,887.5,0,age_bound_exceeded_at_commit,1181.37890625,,0,0
+atomic,1000,775.0,0,age_bound_exceeded_at_commit,1065.47924804688,,0,0
+optimistic,1000,712.5,1,published_after_gate_recheck,893.208251953125,893.281982421875,0,0
+atomic_margin3,1000,700.0,0,age_bound_exceeded_at_commit,989.23706054688,,0,0
+atomic_margin3,1000,900.0,0,age_bound_exceeded_at_commit,1180.0200195312,,0,0
+optimistic,1000,825.0,0,deadline exceeded: elapsed 1084.2ms > 1000ms at release_at_publish,1017.552978515625,,0,0
+atomic_guard,1000,725.0,0,age_bound_exceeded_at_commit,1015.44995117188,,0,0
+optimistic,1000,725.0,1,published_after_gate_recheck,912.56787109375,912.641845703125,0,0
+atomic,1000,800.0,0,age_bound_exceeded_at_commit,1091.22387695312,,0,0
+atomic_margin3,1000,850.0,0,age_bound_exceeded_at_commit,1135.5239257812,,0,0
+atomic,1000,712.5,0,age_bound_exceeded_at_commit,998.61303710938,,0,0
+atomic_guard,1000,837.5,0,age_bound_exceeded_at_commit,1138.998046875,,0,0
+optimistic,1000,775.0,0,deadline exceeded: elapsed 1032.0ms > 1000ms at release_at_publish,965.413330078125,,0,0
+optimistic,1000,837.5,0,deadline exceeded: elapsed 1093.3ms > 1000ms at release_at_publish,1026.64306640625,,0,0
+atomic_margin3,1000,900.0,0,age_bound_exceeded_at_commit,1186.0769042969,,0,0
+atomic_margin3,1000,837.5,0,age_bound_exceeded_at_commit,1121.4477539062,,0,0
+atomic_margin3,1000,737.5,0,age_bound_exceeded_at_commit,1027.64501953125,,0,0
+atomic,1000,725.0,0,age_bound_exceeded_at_commit,1013.73510742188,,0,0
+optimistic,1000,850.0,0,deadline exceeded: elapsed 1103.9ms > 1000ms at release_at_publish,1037.27392578125,,0,0
+atomic_margin3,1000,762.5,0,age_bound_exceeded_at_commit,1049.19409179688,,0,0
+atomic,1000,725.0,0,age_bound_exceeded_at_commit,1005.32788085938,,0,0
+atomic_margin3,1000,750.0,0,age_bound_exceeded_at_commit,1028.69897460938,,0,0
+optimistic,1000,887.5,0,deadline exceeded: elapsed 1148.2ms > 1000ms at release_at_publish,1081.615966796875,,0,0
+atomic_margin3,1000,900.0,0,age_bound_exceeded_at_commit,1190.9111328125,,0,0
+atomic_margin3,1000,787.5,0,age_bound_exceeded_at_commit,1082.4970703125,,0,0
+atomic,1000,787.5,0,age_bound_exceeded_at_commit,1064.61303710938,,0,0
+atomic,1000,762.5,0,age_bound_exceeded_at_commit,1056.64892578125,,0,0

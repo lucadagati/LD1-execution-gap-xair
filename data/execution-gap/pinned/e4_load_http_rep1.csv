@@ -1,0 +1,2 @@
+intents,elapsed_s,throughput_ips,outcome_execute,outcome_delay,outcome_revoke,outcome_degrade,vl_internal_p50_ms,vl_internal_p99_ms,vl_e2e_p50_ms,vl_e2e_p99_ms
+10000,11.004282447043806,908.7371255802692,10000,0,0,0,0.01773284748196602,0.034153927117586136,0.9937449358403683,2.8609782457351685

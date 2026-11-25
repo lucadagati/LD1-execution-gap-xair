@@ -1,0 +1,103 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/embedded/vf2",
+  "kind": "retroactive",
+  "commands": [
+    "BOARD=vf2 ./scripts/run_embedded.sh",
+    "BOARD=vf2 ./scripts/run_embedded_eq3.sh"
+  ],
+  "seeds": [],
+  "files": [
+    {
+      "path": "chrony_after.txt",
+      "bytes": 323,
+      "sha256": "cc669b6799590a5a09c59be19747bb164f624a66c080703d9c15569e74332e42"
+    },
+    {
+      "path": "chrony_before.txt",
+      "bytes": 345,
+      "sha256": "7f763f70eb16d473d5eeb9e2cd0d1ebeed07b5a9515dc43957de6ff7dfc6d37b"
+    },
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 47307,
+      "sha256": "95ddecdb093722510496a6a563f95523a3e766f6f2f4f23fc9e7ecaae65b024f"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 50152,
+      "sha256": "f57172a442957bdb7e17abb3a5b706357397f6b8bab14c780960c3bab586a6b7"
+    },
+    {
+      "path": "e11_stratified_seed1.csv",
+      "bytes": 10145,
+      "sha256": "99dfb160341a68d54b9cc6f7b8e3eca2e3be3161218c8a76fcadd1147b239cff"
+    },
+    {
+      "path": "e11_stratified_seed2.csv",
+      "bytes": 10126,
+      "sha256": "7920849842df76797d67922ac61a8784fa42a884427b1539f4f248c44139f791"
+    },
+    {
+      "path": "e11_stratified_seed3.csv",
+      "bytes": 10251,
+      "sha256": "215d163ca75e48cc312f8afe9a0a972fb8f4ea7c890fb1068030cfe9532bdfb2"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 244085,
+      "sha256": "85754a2e7646683959ed1f908b89bfbaa31cda24e7c977409ef45720cdd4bf5a"
+    },
+    {
+      "path": "e16_eq3_seed1.csv",
+      "bytes": 345964,
+      "sha256": "cc58ff2e6660b5c60c3f0161de3ef6720bf999adea463b870cf8e8e1012143cf"
+    },
+    {
+      "path": "e16_eq3_seed2.csv",
+      "bytes": 346718,
+      "sha256": "97edbfc5ca7cc560779c3d325dba01d2efeb3591e55a3fb739a249ff8fad148f"
+    },
+    {
+      "path": "e16_eq3_seed3.csv",
+      "bytes": 346622,
+      "sha256": "83a436f85d312bdc5df8dace050cd931a1bca61ab018c0eade97a441213000df"
+    },
+    {
+      "path": "e4_load_http_rep1.csv",
+      "bytes": 291,
+      "sha256": "8e7c6c1804b62b1718ca4ff443b6d374d6d4c8c8e156a66f4314e940091b045c"
+    },
+    {
+      "path": "e4_load_http_rep2.csv",
+      "bytes": 290,
+      "sha256": "732291fbad019756e6de8dea43977c0abf7f67cfc27f8689b6c56b7005974ceb"
+    },
+    {
+      "path": "e4_load_http_rep3.csv",
+      "bytes": 292,
+      "sha256": "29f00b5e9d435d82132523f15f4196ac771e993a2df270579ffaa5dde25d3e11"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 735,
+      "sha256": "a8a44a5846995cb684c94bee26ea30cd22ea84ecf270be44c93f7e56b650e006"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"board\": \"vf2\", \"platform\": \"Linux-7.0.0-34-generic-riscv64-with-glibc2.39\", \"python\": \"3.12.3\", \"cpu\": \"rv64imafdc_zicntr_zicsr_zifencei_zihpm_zaamo_zalrsc_zca_zcd_zba_zbb; sifive,u74-mc; rv64imafdc_zicntr_zicsr_zifencei_zihpm_zaamo_zalrsc_zca_zcd_zba_zbb; sifive,u74-mc; rv64imafdc_zicntr_zicsr_zifencei_zihpm_zaamo_zalrsc_zca_zcd_zba_zbb; sifive,u74-mc; rv64imafdc_zicntr_zicsr_zifencei_zihpm_zaamo_zalrsc_zca_zcd_zba_zbb; sifive,u74-mc\", \"cores\": 4, \"kernel\": \"#34.1~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Sep 16 07:14:06 UTC\", \"loadavg\": [\"1.45\", \"2.19\", \"1.51\"], \"pinning\": \"redis core 3, XAIR core 2, gateway core 1, harness core 0\"}",
+      "{\"rss_mb\": {\"xair\": 93, \"gateway\": 30, \"redis\": 6}, \"loadavg_end\": [\"1.37\", \"1.61\", \"1.41\"]}"
+    ]
+  },
+  "notes": [
+    "E25; pinning recorded in environment.txt; e16_eq3_seed*.csv and chrony_*.txt from run_embedded_eq3.sh (2026-10-15)"
+  ],
+  "manifest_written": "2026-10-15T21:33:29+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

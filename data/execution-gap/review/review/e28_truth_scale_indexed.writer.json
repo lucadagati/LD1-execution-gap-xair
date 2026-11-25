@@ -1,0 +1,38 @@
+[
+ {
+  "layout": "hash",
+  "registered": 1000,
+  "rate_hz": 20,
+  "updates": 293,
+  "achieved_hz": 20.020893578975357,
+  "update_p50_ms": 6.986438063904643,
+  "update_p99_ms": 31.295864144340158
+ },
+ {
+  "layout": "hash",
+  "registered": 1000,
+  "rate_hz": 100,
+  "updates": 1640,
+  "achieved_hz": 99.99775028959421,
+  "update_p50_ms": 6.596026010811329,
+  "update_p99_ms": 20.29623300768435
+ },
+ {
+  "layout": "hash",
+  "registered": 10000,
+  "rate_hz": 20,
+  "updates": 894,
+  "achieved_hz": 10.36622633727096,
+  "update_p50_ms": 95.03901889547706,
+  "update_p99_ms": 159.10099796019495
+ },
+ {
+  "layout": "hash",
+  "registered": 10000,
+  "rate_hz": 100,
+  "updates": 938,
+  "achieved_hz": 11.526814486262166,
+  "update_p50_ms": 87.89362199604511,
+  "update_p99_ms": 144.5412200409919
+ }
+]

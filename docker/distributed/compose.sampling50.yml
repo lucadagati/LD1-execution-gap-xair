@@ -1,0 +1,5 @@
+# Variant: the cell replicates its line state by sampling every 50 ms (an OPC UA subscription with a
+# sampling interval of 50 ms and a queue of one), so a pause undone within the interval is never published.
+services:
+  cell:
+    command: ["python", "scripts/cell_controller.py", "--port", "4840", "--scan-ms", "10", "--xair", "http://xair:8080", "--sampling-ms", "50"]

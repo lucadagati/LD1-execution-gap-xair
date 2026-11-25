@@ -1,0 +1,71 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/e27_reps/seed28",
+  "kind": "run",
+  "commands": [
+    "experiments/run_e27_stop_resume.py --seed 28 (Redis 7 on 127.0.0.1:6396)"
+  ],
+  "seeds": [
+    "28"
+  ],
+  "files": [
+    {
+      "path": "e27_stop_resume.csv",
+      "bytes": 156814,
+      "sha256": "08b74eb939c37446d360dcd49866607b7f818a2e22bfa1b90f8826575a5c84cc"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 302,
+      "sha256": "09ed608c2c25e070e050489b08967c95b1cf53bd71a58439ab9a66c8897a2556"
+    }
+  ],
+  "environment_recorded_at_run_time": {},
+  "notes": [],
+  "started": null,
+  "manifest_written": "2026-11-24T22:42:50+00:00",
+  "git": {
+    "commit": "8b92628f73dfdd30af37eb085b014cfe89535173",
+    "dirty": true,
+    "diff_sha256": "83f6020534f0a7c036113c055e0c2c8f358f1a23b08024872e3fef2f5ce58c8a",
+    "changed_paths": [
+      "scripts/run_distributed.sh",
+      "data/execution-gap/distributed/campaigns/c6_fence/",
+      "data/execution-gap/distributed/campaigns/c7_fence/",
+      "data/execution-gap/e27_reps/",
+      "docs/detailed-results/detailed_results.aux",
+      "docs/detailed-results/detailed_results.fdb_latexmk",
+      "docs/detailed-results/detailed_results.fls",
+      "docs/detailed-results/detailed_results.out",
+      "docs/detailed-results/generated/tab_fence_repeat.csv",
+      "experiments/fence_repeat_summary.py"
+    ]
+  },
+  "runtime": {
+    "xair": "1.7.0",
+    "python": "3.12.12",
+    "dependencies": {
+      "fastapi": "0.141.1",
+      "uvicorn": "0.52.1",
+      "redis": "8.1.0",
+      "jsonschema": "4.26.0",
+      "pydantic": "2.13.4",
+      "asyncua": "2.0.1",
+      "pymodbus": "3.15.0",
+      "httpx": "0.28.1"
+    },
+    "requirements_lock_sha256": "ac2b40f5dbaab4de5a5415c3f1a07854da4d6b557aacf0262f9da63c95b8f13e"
+  },
+  "host": {
+    "platform": "Linux-6.8.12-18-pve-x86_64-with-glibc2.35",
+    "machine": "x86_64",
+    "cpu": "AMD EPYC 7313 16-Core Processor",
+    "cpus_visible": 48,
+    "loadavg": [
+      "28.42",
+      "24.26",
+      "25.19"
+    ]
+  },
+  "images": []
+}

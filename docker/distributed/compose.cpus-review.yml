@@ -1,0 +1,9 @@
+# CPU sets of the host used for the review campaigns (2026-10-29): the Docker daemon of that host
+# offered the CPUs below, so the disjoint sets of compose.yml are remapped, with the same sizes.
+services:
+  redis: {cpuset: "2,3"}
+  opa: {cpuset: "8,9,10,11"}
+  xair: {cpuset: "8,9,10,11"}
+  gateway: {cpuset: "13,14,15,16"}
+  cell: {cpuset: "17,18"}
+  bench: {cpuset: "22,23,24,25"}

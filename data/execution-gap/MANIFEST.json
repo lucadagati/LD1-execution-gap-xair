@@ -1,0 +1,254 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap",
+  "kind": "retroactive",
+  "commands": [
+    "./scripts/run_paper_campaign.sh",
+    ".venv/bin/python experiments/run_e15_opcua_hil.py --runs 30",
+    "sudo ./scripts/run_e6_netns.sh 30 10 500",
+    "./scripts/run_e8_docker.sh 30 <1|2>",
+    "./scripts/sync_paper_outputs.sh",
+    ".venv/bin/python experiments/run_e26_controller_churn.py --runs 400 --aba-runs 100 (E26, 2026-10-15)",
+    ".venv/bin/python experiments/analysis_eq3_empirical.py",
+    ".venv/bin/python experiments/run_e27_stop_resume.py (E27, 2026-10-16)",
+    ".venv/bin/python experiments/run_e28_truth_scale.py --runs 50 --controls 60 (E28, 2026-10-16)",
+    "XAIR_STOP_FENCE=0 .venv/bin/python experiments/run_e28_truth_scale.py --layouts document hash shard --touch 0.001 (E28, per-root layout, 2026-10-31); same with --layouts shard (default touch 0.1) for e28_shard_touch10"
+  ],
+  "seeds": [
+    "per step in scripts/run_paper_campaign.sh (e1 42, e10 42/43, e11 42/7/123)"
+  ],
+  "files": [
+    {
+      "path": "e0_lifecycle.json",
+      "bytes": 1610,
+      "sha256": "b87e20cf8b69cbd0a9b8d368588d5af1a3ba0c94f38979d9c4391d5a7bc05024"
+    },
+    {
+      "path": "e10_toctou.csv",
+      "bytes": 39087,
+      "sha256": "ed079bf651478fbcb35b6387cd2b2b51c0b4222ecd9e1430288fc26168448e95"
+    },
+    {
+      "path": "e10_toctou_boundary.csv",
+      "bytes": 60626,
+      "sha256": "04953e4f03d75c452e1e09f7e807806f59ec4a4af3c0a5478194a3f526c6ae6a"
+    },
+    {
+      "path": "e11_stratified_seed123.csv",
+      "bytes": 10495,
+      "sha256": "a5f45da631c6cf2af0b1d2e7a78bc73376bf682b0870b3583bd7d7ff367d2bfb"
+    },
+    {
+      "path": "e11_stratified_seed42.csv",
+      "bytes": 10336,
+      "sha256": "506c842c03e893ae9caa927b2e81f4a3f06480130adf5357bebd30dcc431ef38"
+    },
+    {
+      "path": "e11_stratified_seed7.csv",
+      "bytes": 10197,
+      "sha256": "6f71dc14af29f957d1ad2848f7e6aff48a12093458ef1d1e8471efef0b543f4a"
+    },
+    {
+      "path": "e12_scaling.csv",
+      "bytes": 5513,
+      "sha256": "6c677e5f2195e5fd6f4cc050fce2824bd0a39b616a911e2806f4fcd90000d095"
+    },
+    {
+      "path": "e13_faults.csv",
+      "bytes": 20638,
+      "sha256": "075ff8baa32d353e1b1db632fed1ff841c6a7d5295e830169014ed3c21386213"
+    },
+    {
+      "path": "e14_variants.csv",
+      "bytes": 78950,
+      "sha256": "b0a50fdfaafb1a2ad3141082aa1a5e5d7c20f0be309310f1f9c6a3ac1576ae26"
+    },
+    {
+      "path": "e15_opcua_hil.csv",
+      "bytes": 5527,
+      "sha256": "3df3f27f295b28eb6d155f64cc06eedcdf266fe9e04be57154a5e65e30521488"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 218169,
+      "sha256": "0e32e1f18d63d43a1dfbc4ec1f22edad3bb8a340002027bfc35b00dd323c80b0"
+    },
+    {
+      "path": "e1_baselines.csv",
+      "bytes": 61085,
+      "sha256": "59cf7f6c83e88d2a49c357094c541ad28fec21bcc040c5c80d7c7af1dfc42dd7"
+    },
+    {
+      "path": "e1_fpr.csv",
+      "bytes": 13236,
+      "sha256": "9c9cb783c91e2fddba0c6dd91707d8f090026715cc5832d81815762d458a6992"
+    },
+    {
+      "path": "e26_controller_churn.csv",
+      "sha256": "a2ebbaabc7e1efb0e057f383290d67dd0d0c66b48109f91d63627067ab715f30",
+      "bytes": 1024093
+    },
+    {
+      "path": "e26_controller_churn.scan.json",
+      "sha256": "7ea902f4c0a82231b429c4401b2e63e6dd28cc956740d7f8acc88af6b84fe6d5",
+      "bytes": 752
+    },
+    {
+      "path": "e27_stop_resume.csv",
+      "bytes": 142575,
+      "sha256": "4c8f13109081ce27c4034acff403e0cb9f956f786c3d666ff56540887a25fced"
+    },
+    {
+      "path": "e28_shard_touch10.csv",
+      "bytes": 122617,
+      "sha256": "8fbc66a2571ade4a3eb633749b2a452e045b6ba90a84c20980dee785f3bc5cf2"
+    },
+    {
+      "path": "e28_shard_touch10.writer.json",
+      "bytes": 1185,
+      "sha256": "ab4f6f3cc67691509a21294bed985c7b6bfdb3afcb12fa1beb3bcded3169e31b"
+    },
+    {
+      "path": "e28_touch01pct.csv",
+      "bytes": 368865,
+      "sha256": "84e02716def398c888f864131a0d96541778220fb9e82f8997b2711548aab8e7"
+    },
+    {
+      "path": "e28_touch01pct.writer.json",
+      "bytes": 3578,
+      "sha256": "126eba4f68117e47e94da8384795cae5478223e0643bb7b50a0513efb39e5a44"
+    },
+    {
+      "path": "e28_truth_scale.csv",
+      "bytes": 279052,
+      "sha256": "1ae88e6d4753a0957429fe6156ab0f0dc1a276cf84b564b7766298156ab2a272"
+    },
+    {
+      "path": "e28_truth_scale.writer.json",
+      "bytes": 2390,
+      "sha256": "2c6e80fef9f520266bb3b62fd9e11c8d16170060846e80c7e8594d34674c24be"
+    },
+    {
+      "path": "e3_conflict_http.csv",
+      "bytes": 4145,
+      "sha256": "a9dc1d8a43dc5afbc5ae0e585498f217d44257eb06d5834e8b39172d4f603fae"
+    },
+    {
+      "path": "e4_load_http.csv",
+      "bytes": 294,
+      "sha256": "fbe360a31edf8f99e1b72847ffada105fcea2d6b786c862ea110a083a1826dc8"
+    },
+    {
+      "path": "e6_network.csv",
+      "bytes": 24427,
+      "sha256": "5dcf2f53632d4e63cebb88ae4274a9a2a62b21c532f698bb05206803ad326fc3"
+    },
+    {
+      "path": "e6_network_fresh10s.csv",
+      "bytes": 22893,
+      "sha256": "2e6a5f4049741519a2aac16291d53f452b74e1af11fc05b7e43f7e79434f4a7c"
+    },
+    {
+      "path": "e8_gazebo_campaign1.csv",
+      "bytes": 9725,
+      "sha256": "0dfd3e70fa38e751f5d1191ad72d7411911fcffe66c2b18302dc16aac1643601"
+    },
+    {
+      "path": "e8_gazebo_campaign2.csv",
+      "bytes": 9722,
+      "sha256": "77816d6f3ef7142986fa876352e2b3b391b545597315654c0e32b252bb85dd64"
+    },
+    {
+      "path": "e9_consistency_sweep.csv",
+      "bytes": 16042,
+      "sha256": "9d0180151e2a8c8f32202c54250b15fe39f836894d0e1a2c7a64b0689d4b048a"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 4310,
+      "sha256": "e11dc989df88ef7d0214aedcdd4e2409c21bd062e755c36456130bdbaa47d6e5"
+    },
+    {
+      "path": "eq3_empirical.json",
+      "sha256": "1952369242a6085accedfec58051556e795f514b6d55c9901e3b37a35e46f11e",
+      "bytes": 5097
+    },
+    {
+      "path": "paper_metrics_summary.json",
+      "bytes": 1102745,
+      "sha256": "a88b035b426abb09d825ad858ba698b547add16142328f6a445fa83d5aefa8c4"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "utc=2026-09-23T12:24:52Z",
+      "Linux dagati-llm169 6.8.12-18-pve #1 SMP PREEMPT_DYNAMIC PMX 6.8.12-18 (2025-12-15T18:07Z) x86_64 x86_64 x86_64 GNU/Linux",
+      "Architecture:                            x86_64",
+      "CPU op-mode(s):                          32-bit, 64-bit",
+      "Address sizes:                           48 bits physical, 48 bits virtual",
+      "Byte Order:                              Little Endian",
+      "CPU(s):                                  64",
+      "On-line CPU(s) list:                     0-2,9-20,22-34,36,37,39-41,43-46,53-63",
+      "Off-line CPU(s) list:                    3-8,21,35,38,42,47-52",
+      "Vendor ID:                               AuthenticAMD",
+      "BIOS Vendor ID:                          AMD",
+      "Model name:                              AMD EPYC 7313 16-Core Processor",
+      "BIOS Model name:                         AMD EPYC 7313 16-Core Processor                ",
+      "CPU family:                              25",
+      "Model:                                   1",
+      "Thread(s) per core:                      2",
+      "Core(s) per socket:                      16",
+      "Socket(s):                               2",
+      "Stepping:                                1",
+      "Frequency boost:                         enabled",
+      "CPU max MHz:                             3730.7351",
+      "CPU min MHz:                             1500.0000",
+      "BogoMIPS:                                5988.83",
+      "Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin brs arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca debug_swap ibpb_exit_to_user",
+      "Virtualization:                          AMD-V",
+      "L1d cache:                               1 MiB (32 instances)",
+      "L1i cache:                               1 MiB (32 instances)",
+      "L2 cache:                                16 MiB (32 instances)",
+      "L3 cache:                                256 MiB (8 instances)",
+      "NUMA node(s):                            2",
+      "NUMA node0 CPU(s):                       0-15,32-47",
+      "NUMA node1 CPU(s):                       16-31,48-63",
+      "Vulnerability Gather data sampling:      Not affected",
+      "Vulnerability Indirect target selection: Not affected",
+      "Vulnerability Itlb multihit:             Not affected",
+      "Vulnerability L1tf:                      Not affected",
+      "Vulnerability Mds:                       Not affected",
+      "Vulnerability Meltdown:                  Not affected",
+      "Vulnerability Mmio stale data:           Not affected",
+      "Vulnerability Reg file data sampling:    Not affected",
+      "Vulnerability Retbleed:                  Not affected",
+      "Vulnerability Spec rstack overflow:      Mitigation; Safe RET",
+      "Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl",
+      "Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization",
+      "Vulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected",
+      "Vulnerability Srbds:                     Not affected",
+      "Vulnerability Tsa:                       Mitigation; Clear CPU buffers",
+      "Vulnerability Tsx async abort:           Not affected",
+      "Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace",
+      "               total        used        free      shared  buff/cache   available",
+      "Mem:           512Gi        13Gi       485Gi        69Mi        13Gi       498Gi",
+      "Swap:             0B          0B          0B",
+      "Python 3.12.12",
+      "fastapi==0.141.1 uvicorn==0.52.1 pydantic==2.13.4 jsonschema==4.26.0 redis==8.1.0",
+      "redis_url=redis://127.0.0.1:6379/1",
+      "ros2=absent"
+    ]
+  },
+  "notes": [
+    "single host (S), 2026-09-23 (environment.txt); e0_lifecycle.json regenerated 2026-10-06 with the v1.7 lifecycle (14 cases; the v1.6 file had 10)",
+    "e26_controller_churn.* added 2026-10-15; eq3_empirical.json derived from embedded/*/e16_eq3_seed*.csv",
+    "e27_stop_resume.csv and e28_truth_scale.* added 2026-10-16 (stop fence; truth versions under many predicates)"
+  ],
+  "manifest_written": "2026-10-05T23:20:35+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

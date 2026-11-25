@@ -1,0 +1,598 @@
+metric,campaign,value
+E3 optimistic: released of those invalidated before the check,c1,0/135
+E3 atomic: released of those invalidated before the check,c1,0/135
+E3-ABA opa/opa: released after undone change; controls released,c1,50/50; 25/25
+E3-ABA opa/opa_readset: released after undone change; controls released,c1,0/50; 25/25
+E3-ABA xair/predicate: released after undone change; controls released,c1,50/50; 25/25
+E3-ABA xair/readset: released after undone change; controls released,c1,0/50; 25/25
+E3-ABA xair/truth: released after undone change; controls released,c1,0/50; 25/25
+E3-ABA xair_atomic/readset: released after undone change; controls released,c1,0/50; 25/25
+E3-ABA xair_atomic/truth: released after undone change; controls released,c1,0/50; 25/25
+E4 pause xair/plc_conditional: stale; history; valid executed,c1,0/220; 0/220; 20/20
+E4 pause xair/plc_plain: stale; history; valid executed,c1,115/220; 0/220; 20/20
+E4 pause xair/plc_predicate: stale; history; valid executed,c1,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_conditional: stale; history; valid executed,c1,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_plain: stale; history; valid executed,c1,115/220; 0/220; 20/20
+E4 pause xair_atomic/plc_predicate: stale; history; valid executed,c1,0/220; 0/220; 20/20
+E4 pause-resume xair/plc_conditional: stale; history; valid executed,c1,0/200; 0/200; 20/20
+E4 pause-resume xair/plc_plain: stale; history; valid executed,c1,57/200; 50/200; 20/20
+E4 pause-resume xair/plc_predicate: stale; history; valid executed,c1,0/200; 62/200; 20/20
+E4 pause-resume xair_atomic/plc_conditional: stale; history; valid executed,c1,0/200; 0/200; 20/20
+E4 pause-resume xair_atomic/plc_plain: stale; history; valid executed,c1,58/200; 52/200; 20/20
+E4 pause-resume xair_atomic/plc_predicate: stale; history; valid executed,c1,0/200; 55/200; 20/20
+E5 global @0 Hz: valid revoked,c1,0/200 (0%)
+E5 global @20 Hz: valid revoked,c1,18/200 (9%)
+E5 global @100 Hz: valid revoked,c1,126/200 (63%)
+E5 global @500 Hz: valid revoked,c1,198/200 (99%)
+E5 opa @0 Hz: valid revoked,c1,0/200 (0%)
+E5 opa @20 Hz: valid revoked,c1,0/200 (0%)
+E5 opa @100 Hz: valid revoked,c1,0/200 (0%)
+E5 opa @500 Hz: valid revoked,c1,0/200 (0%)
+E5 opa_readset @0 Hz: valid revoked,c1,0/200 (0%)
+E5 opa_readset @20 Hz: valid revoked,c1,0/200 (0%)
+E5 opa_readset @100 Hz: valid revoked,c1,0/200 (0%)
+E5 opa_readset @500 Hz: valid revoked,c1,0/200 (0%)
+E5 readset @0 Hz: valid revoked,c1,0/200 (0%)
+E5 readset @20 Hz: valid revoked,c1,0/200 (0%)
+E5 readset @100 Hz: valid revoked,c1,0/200 (0%)
+E5 readset @500 Hz: valid revoked,c1,0/200 (0%)
+E5 truth @0 Hz: valid revoked,c1,0/200 (0%)
+E5 truth @20 Hz: valid revoked,c1,0/200 (0%)
+E5 truth @100 Hz: valid revoked,c1,0/200 (0%)
+E5 truth @500 Hz: valid revoked,c1,0/200 (0%)
+E5-trace continuous global @10 ms: valid revoked,c1,35/100 (35%)
+E5-trace continuous global @100 ms: valid revoked,c1,4/100 (4%)
+E5-trace continuous global @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous opa @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous opa @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous opa @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous opa_readset @10 ms: valid revoked,c1,26/100 (26%)
+E5-trace continuous opa_readset @100 ms: valid revoked,c1,1/100 (1%)
+E5-trace continuous opa_readset @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous predicate @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous predicate @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous predicate @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous readset @10 ms: valid revoked,c1,41/100 (41%)
+E5-trace continuous readset @100 ms: valid revoked,c1,5/100 (5%)
+E5-trace continuous readset @1000 ms: valid revoked,c1,1/100 (1%)
+E5-trace continuous truth @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous truth @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace continuous truth @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete global @10 ms: valid revoked,c1,41/100 (41%)
+E5-trace discrete global @100 ms: valid revoked,c1,7/100 (7%)
+E5-trace discrete global @1000 ms: valid revoked,c1,2/100 (2%)
+E5-trace discrete opa @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete opa @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete opa @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete opa_readset @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete opa_readset @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete opa_readset @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete predicate @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete predicate @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete predicate @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete readset @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete readset @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete readset @1000 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete truth @10 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete truth @100 ms: valid revoked,c1,0/100 (0%)
+E5-trace discrete truth @1000 ms: valid revoked,c1,0/100 (0%)
+E1 e1b/direct: obsolete executed,c1,100/100
+E1 e1b/local: obsolete executed,c1,0/100
+E1 e1b/naive: obsolete executed,c1,100/100
+E1 e1b/opa: obsolete executed,c1,0/100
+E1 e1b/xair: obsolete executed,c1,0/100
+E2 local_authoritative/0: obsolete executed,c1,0/10
+E2 local_authoritative/10: obsolete executed,c1,0/10
+E2 local_authoritative/100: obsolete executed,c1,0/10
+E2 local_authoritative/250: obsolete executed,c1,0/10
+E2 local_authoritative/50: obsolete executed,c1,0/10
+E2 local_authoritative/500: obsolete executed,c1,0/10
+E2 local_push/0: obsolete executed,c1,10/10
+E2 local_push/10: obsolete executed,c1,10/10
+E2 local_push/100: obsolete executed,c1,0/10
+E2 local_push/250: obsolete executed,c1,0/10
+E2 local_push/50: obsolete executed,c1,0/10
+E2 local_push/500: obsolete executed,c1,0/10
+E2 local_stale/0: obsolete executed,c1,10/10
+E2 local_stale/10: obsolete executed,c1,10/10
+E2 local_stale/100: obsolete executed,c1,10/10
+E2 local_stale/250: obsolete executed,c1,10/10
+E2 local_stale/50: obsolete executed,c1,10/10
+E2 local_stale/500: obsolete executed,c1,10/10
+E2 xair/0: obsolete executed,c1,0/10
+E2 xair/10: obsolete executed,c1,0/10
+E2 xair/100: obsolete executed,c1,0/10
+E2 xair/250: obsolete executed,c1,0/10
+E2 xair/50: obsolete executed,c1,0/10
+E2 xair/500: obsolete executed,c1,0/10
+E1-policy 0/drift: released,c1,100/100
+E1-policy 0/valid: released,c1,100/100
+E1-policy 1/drift: released,c1,0/100
+E1-policy 1/valid: released,c1,100/100
+E3 optimistic: released of those invalidated before the check,c2,0/136
+E3 atomic: released of those invalidated before the check,c2,0/136
+E3-ABA opa/opa: released after undone change; controls released,c2,50/50; 25/25
+E3-ABA opa/opa_readset: released after undone change; controls released,c2,0/50; 25/25
+E3-ABA xair/predicate: released after undone change; controls released,c2,50/50; 25/25
+E3-ABA xair/readset: released after undone change; controls released,c2,0/50; 25/25
+E3-ABA xair/truth: released after undone change; controls released,c2,0/50; 25/25
+E3-ABA xair_atomic/readset: released after undone change; controls released,c2,0/50; 25/25
+E3-ABA xair_atomic/truth: released after undone change; controls released,c2,0/50; 25/25
+E4 pause xair/plc_conditional: stale; history; valid executed,c2,0/220; 0/220; 20/20
+E4 pause xair/plc_plain: stale; history; valid executed,c2,105/220; 0/220; 20/20
+E4 pause xair/plc_predicate: stale; history; valid executed,c2,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_conditional: stale; history; valid executed,c2,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_plain: stale; history; valid executed,c2,113/220; 0/220; 20/20
+E4 pause xair_atomic/plc_predicate: stale; history; valid executed,c2,0/220; 0/220; 20/20
+E4 pause-resume xair/plc_conditional: stale; history; valid executed,c2,0/200; 0/200; 20/20
+E4 pause-resume xair/plc_plain: stale; history; valid executed,c2,61/200; 57/200; 20/20
+E4 pause-resume xair/plc_predicate: stale; history; valid executed,c2,0/200; 51/200; 20/20
+E4 pause-resume xair_atomic/plc_conditional: stale; history; valid executed,c2,0/200; 0/200; 20/20
+E4 pause-resume xair_atomic/plc_plain: stale; history; valid executed,c2,57/200; 55/200; 20/20
+E4 pause-resume xair_atomic/plc_predicate: stale; history; valid executed,c2,0/200; 55/200; 20/20
+E5 global @0 Hz: valid revoked,c2,0/200 (0%)
+E5 global @20 Hz: valid revoked,c2,21/200 (10%)
+E5 global @100 Hz: valid revoked,c2,128/200 (64%)
+E5 global @500 Hz: valid revoked,c2,198/200 (99%)
+E5 opa @0 Hz: valid revoked,c2,0/200 (0%)
+E5 opa @20 Hz: valid revoked,c2,0/200 (0%)
+E5 opa @100 Hz: valid revoked,c2,0/200 (0%)
+E5 opa @500 Hz: valid revoked,c2,0/200 (0%)
+E5 opa_readset @0 Hz: valid revoked,c2,0/200 (0%)
+E5 opa_readset @20 Hz: valid revoked,c2,0/200 (0%)
+E5 opa_readset @100 Hz: valid revoked,c2,0/200 (0%)
+E5 opa_readset @500 Hz: valid revoked,c2,0/200 (0%)
+E5 readset @0 Hz: valid revoked,c2,0/200 (0%)
+E5 readset @20 Hz: valid revoked,c2,0/200 (0%)
+E5 readset @100 Hz: valid revoked,c2,0/200 (0%)
+E5 readset @500 Hz: valid revoked,c2,0/200 (0%)
+E5 truth @0 Hz: valid revoked,c2,0/200 (0%)
+E5 truth @20 Hz: valid revoked,c2,0/200 (0%)
+E5 truth @100 Hz: valid revoked,c2,0/200 (0%)
+E5 truth @500 Hz: valid revoked,c2,0/200 (0%)
+E5-trace continuous global @10 ms: valid revoked,c2,34/100 (34%)
+E5-trace continuous global @100 ms: valid revoked,c2,3/100 (3%)
+E5-trace continuous global @1000 ms: valid revoked,c2,1/100 (1%)
+E5-trace continuous opa @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous opa @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous opa @1000 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous opa_readset @10 ms: valid revoked,c2,32/100 (32%)
+E5-trace continuous opa_readset @100 ms: valid revoked,c2,2/100 (2%)
+E5-trace continuous opa_readset @1000 ms: valid revoked,c2,2/100 (2%)
+E5-trace continuous predicate @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous predicate @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous predicate @1000 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous readset @10 ms: valid revoked,c2,40/100 (40%)
+E5-trace continuous readset @100 ms: valid revoked,c2,4/100 (4%)
+E5-trace continuous readset @1000 ms: valid revoked,c2,1/100 (1%)
+E5-trace continuous truth @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous truth @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace continuous truth @1000 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete global @10 ms: valid revoked,c2,39/100 (39%)
+E5-trace discrete global @100 ms: valid revoked,c2,6/100 (6%)
+E5-trace discrete global @1000 ms: valid revoked,c2,1/100 (1%)
+E5-trace discrete opa @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete opa @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete opa @1000 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete opa_readset @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete opa_readset @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete opa_readset @1000 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete predicate @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete predicate @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete predicate @1000 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete readset @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete readset @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete readset @1000 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete truth @10 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete truth @100 ms: valid revoked,c2,0/100 (0%)
+E5-trace discrete truth @1000 ms: valid revoked,c2,0/100 (0%)
+E3 optimistic: released of those invalidated before the check,c3,0/136
+E3 atomic: released of those invalidated before the check,c3,0/138
+E3-ABA opa/opa: released after undone change; controls released,c3,50/50; 25/25
+E3-ABA opa/opa_readset: released after undone change; controls released,c3,0/50; 25/25
+E3-ABA xair/predicate: released after undone change; controls released,c3,50/50; 25/25
+E3-ABA xair/readset: released after undone change; controls released,c3,0/50; 25/25
+E3-ABA xair/truth: released after undone change; controls released,c3,0/50; 25/25
+E3-ABA xair_atomic/readset: released after undone change; controls released,c3,0/50; 25/25
+E3-ABA xair_atomic/truth: released after undone change; controls released,c3,0/50; 25/25
+E4 pause xair/plc_conditional: stale; history; valid executed,c3,0/220; 0/220; 20/20
+E4 pause xair/plc_plain: stale; history; valid executed,c3,113/220; 0/220; 20/20
+E4 pause xair/plc_predicate: stale; history; valid executed,c3,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_conditional: stale; history; valid executed,c3,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_plain: stale; history; valid executed,c3,113/220; 0/220; 20/20
+E4 pause xair_atomic/plc_predicate: stale; history; valid executed,c3,0/220; 0/220; 20/20
+E4 pause-resume xair/plc_conditional: stale; history; valid executed,c3,0/200; 0/200; 20/20
+E4 pause-resume xair/plc_plain: stale; history; valid executed,c3,55/200; 56/200; 20/20
+E4 pause-resume xair/plc_predicate: stale; history; valid executed,c3,0/200; 64/200; 20/20
+E4 pause-resume xair_atomic/plc_conditional: stale; history; valid executed,c3,0/200; 0/200; 20/20
+E4 pause-resume xair_atomic/plc_plain: stale; history; valid executed,c3,53/200; 56/200; 20/20
+E4 pause-resume xair_atomic/plc_predicate: stale; history; valid executed,c3,0/200; 58/200; 20/20
+E5 global @0 Hz: valid revoked,c3,0/200 (0%)
+E5 global @20 Hz: valid revoked,c3,24/200 (12%)
+E5 global @100 Hz: valid revoked,c3,127/200 (64%)
+E5 global @500 Hz: valid revoked,c3,199/200 (100%)
+E5 opa @0 Hz: valid revoked,c3,0/200 (0%)
+E5 opa @20 Hz: valid revoked,c3,0/200 (0%)
+E5 opa @100 Hz: valid revoked,c3,0/200 (0%)
+E5 opa @500 Hz: valid revoked,c3,0/200 (0%)
+E5 opa_readset @0 Hz: valid revoked,c3,0/200 (0%)
+E5 opa_readset @20 Hz: valid revoked,c3,0/200 (0%)
+E5 opa_readset @100 Hz: valid revoked,c3,0/200 (0%)
+E5 opa_readset @500 Hz: valid revoked,c3,0/200 (0%)
+E5 readset @0 Hz: valid revoked,c3,0/200 (0%)
+E5 readset @20 Hz: valid revoked,c3,0/200 (0%)
+E5 readset @100 Hz: valid revoked,c3,0/200 (0%)
+E5 readset @500 Hz: valid revoked,c3,0/200 (0%)
+E5 truth @0 Hz: valid revoked,c3,0/200 (0%)
+E5 truth @20 Hz: valid revoked,c3,0/200 (0%)
+E5 truth @100 Hz: valid revoked,c3,0/200 (0%)
+E5 truth @500 Hz: valid revoked,c3,0/200 (0%)
+E5-trace continuous global @10 ms: valid revoked,c3,39/100 (39%)
+E5-trace continuous global @100 ms: valid revoked,c3,5/100 (5%)
+E5-trace continuous global @1000 ms: valid revoked,c3,1/100 (1%)
+E5-trace continuous opa @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous opa @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous opa @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous opa_readset @10 ms: valid revoked,c3,22/100 (22%)
+E5-trace continuous opa_readset @100 ms: valid revoked,c3,5/100 (5%)
+E5-trace continuous opa_readset @1000 ms: valid revoked,c3,1/100 (1%)
+E5-trace continuous predicate @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous predicate @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous predicate @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous readset @10 ms: valid revoked,c3,35/100 (35%)
+E5-trace continuous readset @100 ms: valid revoked,c3,1/100 (1%)
+E5-trace continuous readset @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous truth @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous truth @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace continuous truth @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete global @10 ms: valid revoked,c3,37/100 (37%)
+E5-trace discrete global @100 ms: valid revoked,c3,4/100 (4%)
+E5-trace discrete global @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete opa @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete opa @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete opa @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete opa_readset @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete opa_readset @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete opa_readset @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete predicate @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete predicate @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete predicate @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete readset @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete readset @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete readset @1000 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete truth @10 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete truth @100 ms: valid revoked,c3,0/100 (0%)
+E5-trace discrete truth @1000 ms: valid revoked,c3,0/100 (0%)
+E3 optimistic: released of those invalidated before the check,c4,0/139
+E3 atomic: released of those invalidated before the check,c4,0/140
+E3-ABA opa/opa: released after undone change; controls released,c4,50/50; 25/25
+E3-ABA opa/opa_readset: released after undone change; controls released,c4,0/50; 25/25
+E3-ABA xair/predicate: released after undone change; controls released,c4,50/50; 25/25
+E3-ABA xair/readset: released after undone change; controls released,c4,0/50; 25/25
+E3-ABA xair/truth: released after undone change; controls released,c4,0/50; 25/25
+E3-ABA xair_atomic/readset: released after undone change; controls released,c4,0/50; 25/25
+E3-ABA xair_atomic/truth: released after undone change; controls released,c4,0/50; 25/25
+E4 pause xair/plc_conditional: stale; history; valid executed,c4,0/220; 0/220; 20/20
+E4 pause xair/plc_plain: stale; history; valid executed,c4,119/220; 0/220; 20/20
+E4 pause xair/plc_predicate: stale; history; valid executed,c4,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_conditional: stale; history; valid executed,c4,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_plain: stale; history; valid executed,c4,111/220; 0/220; 20/20
+E4 pause xair_atomic/plc_predicate: stale; history; valid executed,c4,0/220; 0/220; 20/20
+E4 pause-resume xair/plc_conditional: stale; history; valid executed,c4,0/200; 0/200; 20/20
+E4 pause-resume xair/plc_plain: stale; history; valid executed,c4,55/200; 54/200; 20/20
+E4 pause-resume xair/plc_predicate: stale; history; valid executed,c4,0/200; 56/200; 20/20
+E4 pause-resume xair_atomic/plc_conditional: stale; history; valid executed,c4,0/200; 0/200; 20/20
+E4 pause-resume xair_atomic/plc_plain: stale; history; valid executed,c4,59/200; 57/200; 20/20
+E4 pause-resume xair_atomic/plc_predicate: stale; history; valid executed,c4,0/200; 61/200; 20/20
+E5 global @0 Hz: valid revoked,c4,0/200 (0%)
+E5 global @20 Hz: valid revoked,c4,28/200 (14%)
+E5 global @100 Hz: valid revoked,c4,140/200 (70%)
+E5 global @500 Hz: valid revoked,c4,200/200 (100%)
+E5 opa @0 Hz: valid revoked,c4,0/200 (0%)
+E5 opa @20 Hz: valid revoked,c4,0/200 (0%)
+E5 opa @100 Hz: valid revoked,c4,0/200 (0%)
+E5 opa @500 Hz: valid revoked,c4,0/200 (0%)
+E5 opa_readset @0 Hz: valid revoked,c4,0/200 (0%)
+E5 opa_readset @20 Hz: valid revoked,c4,0/200 (0%)
+E5 opa_readset @100 Hz: valid revoked,c4,0/200 (0%)
+E5 opa_readset @500 Hz: valid revoked,c4,0/200 (0%)
+E5 readset @0 Hz: valid revoked,c4,0/200 (0%)
+E5 readset @20 Hz: valid revoked,c4,0/200 (0%)
+E5 readset @100 Hz: valid revoked,c4,0/200 (0%)
+E5 readset @500 Hz: valid revoked,c4,0/200 (0%)
+E5 truth @0 Hz: valid revoked,c4,0/200 (0%)
+E5 truth @20 Hz: valid revoked,c4,0/200 (0%)
+E5 truth @100 Hz: valid revoked,c4,0/200 (0%)
+E5 truth @500 Hz: valid revoked,c4,0/200 (0%)
+E5-trace continuous global @10 ms: valid revoked,c4,38/100 (38%)
+E5-trace continuous global @100 ms: valid revoked,c4,4/100 (4%)
+E5-trace continuous global @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous opa @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous opa @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous opa @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous opa_readset @10 ms: valid revoked,c4,22/100 (22%)
+E5-trace continuous opa_readset @100 ms: valid revoked,c4,1/100 (1%)
+E5-trace continuous opa_readset @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous predicate @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous predicate @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous predicate @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous readset @10 ms: valid revoked,c4,37/100 (37%)
+E5-trace continuous readset @100 ms: valid revoked,c4,5/100 (5%)
+E5-trace continuous readset @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous truth @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous truth @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace continuous truth @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete global @10 ms: valid revoked,c4,33/100 (33%)
+E5-trace discrete global @100 ms: valid revoked,c4,7/100 (7%)
+E5-trace discrete global @1000 ms: valid revoked,c4,2/100 (2%)
+E5-trace discrete opa @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete opa @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete opa @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete opa_readset @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete opa_readset @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete opa_readset @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete predicate @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete predicate @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete predicate @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete readset @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete readset @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete readset @1000 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete truth @10 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete truth @100 ms: valid revoked,c4,0/100 (0%)
+E5-trace discrete truth @1000 ms: valid revoked,c4,0/100 (0%)
+E3 optimistic: released of those invalidated before the check,c5,0/134
+E3 atomic: released of those invalidated before the check,c5,0/141
+E3-ABA opa/opa: released after undone change; controls released,c5,50/50; 25/25
+E3-ABA opa/opa_readset: released after undone change; controls released,c5,0/50; 25/25
+E3-ABA xair/predicate: released after undone change; controls released,c5,50/50; 25/25
+E3-ABA xair/readset: released after undone change; controls released,c5,0/50; 25/25
+E3-ABA xair/truth: released after undone change; controls released,c5,0/50; 25/25
+E3-ABA xair_atomic/readset: released after undone change; controls released,c5,0/50; 25/25
+E3-ABA xair_atomic/truth: released after undone change; controls released,c5,0/50; 25/25
+E4 pause xair/plc_conditional: stale; history; valid executed,c5,0/220; 0/220; 20/20
+E4 pause xair/plc_plain: stale; history; valid executed,c5,115/220; 0/220; 20/20
+E4 pause xair/plc_predicate: stale; history; valid executed,c5,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_conditional: stale; history; valid executed,c5,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_plain: stale; history; valid executed,c5,117/220; 0/220; 20/20
+E4 pause xair_atomic/plc_predicate: stale; history; valid executed,c5,0/220; 0/220; 20/20
+E4 pause-resume xair/plc_conditional: stale; history; valid executed,c5,0/200; 0/200; 20/20
+E4 pause-resume xair/plc_plain: stale; history; valid executed,c5,49/200; 60/200; 20/20
+E4 pause-resume xair/plc_predicate: stale; history; valid executed,c5,0/200; 52/200; 20/20
+E4 pause-resume xair_atomic/plc_conditional: stale; history; valid executed,c5,0/200; 0/200; 20/20
+E4 pause-resume xair_atomic/plc_plain: stale; history; valid executed,c5,59/200; 61/200; 20/20
+E4 pause-resume xair_atomic/plc_predicate: stale; history; valid executed,c5,0/200; 68/200; 20/20
+E5 global @0 Hz: valid revoked,c5,0/200 (0%)
+E5 global @20 Hz: valid revoked,c5,27/200 (14%)
+E5 global @100 Hz: valid revoked,c5,123/200 (62%)
+E5 global @500 Hz: valid revoked,c5,200/200 (100%)
+E5 opa @0 Hz: valid revoked,c5,0/200 (0%)
+E5 opa @20 Hz: valid revoked,c5,0/200 (0%)
+E5 opa @100 Hz: valid revoked,c5,0/200 (0%)
+E5 opa @500 Hz: valid revoked,c5,0/200 (0%)
+E5 opa_readset @0 Hz: valid revoked,c5,0/200 (0%)
+E5 opa_readset @20 Hz: valid revoked,c5,0/200 (0%)
+E5 opa_readset @100 Hz: valid revoked,c5,0/200 (0%)
+E5 opa_readset @500 Hz: valid revoked,c5,0/200 (0%)
+E5 readset @0 Hz: valid revoked,c5,0/200 (0%)
+E5 readset @20 Hz: valid revoked,c5,0/200 (0%)
+E5 readset @100 Hz: valid revoked,c5,0/200 (0%)
+E5 readset @500 Hz: valid revoked,c5,0/200 (0%)
+E5 truth @0 Hz: valid revoked,c5,0/200 (0%)
+E5 truth @20 Hz: valid revoked,c5,0/200 (0%)
+E5 truth @100 Hz: valid revoked,c5,0/200 (0%)
+E5 truth @500 Hz: valid revoked,c5,0/200 (0%)
+E5-trace continuous global @10 ms: valid revoked,c5,39/100 (39%)
+E5-trace continuous global @100 ms: valid revoked,c5,6/100 (6%)
+E5-trace continuous global @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous opa @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous opa @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous opa @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous opa_readset @10 ms: valid revoked,c5,29/100 (29%)
+E5-trace continuous opa_readset @100 ms: valid revoked,c5,4/100 (4%)
+E5-trace continuous opa_readset @1000 ms: valid revoked,c5,2/100 (2%)
+E5-trace continuous predicate @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous predicate @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous predicate @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous readset @10 ms: valid revoked,c5,34/100 (34%)
+E5-trace continuous readset @100 ms: valid revoked,c5,6/100 (6%)
+E5-trace continuous readset @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous truth @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous truth @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace continuous truth @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete global @10 ms: valid revoked,c5,38/100 (38%)
+E5-trace discrete global @100 ms: valid revoked,c5,3/100 (3%)
+E5-trace discrete global @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete opa @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete opa @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete opa @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete opa_readset @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete opa_readset @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete opa_readset @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete predicate @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete predicate @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete predicate @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete readset @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete readset @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete readset @1000 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete truth @10 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete truth @100 ms: valid revoked,c5,0/100 (0%)
+E5-trace discrete truth @1000 ms: valid revoked,c5,0/100 (0%)
+E3 optimistic: released of those invalidated before the check,c6_fence,0/134
+E3 atomic: released of those invalidated before the check,c6_fence,0/134
+E3-ABA opa/opa: released after undone change; controls released,c6_fence,50/50; 25/25
+E3-ABA opa/opa_readset: released after undone change; controls released,c6_fence,0/50; 25/25
+E3-ABA xair/predicate: released after undone change; controls released,c6_fence,50/50; 25/25
+E3-ABA xair/readset: released after undone change; controls released,c6_fence,0/50; 25/25
+E3-ABA xair/truth: released after undone change; controls released,c6_fence,0/50; 25/25
+E3-ABA xair_atomic/readset: released after undone change; controls released,c6_fence,0/50; 25/25
+E3-ABA xair_atomic/truth: released after undone change; controls released,c6_fence,0/50; 25/25
+E4 pause xair/plc_conditional: stale; history; valid executed,c6_fence,0/220; 0/220; 20/20
+E4 pause xair/plc_plain: stale; history; valid executed,c6_fence,110/220; 0/220; 20/20
+E4 pause xair/plc_predicate: stale; history; valid executed,c6_fence,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_conditional: stale; history; valid executed,c6_fence,0/220; 0/220; 20/20
+E4 pause xair_atomic/plc_plain: stale; history; valid executed,c6_fence,105/220; 0/220; 20/20
+E4 pause xair_atomic/plc_predicate: stale; history; valid executed,c6_fence,0/220; 0/220; 20/20
+E4 pause-resume xair/plc_conditional: stale; history; valid executed,c6_fence,0/200; 0/200; 20/20
+E4 pause-resume xair/plc_plain: stale; history; valid executed,c6_fence,33/200; 78/200; 20/20
+E4 pause-resume xair/plc_predicate: stale; history; valid executed,c6_fence,0/200; 71/200; 20/20
+E4 pause-resume xair_atomic/plc_conditional: stale; history; valid executed,c6_fence,0/200; 0/200; 20/20
+E4 pause-resume xair_atomic/plc_plain: stale; history; valid executed,c6_fence,38/200; 73/200; 20/20
+E4 pause-resume xair_atomic/plc_predicate: stale; history; valid executed,c6_fence,0/200; 80/200; 20/20
+E5 global @0 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 global @20 Hz: valid revoked,c6_fence,26/200 (13%)
+E5 global @100 Hz: valid revoked,c6_fence,184/200 (92%)
+E5 global @500 Hz: valid revoked,c6_fence,200/200 (100%)
+E5 opa @0 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 opa @20 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 opa @100 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 opa @500 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 opa_readset @0 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 opa_readset @20 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 opa_readset @100 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 opa_readset @500 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 readset @0 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 readset @20 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 readset @100 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 readset @500 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 truth @0 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 truth @20 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 truth @100 Hz: valid revoked,c6_fence,0/200 (0%)
+E5 truth @500 Hz: valid revoked,c6_fence,0/200 (0%)
+E5-trace continuous global @10 ms: valid revoked,c6_fence,63/100 (63%)
+E5-trace continuous global @100 ms: valid revoked,c6_fence,4/100 (4%)
+E5-trace continuous global @1000 ms: valid revoked,c6_fence,1/100 (1%)
+E5-trace continuous opa @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous opa @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous opa @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous opa_readset @10 ms: valid revoked,c6_fence,51/100 (51%)
+E5-trace continuous opa_readset @100 ms: valid revoked,c6_fence,8/100 (8%)
+E5-trace continuous opa_readset @1000 ms: valid revoked,c6_fence,1/100 (1%)
+E5-trace continuous predicate @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous predicate @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous predicate @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous readset @10 ms: valid revoked,c6_fence,58/100 (58%)
+E5-trace continuous readset @100 ms: valid revoked,c6_fence,3/100 (3%)
+E5-trace continuous readset @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous truth @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous truth @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace continuous truth @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete global @10 ms: valid revoked,c6_fence,71/100 (71%)
+E5-trace discrete global @100 ms: valid revoked,c6_fence,1/100 (1%)
+E5-trace discrete global @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete opa @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete opa @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete opa @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete opa_readset @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete opa_readset @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete opa_readset @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete predicate @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete predicate @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete predicate @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete readset @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete readset @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete readset @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete truth @10 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete truth @100 ms: valid revoked,c6_fence,0/100 (0%)
+E5-trace discrete truth @1000 ms: valid revoked,c6_fence,0/100 (0%)
+E1 e1b/direct: obsolete executed,c6_fence,100/100
+E1 e1b/local: obsolete executed,c6_fence,0/100
+E1 e1b/naive: obsolete executed,c6_fence,100/100
+E1 e1b/opa: obsolete executed,c6_fence,0/100
+E1 e1b/xair: obsolete executed,c6_fence,0/100
+E2 local_authoritative/0: obsolete executed,c6_fence,0/10
+E2 local_authoritative/10: obsolete executed,c6_fence,0/10
+E2 local_authoritative/100: obsolete executed,c6_fence,0/10
+E2 local_authoritative/250: obsolete executed,c6_fence,0/10
+E2 local_authoritative/50: obsolete executed,c6_fence,0/10
+E2 local_authoritative/500: obsolete executed,c6_fence,0/10
+E2 local_push/0: obsolete executed,c6_fence,10/10
+E2 local_push/10: obsolete executed,c6_fence,10/10
+E2 local_push/100: obsolete executed,c6_fence,0/10
+E2 local_push/250: obsolete executed,c6_fence,0/10
+E2 local_push/50: obsolete executed,c6_fence,0/10
+E2 local_push/500: obsolete executed,c6_fence,0/10
+E2 local_stale/0: obsolete executed,c6_fence,10/10
+E2 local_stale/10: obsolete executed,c6_fence,10/10
+E2 local_stale/100: obsolete executed,c6_fence,10/10
+E2 local_stale/250: obsolete executed,c6_fence,10/10
+E2 local_stale/50: obsolete executed,c6_fence,10/10
+E2 local_stale/500: obsolete executed,c6_fence,10/10
+E2 xair/0: obsolete executed,c6_fence,0/10
+E2 xair/10: obsolete executed,c6_fence,0/10
+E2 xair/100: obsolete executed,c6_fence,0/10
+E2 xair/250: obsolete executed,c6_fence,0/10
+E2 xair/50: obsolete executed,c6_fence,0/10
+E2 xair/500: obsolete executed,c6_fence,0/10
+E1-classes GRASP/direct: obsolete executed,c6_fence,100/100
+E1-classes GRASP/local: obsolete executed,c6_fence,0/100
+E1-classes GRASP/xair: obsolete executed,c6_fence,0/100
+E1-classes RESUME/direct: obsolete executed,c6_fence,100/100
+E1-classes RESUME/local: obsolete executed,c6_fence,0/100
+E1-classes RESUME/xair: obsolete executed,c6_fence,0/100
+E1-classes SET_SPEED/direct: obsolete executed,c6_fence,100/100
+E1-classes SET_SPEED/local: obsolete executed,c6_fence,0/100
+E1-classes SET_SPEED/xair: obsolete executed,c6_fence,0/100
+E1-classes STOP/direct: obsolete executed,c6_fence,100/100
+E1-classes STOP/local: obsolete executed,c6_fence,0/100
+E1-classes STOP/xair: obsolete executed,c6_fence,0/100
+E1-policy 0/drift: released,c6_fence,100/100
+E1-policy 0/valid: released,c6_fence,100/100
+E1-policy 1/drift: released,c6_fence,0/100
+E1-policy 1/valid: released,c6_fence,100/100
+E1 e1b/direct: obsolete executed,c7_fence,100/100
+E1 e1b/local: obsolete executed,c7_fence,0/100
+E1 e1b/naive: obsolete executed,c7_fence,100/100
+E1 e1b/opa: obsolete executed,c7_fence,0/100
+E1 e1b/xair: obsolete executed,c7_fence,0/100
+E2 local_authoritative/0: obsolete executed,c7_fence,0/10
+E2 local_authoritative/10: obsolete executed,c7_fence,0/10
+E2 local_authoritative/100: obsolete executed,c7_fence,0/10
+E2 local_authoritative/250: obsolete executed,c7_fence,0/10
+E2 local_authoritative/50: obsolete executed,c7_fence,0/10
+E2 local_authoritative/500: obsolete executed,c7_fence,0/10
+E2 local_push/0: obsolete executed,c7_fence,10/10
+E2 local_push/10: obsolete executed,c7_fence,10/10
+E2 local_push/100: obsolete executed,c7_fence,0/10
+E2 local_push/250: obsolete executed,c7_fence,0/10
+E2 local_push/50: obsolete executed,c7_fence,0/10
+E2 local_push/500: obsolete executed,c7_fence,0/10
+E2 local_stale/0: obsolete executed,c7_fence,10/10
+E2 local_stale/10: obsolete executed,c7_fence,10/10
+E2 local_stale/100: obsolete executed,c7_fence,10/10
+E2 local_stale/250: obsolete executed,c7_fence,10/10
+E2 local_stale/50: obsolete executed,c7_fence,10/10
+E2 local_stale/500: obsolete executed,c7_fence,10/10
+E2 xair/0: obsolete executed,c7_fence,0/10
+E2 xair/10: obsolete executed,c7_fence,0/10
+E2 xair/100: obsolete executed,c7_fence,0/10
+E2 xair/250: obsolete executed,c7_fence,0/10
+E2 xair/50: obsolete executed,c7_fence,0/10
+E2 xair/500: obsolete executed,c7_fence,0/10
+E1-classes GRASP/direct: obsolete executed,c7_fence,100/100
+E1-classes GRASP/local: obsolete executed,c7_fence,0/100
+E1-classes GRASP/xair: obsolete executed,c7_fence,0/100
+E1-classes RESUME/direct: obsolete executed,c7_fence,100/100
+E1-classes RESUME/local: obsolete executed,c7_fence,0/100
+E1-classes RESUME/xair: obsolete executed,c7_fence,0/100
+E1-classes SET_SPEED/direct: obsolete executed,c7_fence,100/100
+E1-classes SET_SPEED/local: obsolete executed,c7_fence,0/100
+E1-classes SET_SPEED/xair: obsolete executed,c7_fence,0/100
+E1-classes STOP/direct: obsolete executed,c7_fence,100/100
+E1-classes STOP/local: obsolete executed,c7_fence,0/100
+E1-classes STOP/xair: obsolete executed,c7_fence,0/100
+E1-policy 0/drift: released,c7_fence,100/100
+E1-policy 0/valid: released,c7_fence,100/100
+E1-policy 1/drift: released,c7_fence,0/100
+E1-policy 1/valid: released,c7_fence,100/100
+E3-stop fence=0 xair: stale after stop; controls released,e27 seed27,238/330; 100/100
+E3-stop fence=0 xair_atomic: stale after stop; controls released,e27 seed27,245/330; 100/100
+E3-stop fence=1 xair: stale after stop; controls released,e27 seed27,0/330; 100/100
+E3-stop fence=1 xair_atomic: stale after stop; controls released,e27 seed27,0/330; 100/100
+E3-stop fence=0 xair: stale after stop; controls released,e27 seed28,235/330; 100/100
+E3-stop fence=0 xair_atomic: stale after stop; controls released,e27 seed28,239/330; 100/100
+E3-stop fence=1 xair: stale after stop; controls released,e27 seed28,0/330; 100/100
+E3-stop fence=1 xair_atomic: stale after stop; controls released,e27 seed28,0/330; 100/100
+E3-stop fence=0 xair: stale after stop; controls released,e27 seed29,238/330; 100/100
+E3-stop fence=0 xair_atomic: stale after stop; controls released,e27 seed29,239/330; 100/100
+E3-stop fence=1 xair: stale after stop; controls released,e27 seed29,0/330; 100/100
+E3-stop fence=1 xair_atomic: stale after stop; controls released,e27 seed29,0/330; 100/100

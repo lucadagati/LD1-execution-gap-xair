@@ -1,0 +1,53 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/pinned",
+  "kind": "retroactive",
+  "commands": [
+    "./scripts/run_pinned_perf.sh"
+  ],
+  "seeds": [],
+  "files": [
+    {
+      "path": "e12_scaling.csv",
+      "bytes": 5497,
+      "sha256": "76b20944d686c104144b95375d39e269c8df1181d010a85a8f314d257add69f0"
+    },
+    {
+      "path": "e4_load_http_rep1.csv",
+      "bytes": 296,
+      "sha256": "5e4d9cb353d2a7706606a4ff6d99f87eb41b08cdf4b6cc6b9049dc0bd271f2a0"
+    },
+    {
+      "path": "e4_load_http_rep2.csv",
+      "bytes": 296,
+      "sha256": "40055dc92365226db5357b323c84be91d7cc98fae1f297e43ab72e148a9a05fb"
+    },
+    {
+      "path": "e4_load_http_rep3.csv",
+      "bytes": 296,
+      "sha256": "2038a66eb86e2080a9a24f0374625fd8e5e30e85db57a908a7882bf1242aabf9"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 115,
+      "sha256": "1c9cd406cac756740a8a25ba7b71768dfc6d66480bb2cf8b2c59fd13117837f9"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "pinned: xair=28-31 gateway=32-34,36 bench=16-20 redis=3,6",
+      "loadavg_start=7.28 6.55 6.39",
+      "loadavg_end=10.70 7.57 6.74"
+    ]
+  },
+  "notes": [
+    "reserved cores (R)"
+  ],
+  "manifest_written": "2026-10-05T23:20:35+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

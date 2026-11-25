@@ -1,0 +1,46 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/distributed/sensitivity/shared_cpu",
+  "kind": "retroactive",
+  "commands": [
+    "SUITES=\"e10_natural e10_natural_atomic e16\" COMPOSE_EXTRA=compose.shared-cpu.yml OUT_SUB=distributed/sensitivity/shared_cpu sudo ./scripts/run_distributed.sh 0.5ms 0.1ms"
+  ],
+  "seeds": [
+    "per suite in scripts/run_distributed.sh: e1 42+S, e10 boundary/atomic 43+S, e10 natural 44+S, e10-deadline 10+S, e10-aba 11+S, e21 21+S, e21-aba 31+S, e16 42+S, e16-trace 16+S, e20 20+S, e18 18+S (S = SEED_OFFSET in environment.txt); S=0"
+  ],
+  "files": [
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 44719,
+      "sha256": "b256295dc32ca1c1b19bec518a912a28150085e1efc7ab82fc370c3ed2145a25"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 48295,
+      "sha256": "29d3e708cd5be0b6ae1df9bffd2ee4d70875eb1da3a7f8d1b3e921fec6414c96"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 524156,
+      "sha256": "e18f0512e041751cc6f5966ed2c5243daf1ff293cc2b3723ddf23982029f19df"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 398,
+      "sha256": "f206167e1c6b4b259262ea0ec5dea982c6e023166b4b04741498699ab68f3dca"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"netem_one_way_delay\": \"0.5ms\", \"netem_jitter\": \"0.1ms\", \"suites\": \"e10_natural e10_natural_atomic e16\", \"seed_offset\": 0, \"compose_extra\": \"compose.shared-cpu.yml\", \"trace_phase\": \"random\", \"tcp_connect_rtt_ms_p50_p99\": {\"bench->xair\": [1.244, 1.672], \"bench->gateway\": [1.277, 1.79], \"bench->redis\": [1.232, 1.661]}, \"shared_monotonic_clock_check\": \"50/50\", \"loadavg\": [\"5.32\", \"5.30\", \"5.91\"]}"
+    ]
+  },
+  "notes": [],
+  "manifest_written": "2026-10-05T23:20:36+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

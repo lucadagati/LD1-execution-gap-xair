@@ -1,0 +1,7 @@
+journal/
+.venv/
+.run/
+experiments/results/
+data/
+**/__pycache__/
+.git/

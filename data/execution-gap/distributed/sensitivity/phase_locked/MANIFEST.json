@@ -1,0 +1,36 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/distributed/sensitivity/phase_locked",
+  "kind": "retroactive",
+  "commands": [
+    "SUITES=e16_trace TRACE_PHASE=fixed OUT_SUB=distributed/sensitivity/phase_locked sudo ./scripts/run_distributed.sh 0.5ms 0.1ms"
+  ],
+  "seeds": [
+    "per suite in scripts/run_distributed.sh: e1 42+S, e10 boundary/atomic 43+S, e10 natural 44+S, e10-deadline 10+S, e10-aba 11+S, e21 21+S, e21-aba 31+S, e16 42+S, e16-trace 16+S, e20 20+S, e18 18+S (S = SEED_OFFSET in environment.txt); S=0"
+  ],
+  "files": [
+    {
+      "path": "e16_trace_churn.csv",
+      "bytes": 370419,
+      "sha256": "bd3c077008823adfc6d56ec8e6ee10f2199b755f66b1d8524d3f39b465f3feac"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 351,
+      "sha256": "ab4742b097ade7833fc2495c3d6fe51ec4a40c82dde42ca54ea84dfbb5e0e51c"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"netem_one_way_delay\": \"0.5ms\", \"netem_jitter\": \"0.1ms\", \"suites\": \"e16_trace\", \"seed_offset\": 0, \"compose_extra\": \"\", \"trace_phase\": \"fixed\", \"tcp_connect_rtt_ms_p50_p99\": {\"bench->xair\": [1.266, 2.273], \"bench->gateway\": [1.274, 2.234], \"bench->redis\": [1.234, 1.639]}, \"shared_monotonic_clock_check\": \"50/50\", \"loadavg\": [\"6.59\", \"6.09\", \"6.12\"]}"
+    ]
+  },
+  "notes": [],
+  "manifest_written": "2026-10-05T23:20:36+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

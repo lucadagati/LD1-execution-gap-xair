@@ -1,0 +1,13 @@
+{
+ "commit": "8b92628f73dfdd30af37eb085b014cfe89535173",
+ "stop_fence": -1,
+ "seed_offset": 1,
+ "suites": "e27",
+ "note": "E3-stop repeat, both fence settings (the experiment toggles the fence itself), seed 28",
+ "started_utc": "2026-11-24T21:53:50Z",
+ "loadavg": [
+  "29.10",
+  "28.00",
+  "23.81"
+ ]
+}

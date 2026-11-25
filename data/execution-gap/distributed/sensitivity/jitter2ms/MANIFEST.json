@@ -1,0 +1,46 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/distributed/sensitivity/jitter2ms",
+  "kind": "retroactive",
+  "commands": [
+    "SUITES=\"e10_natural e10_natural_atomic e16\" OUT_SUB=distributed/sensitivity/jitter2ms sudo ./scripts/run_distributed.sh 2ms 1ms"
+  ],
+  "seeds": [
+    "per suite in scripts/run_distributed.sh: e1 42+S, e10 boundary/atomic 43+S, e10 natural 44+S, e10-deadline 10+S, e10-aba 11+S, e21 21+S, e21-aba 31+S, e16 42+S, e16-trace 16+S, e20 20+S, e18 18+S (S = SEED_OFFSET in environment.txt); S=0"
+  ],
+  "files": [
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 45646,
+      "sha256": "752d484980eaaabe93ef7b9473829f14edf6e01bfa159eafce93c826f092917a"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 47155,
+      "sha256": "a6e002c6b23aec2ec0d0f26119b9bc1df648b7bf923f876c4a1dd6151ac075bd"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 527819,
+      "sha256": "444d3ee8ec17ccd47f7ad602961833b0bf6684af4914527a6b6f33a1d21ba75d"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 372,
+      "sha256": "b3ac202075d5c5e984d4d0eb71f2d0fe702caa0224c1473351cfaebafbef8cba"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"netem_one_way_delay\": \"2ms\", \"netem_jitter\": \"1ms\", \"suites\": \"e10_natural e10_natural_atomic e16\", \"seed_offset\": 0, \"compose_extra\": \"\", \"trace_phase\": \"random\", \"tcp_connect_rtt_ms_p50_p99\": {\"bench->xair\": [4.197, 8.093], \"bench->gateway\": [4.286, 7.63], \"bench->redis\": [4.191, 8.374]}, \"shared_monotonic_clock_check\": \"50/50\", \"loadavg\": [\"4.94\", \"5.97\", \"6.28\"]}"
+    ]
+  },
+  "notes": [],
+  "manifest_written": "2026-10-05T23:20:36+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

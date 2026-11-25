@@ -1,0 +1,273 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/distributed/e20_paired",
+  "kind": "run",
+  "commands": [
+    "SUITES=e20 OUT_SUB=distributed/e20_paired sudo ./scripts/run_distributed.sh 0.5ms 0.1ms",
+    "(inside the bench container) python experiments/run_e20_mes.py --design paired --compression 4320 --intents 2000 --seed 20"
+  ],
+  "seeds": [
+    "20"
+  ],
+  "files": [
+    {
+      "path": "e20_mes_offline.csv",
+      "bytes": 1178,
+      "sha256": "b03ef3d17b916838709689958af48778ab31f274a6b1975fa8f9c82c14add910"
+    },
+    {
+      "path": "e20_mes_replay_paired.csv",
+      "bytes": 3106684,
+      "sha256": "791c31cd56af6dca34c21a3c4664b516dfe51d1ae52d67c0fba7d94e0c086275"
+    },
+    {
+      "path": "e20_mes_sensitivity.csv",
+      "bytes": 3250,
+      "sha256": "53bdafc8b9149ffdcf61089c83b8d9f120d4b8971effb931aae14b1c95cc38e7"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 345,
+      "sha256": "697942683c783c0d3989cbaf750561dc91e54cf98a10963fcc2938c6834f5dde"
+    },
+    {
+      "path": "run_console.txt",
+      "bytes": 6338,
+      "sha256": "ceae79e6fc76dc00c757946f643c23919383f9f0e97e6e5bd7440b8aedb213af"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"netem_one_way_delay\": \"0.5ms\", \"netem_jitter\": \"0.1ms\", \"suites\": \"e20\", \"seed_offset\": 0, \"compose_extra\": \"\", \"trace_phase\": \"random\", \"tcp_connect_rtt_ms_p50_p99\": {\"bench->xair\": [1.289, 3.39], \"bench->gateway\": [1.254, 1.786], \"bench->redis\": [1.285, 1.687]}, \"shared_monotonic_clock_check\": \"50/50\", \"loadavg\": [\"4.44\", \"4.79\", \"5.10\"]}"
+    ]
+  },
+  "notes": [
+    "Run ended 2026-10-06T01:16:43+02:00. None of the code_files was modified between the start of the run and the first version of this manifest (checked with find -newer). docker/distributed/compose.yml was pinned by image digest after the run (the run used the tags redis:7-alpine and openpolicyagent/opa:1.21.0, whose local images are listed under images). The git diff digest is that of the working tree when this manifest was written, which also contains documentation edits made during and after the run.",
+    "e20_mes_offline.csv and e20_mes_sensitivity.csv are byte-identical to the v1.6 files in distributed/ (same log, same seed).",
+    "run_console.txt is the console output of run_distributed.sh."
+  ],
+  "code_files": [
+    {
+      "path": "xair/core/runtime.py",
+      "sha256": "983f8b7fc8557d04cc92a2e37cc90c1d02b48e5c2fc351d1ba5b55d1c4533652"
+    },
+    {
+      "path": "xair/core/lifecycle.py",
+      "sha256": "43dea9900baa3e26758a2700851642ed9578747078d3e8251c746b676a8d99b6"
+    },
+    {
+      "path": "xair/core/models.py",
+      "sha256": "f8de2bf7d768987d1cf504212a4788c4e4b5b305f011ac9756741d081edf5db7"
+    },
+    {
+      "path": "xair/core/context_store.py",
+      "sha256": "76a46b8b4abc3b5cd29557191bacb0094785f74a58fe102562ddb242cacf5381"
+    },
+    {
+      "path": "xair/core/temporal_validator.py",
+      "sha256": "b12cf54db560b7d77a1b7df61d819abd0f06da782b81870d55951047aa5c302c"
+    },
+    {
+      "path": "xair/core/context_validator.py",
+      "sha256": "049c37259cae4534fa92f2b8e0b04f72939504a19b700d1bdc851f305687e332"
+    },
+    {
+      "path": "xair/core/versioning.py",
+      "sha256": "f8d47d90c68465208ef3968287ecf49dd8b3ae1e44af4ad0977a591c860c3472"
+    },
+    {
+      "path": "xair/core/execution_decision.py",
+      "sha256": "1a7c8f8a83bf9136be6b7c7f10adb6f6bb9ffaba7f3d82a8e983a105c0f0947c"
+    },
+    {
+      "path": "xair/core/coordinator.py",
+      "sha256": "44ab485a0eb0faad141c39a225f50176fffe0f681ae3c244b13004c23654c37c"
+    },
+    {
+      "path": "xair/adapters/http_server.py",
+      "sha256": "62db826a8bf80abd3963b78e33e241cc64f4d6972409527db8f4a188740ac191"
+    },
+    {
+      "path": "xair/adapters/runtime_state.py",
+      "sha256": "95282009270613c774d85c06dfd156d56be2446686dde2092ab7a027bbd60634"
+    },
+    {
+      "path": "scripts/actuator_gateway.py",
+      "sha256": "e17916b7ef6af224d10c933ff9a0a93bf5a7c7302fd34216ec023faea987a7f4"
+    },
+    {
+      "path": "scripts/xair_http_client.py",
+      "sha256": "721cd8449298ba0f30171e38821ac59452c4000e35bbf475fc5e320c64621589"
+    },
+    {
+      "path": "scripts/cell_controller.py",
+      "sha256": "ca2a322297d777d1cb99ba555a80aa4eaf56716ce279fda8e94660a4926c7b47"
+    },
+    {
+      "path": "scripts/run_distributed.sh",
+      "sha256": "d32d79839925fffcfd80fb379ec9cf5903f627786895bc4bc2000c75bc53a257"
+    },
+    {
+      "path": "experiments/run_e20_mes.py",
+      "sha256": "74bf5c7370dce6746fdce6dd96c1266af357144c90af8d61ad6d10eeef75be34"
+    },
+    {
+      "path": "experiments/common.py",
+      "sha256": "7a5614adf3900973b978179383d8c93f279b56295c6fbf89e3da519a08fd5ea5"
+    },
+    {
+      "path": "experiments/mes_trace.py",
+      "sha256": "ad2617ed7faa392ada644f1be7f8ea88a983390a3175e938be0c32173672b655"
+    },
+    {
+      "path": "docker/opa/xair.rego",
+      "sha256": "56acdb6530759bad0c9b2bfddbbf3b06bdb2bacafe0c119d72ea3e2703a80e67"
+    },
+    {
+      "path": "schemas/action-intent-v1.json",
+      "sha256": "22944e4a02cb2e797801e16e73feb506ff0f90ec44c29b5e71a80d71789899a1"
+    },
+    {
+      "path": "requirements.lock",
+      "sha256": "ac2b40f5dbaab4de5a5415c3f1a07854da4d6b557aacf0262f9da63c95b8f13e"
+    }
+  ],
+  "started": "2026-10-06T00:55:14+02:00",
+  "manifest_written": "2026-10-05T23:18:38+00:00",
+  "git": {
+    "commit": "e16729943d5f8ed9977939c77dd02d34298ab560",
+    "dirty": true,
+    "diff_sha256": "5c3791325daeefe2b249d29aa02151a65a4a965537d83802545657967166bd7b",
+    "changed_paths": [
+      ".github/workflows/ci.yml",
+      "Dockerfile",
+      "README.md",
+      "data/execution-gap/README.md",
+      "data/execution-gap/e0_lifecycle.json",
+      "data/execution-gap/paper_metrics_summary.json",
+      "docker-compose.yml",
+      "docker/distributed/compose.yml",
+      "docker/openplc/cell_ctl.st",
+      "docker/xair-node/Dockerfile",
+      "docs/detailed-results/detailed_results.pdf",
+      "docs/detailed-results/detailed_results.tex",
+      "docs/detailed-results/generated/numbers.tex",
+      "docs/detailed-results/generated/tab_e20.tex",
+      "examples/manufacturing-stop-robot.json -> examples/manufacturing-pick-part.json",
+      "examples/manufacturing-resume-stale.json",
+      "experiments/EVALUATION.md",
+      "experiments/aggregate_experiment_results.py",
+      "experiments/make_paper_tables.py",
+      "experiments/run_e0_lifecycle.py",
+      "experiments/run_e18b_durability.py",
+      "experiments/run_e20_mes.py",
+      "experiments/run_e23_truth_scaling.py",
+      "experiments/run_e8_gazebo_cell.py",
+      "experiments/run_e9_consistency_sweep.py",
+      "schemas/action-intent-v1.json",
+      "scripts/actuator_gateway.py",
+      "scripts/cell_controller.py",
+      "scripts/plc_modbus.py",
+      "scripts/run_distributed.sh",
+      "scripts/run_embedded.sh",
+      "scripts/run_lan.sh",
+      "scripts/run_openplc.sh",
+      "scripts/run_physical.sh",
+      "scripts/run_pinned_perf.sh",
+      "scripts/xair_http_client.py",
+      "simulation/opcua_hil_bridge.py",
+      "tests/test_contract_runtime.py",
+      "tests/test_read_set_versioning.py",
+      "tests/test_review_fixes.py",
+      "tests/test_schema.py",
+      "xair/adapters/http_server.py",
+      "xair/core/lifecycle.py",
+      "xair/core/models.py",
+      "xair/core/runtime.py",
+      "data/execution-gap/MANIFEST.json",
+      "data/execution-gap/distributed/MANIFEST.json",
+      "data/execution-gap/distributed/campaigns/c2/MANIFEST.json",
+      "data/execution-gap/distributed/campaigns/c3/MANIFEST.json",
+      "data/execution-gap/distributed/campaigns/c4/MANIFEST.json",
+      "data/execution-gap/distributed/campaigns/c5/MANIFEST.json",
+      "data/execution-gap/distributed/e20_paired/",
+      "data/execution-gap/distributed/sensitivity/jitter2ms/MANIFEST.json",
+      "data/execution-gap/distributed/sensitivity/phase_locked/MANIFEST.json",
+      "data/execution-gap/distributed/sensitivity/shared_cpu/MANIFEST.json",
+      "data/execution-gap/embedded/rpi4/MANIFEST.json",
+      "data/execution-gap/embedded/vf2/MANIFEST.json",
+      "data/execution-gap/lan/MANIFEST.json",
+      "data/execution-gap/openplc/MANIFEST.json",
+      "data/execution-gap/physical/MANIFEST.json",
+      "data/execution-gap/pinned/MANIFEST.json",
+      "data/execution-gap/scaling/MANIFEST.json",
+      "docs/AIS.md",
+      "docs/detailed-results/generated/tab_e20_rotation.tex",
+      "scripts/make_manifest.py",
+      "scripts/write_retro_manifests.sh",
+      "tests/test_ais_contract.py",
+      "tests/test_cell_controller.py",
+      "tests/test_e20_paired.py",
+      "tests/test_lifecycle_release_effect.py",
+      "tests/test_manifest.py"
+    ]
+  },
+  "runtime": {
+    "xair": "1.6.1",
+    "python": "3.12.12",
+    "dependencies": {
+      "fastapi": "0.141.1",
+      "uvicorn": "0.52.1",
+      "redis": "8.1.0",
+      "jsonschema": "4.26.0",
+      "pydantic": "2.13.4",
+      "asyncua": "2.0.1",
+      "pymodbus": "3.15.0",
+      "httpx": "0.28.1"
+    },
+    "requirements_lock_sha256": "ac2b40f5dbaab4de5a5415c3f1a07854da4d6b557aacf0262f9da63c95b8f13e"
+  },
+  "host": {
+    "platform": "Linux-6.8.12-18-pve-x86_64-with-glibc2.35",
+    "machine": "x86_64",
+    "cpu": "AMD EPYC 7313 16-Core Processor",
+    "cpus_visible": 48,
+    "loadavg": [
+      "5.30",
+      "6.22",
+      "6.20"
+    ]
+  },
+  "images": [
+    {
+      "ref": "redis:7-alpine",
+      "id": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+      "repo_digests": [
+        "redis@sha256:520775a41a63e77e06c73e35d2fd9cc15921a609516818796b4ecbb813078bc7"
+      ],
+      "created": "2026-09-17T21:32:46.989770417Z"
+    },
+    {
+      "ref": "openpolicyagent/opa:1.21.0",
+      "id": "sha256:7a8784bc427c9e0a1f42e920ed219e4c75b21a4ee6d95cfbc947ee8d6772b9f7",
+      "repo_digests": [
+        "openpolicyagent/opa@sha256:9e0010512cf405e66bfd7b89394f514e56fe0464822df0527e780344ab151450"
+      ],
+      "created": "2026-09-24T13:34:04.030521273Z"
+    },
+    {
+      "ref": "xair-node",
+      "id": "sha256:768ff47acfcddf596b64b2e89a4f81ad26d55ebfee43cddb7ccae71f12072646",
+      "repo_digests": [],
+      "created": "2026-09-24T22:07:56.21324602Z"
+    },
+    {
+      "ref": "python:3.12-slim",
+      "id": "sha256:9e87977b867847e186d066f531ef783b006d582a985c341c269446088d90f2c4",
+      "repo_digests": [
+        "python@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9"
+      ],
+      "created": "2026-09-19T01:07:11.796422884Z"
+    }
+  ]
+}

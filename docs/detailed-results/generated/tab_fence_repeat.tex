@@ -1,0 +1,16 @@
+E3, optimistic: released / invalidated before the check & 0/134--139 & 0/134 \\
+E3, atomic: released / invalidated before the check & 0/135--141 & 0/134 \\
+E3-ABA, no version: released after undone change; controls & 50/50; 25/25 & 50/50; 25/25 \\
+E3-ABA, read-set version & 0/50; 25/25 & 0/50; 25/25 \\
+E3-ABA, truth version & 0/50; 25/25 & 0/50; 25/25 \\
+E4 pause, unconditional (optimistic): stale; history; valid & 105--119/220; 0/220; 20/20 & 110/220; 0/220; 20/20 \\
+E4 pause, interlock (optimistic) & 0/220; 0/220; 20/20 & 0/220; 0/220; 20/20 \\
+E4 pause, version-conditional (optimistic) & 0/220; 0/220; 20/20 & 0/220; 0/220; 20/20 \\
+E4 pause--resume, interlock (optimistic) & 0/200; 51--64/200; 20/20 & 0/200; 71/200; 20/20 \\
+E4 pause--resume, version-conditional (optimistic) & 0/200; 0/200; 20/20 & 0/200; 0/200; 20/20 \\
+E5, global version, 20\,Hz: valid revoked & 18--28/200 (9--14\%) & 26/200 (13\%) \\
+E5, global version, 100\,Hz & 123--140/200 (62--70\%) & 184/200 (92\%) \\
+E5, read-set version, 100\,Hz & 0/200 (0\%) & 0/200 (0\%) \\
+E5, truth version, 100\,Hz & 0/200 (0\%) & 0/200 (0\%) \\
+E5-trace, read-set version, 10\,ms & 34--41/100 (34--41\%) & 58/100 (58\%) \\
+E5-trace, truth version, 10\,ms & 0/100 (0\%) & 0/100 (0\%) \\

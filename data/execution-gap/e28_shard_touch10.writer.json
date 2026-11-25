@@ -1,0 +1,56 @@
+[
+ {
+  "layout": "shard",
+  "registered": 10,
+  "rate_hz": 20,
+  "updates": 236,
+  "achieved_hz": 19.999654260284714,
+  "update_p50_ms": 2.4162251502275467,
+  "update_p99_ms": 5.9842499904334545
+ },
+ {
+  "layout": "shard",
+  "registered": 10,
+  "rate_hz": 100,
+  "updates": 1174,
+  "achieved_hz": 100.06556488596225,
+  "update_p50_ms": 1.978773158043623,
+  "update_p99_ms": 4.098962061107159
+ },
+ {
+  "layout": "shard",
+  "registered": 1000,
+  "rate_hz": 20,
+  "updates": 263,
+  "achieved_hz": 20.021841516269003,
+  "update_p50_ms": 9.07810591161251,
+  "update_p99_ms": 19.878985127434134
+ },
+ {
+  "layout": "shard",
+  "registered": 1000,
+  "rate_hz": 100,
+  "updates": 1576,
+  "achieved_hz": 98.81636401640502,
+  "update_p50_ms": 8.208743995055556,
+  "update_p99_ms": 20.10820503346622
+ },
+ {
+  "layout": "shard",
+  "registered": 10000,
+  "rate_hz": 20,
+  "updates": 629,
+  "achieved_hz": 9.0880460992294,
+  "update_p50_ms": 114.5114719402045,
+  "update_p99_ms": 171.5352819301188
+ },
+ {
+  "layout": "shard",
+  "registered": 10000,
+  "rate_hz": 100,
+  "updates": 632,
+  "achieved_hz": 9.757825732774545,
+  "update_p50_ms": 107.79296397231519,
+  "update_p99_ms": 160.5682719964534
+ }
+]

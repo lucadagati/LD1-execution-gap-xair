@@ -1,0 +1,2 @@
+{"board": "rpi4", "platform": "Linux-7.0.0-1020-raspi-realtime-aarch64-with-glibc2.43", "python": "3.12.14", "cpu": "Raspberry Pi 4 Model B Rev 1.5", "cores": 4, "kernel": "#20-Ubuntu SMP PREEMPT_RT Fri Sep 11 17:25:38 UTC 2026", "loadavg": ["3.32", "1.79", "0.76"], "pinning": "redis core 3, XAIR core 2, gateway core 1, harness core 0"}
+{"rss_mb": {"xair": 83, "gateway": 31, "redis": null}, "loadavg_end": ["3.93", "2.30", "1.01"]}

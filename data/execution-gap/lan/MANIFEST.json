@@ -1,0 +1,79 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/lan",
+  "kind": "retroactive",
+  "commands": [
+    "CORE_HOST=.. CORE_IP=.. EDGE_HOST=.. EDGE_IP=.. ./scripts/run_lan.sh"
+  ],
+  "seeds": [],
+  "files": [
+    {
+      "path": "e10_aba.csv",
+      "bytes": 33904,
+      "sha256": "2f1c074a5c585dc1739cb42f510a1bed6d9d1e64362d204bff4c166fdd83b662"
+    },
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 53794,
+      "sha256": "099a42b3a36741eaccb49eac4cc710c81406e1009c415e1742dc1655bc843c94"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 58971,
+      "sha256": "172c3aa27bdde3e55a60ad7ca2fe1d2f33606cdae205314ab5a2c6fa105947f8"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 325733,
+      "sha256": "e0ef926ca11c30cd8f716071919d59e0a5d619805535494f627c3a3a661560e5"
+    },
+    {
+      "path": "e1_baselines.csv",
+      "bytes": 61185,
+      "sha256": "523bfd2ecba9a8703c7a50e2ca38a319df03b21826c4b525cb8b6feff5f5c260"
+    },
+    {
+      "path": "e1_fpr.csv",
+      "bytes": 13232,
+      "sha256": "e35e1b14fb0436c77d985b7b09c1eef37d2ee3eac4962465a833ed42ffe79562"
+    },
+    {
+      "path": "e21_cell_aba.csv",
+      "bytes": 141889,
+      "sha256": "19277dbcd0b2d2fdcf7be47a353de489d5290e2008ba033cccf60aa984842225"
+    },
+    {
+      "path": "e21_cell_controller.csv",
+      "bytes": 175266,
+      "sha256": "4f397b2a526676d7cfd411ec0bbe6d7023321636a076ee0a4ec698b22bab9b46"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 311,
+      "sha256": "33234b3c4d029a81da1d8efe3b3f817801469dc7c5986fafbd76e23fe3271208"
+    },
+    {
+      "path": "environment_e21_e21_aba.txt",
+      "bytes": 309,
+      "sha256": "c150379a393710cdf50066672a5ead7af9030698726539ee353314838190e351"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"topology\": \"producers+XAIR+Redis on 192.168.0.101 (rpi4); gateway+cell controller on 192.168.0.130 (coralmac); same Wi-Fi LAN\", \"tcp_connect_rtt_ms core->gateway\": {\"p50\": 6.62, \"p90\": 8.45, \"p99\": 10.74}, \"core\": \"Linux-7.0.0-1020-raspi-realtime-aarch64-with-glibc2.43\", \"loadavg\": [\"1.70\", \"1.58\", \"2.00\"]}"
+    ],
+    "environment_e21_e21_aba.txt": [
+      "{\"topology\": \"producers+XAIR+Redis on 192.168.0.101 (rpi4); gateway+cell controller on 192.168.0.130 (coralmac); same Wi-Fi LAN\", \"tcp_connect_rtt_ms core->gateway\": {\"p50\": 6.78, \"p90\": 8.2, \"p99\": 14.5}, \"core\": \"Linux-7.0.0-1020-raspi-realtime-aarch64-with-glibc2.43\", \"loadavg\": [\"0.94\", \"0.97\", \"0.45\"]}"
+    ]
+  },
+  "notes": [
+    "Wi-Fi LAN node (L)"
+  ],
+  "manifest_written": "2026-10-05T23:20:36+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

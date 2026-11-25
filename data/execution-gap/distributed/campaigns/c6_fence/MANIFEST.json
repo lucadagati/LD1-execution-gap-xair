@@ -1,0 +1,145 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/distributed/campaigns/c6_fence",
+  "kind": "run",
+  "commands": [
+    "SUITES=... SEED_OFFSET=5 COMPOSE_EXTRA=compose.cpus-review.yml OUT_SUB=distributed/campaigns/c6_fence scripts/run_distributed.sh 0.5ms 0.1ms (stop fence on; runner had the e14 suite added)"
+  ],
+  "seeds": [
+    "5"
+  ],
+  "files": [
+    {
+      "path": "e10_aba.csv",
+      "bytes": 47662,
+      "sha256": "a7980e89586f3afea0725a66525bffe2b9a2d661800be2b8ddb62acce24a6b1e"
+    },
+    {
+      "path": "e10_deadline.csv",
+      "bytes": 203215,
+      "sha256": "38cf588fd9d9613c27e0bcb0ca593a9307869021e1d3af8d7a9a919b4262fbcb"
+    },
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 45736,
+      "sha256": "8de4b12795cb38fd3900a14be4691562ab6463a92a7b13cb8776373ef86f9993"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 49047,
+      "sha256": "b32019edfee6749ccfef5810b70e82ff431c22f6e92dba38279b62185c7165af"
+    },
+    {
+      "path": "e10_toctou_atomic.csv",
+      "bytes": 119918,
+      "sha256": "816eec761bf92b414569a0cdd469b62aeb30b38c8258d33f3627de24904e1865"
+    },
+    {
+      "path": "e10_toctou_boundary.csv",
+      "bytes": 111158,
+      "sha256": "ce4051ccf56bc3cfef9b8ea3fe5d633751ffa2a698193cc0cd3de6f92dd43707"
+    },
+    {
+      "path": "e14_variants.csv",
+      "bytes": 78950,
+      "sha256": "b0a50fdfaafb1a2ad3141082aa1a5e5d7c20f0be309310f1f9c6a3ac1576ae26"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 706935,
+      "sha256": "b4d43af7e37af7ee4b779267b1ad04d93231254b0ff2086846b4410ece18bbec"
+    },
+    {
+      "path": "e16_trace_churn.csv",
+      "bytes": 375693,
+      "sha256": "d5e68652f59f5a71fa8b0fac99946b7bd123b9a93e04dc83e33bd5018a161a2e"
+    },
+    {
+      "path": "e17_policy.csv",
+      "bytes": 18401,
+      "sha256": "cc4c132aae531c8ac8d4b0481d1f9e4d8935fc492e4600759f9f0af5966d7990"
+    },
+    {
+      "path": "e1_baselines.csv",
+      "bytes": 75455,
+      "sha256": "78f41ddeca488f7600d6cff1029e7782768ff984dbca8711893808e32b7be71a"
+    },
+    {
+      "path": "e21_cell_aba.csv",
+      "bytes": 240525,
+      "sha256": "29218f1560388c6b132883d79da25c6dfea19e9854eb75f75bdc23eb87edd3b0"
+    },
+    {
+      "path": "e21_cell_controller.csv",
+      "bytes": 262483,
+      "sha256": "d0e9375221ab50f4d49b554894f64ce4285461dca94aa3404f2e812969a6a63a"
+    },
+    {
+      "path": "e9_consistency_sweep.csv",
+      "bytes": 16042,
+      "sha256": "9d0180151e2a8c8f32202c54250b15fe39f836894d0e1a2c7a64b0689d4b048a"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 484,
+      "sha256": "89c4b343010e93caa21625a16036eb171e74b5a5cd429e821f2703c713b1164f"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 428,
+      "sha256": "7917e98328ceb5e877e65d20b5c52cadb6cf6cc3fcc9ecd96f5ebb7b3c2f2b6e"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"netem_one_way_delay\": \"0.5ms\", \"netem_jitter\": \"0.1ms\", \"suites\": \"e10_boundary e10_atomic e10_natural e10_natural_atomic e10_deadline e10_aba e21 e21_aba e16 e16_trace e1 e17 e9 e14\", \"seed_offset\": 5, \"compose_extra\": \"compose.cpus-review.yml\", \"trace_phase\": \"random\", \"tcp_connect_rtt_ms_p50_p99\": {\"bench->xair\": [1.303, 2.259], \"bench->gateway\": [1.305, 2.511], \"bench->redis\": [1.317, 1.688]}, \"shared_monotonic_clock_check\": \"50/50\", \"loadavg\": [\"43.54\", \"32.66\", \"26.25\"]}"
+    ]
+  },
+  "notes": [],
+  "started": null,
+  "manifest_written": "2026-11-24T22:42:50+00:00",
+  "git": {
+    "commit": "8b92628f73dfdd30af37eb085b014cfe89535173",
+    "dirty": true,
+    "diff_sha256": "83f6020534f0a7c036113c055e0c2c8f358f1a23b08024872e3fef2f5ce58c8a",
+    "changed_paths": [
+      "scripts/run_distributed.sh",
+      "data/execution-gap/distributed/campaigns/c6_fence/",
+      "data/execution-gap/distributed/campaigns/c7_fence/",
+      "data/execution-gap/e27_reps/",
+      "docs/detailed-results/detailed_results.aux",
+      "docs/detailed-results/detailed_results.fdb_latexmk",
+      "docs/detailed-results/detailed_results.fls",
+      "docs/detailed-results/detailed_results.out",
+      "docs/detailed-results/generated/tab_fence_repeat.csv",
+      "experiments/fence_repeat_summary.py"
+    ]
+  },
+  "runtime": {
+    "xair": "1.7.0",
+    "python": "3.12.12",
+    "dependencies": {
+      "fastapi": "0.141.1",
+      "uvicorn": "0.52.1",
+      "redis": "8.1.0",
+      "jsonschema": "4.26.0",
+      "pydantic": "2.13.4",
+      "asyncua": "2.0.1",
+      "pymodbus": "3.15.0",
+      "httpx": "0.28.1"
+    },
+    "requirements_lock_sha256": "ac2b40f5dbaab4de5a5415c3f1a07854da4d6b557aacf0262f9da63c95b8f13e"
+  },
+  "host": {
+    "platform": "Linux-6.8.12-18-pve-x86_64-with-glibc2.35",
+    "machine": "x86_64",
+    "cpu": "AMD EPYC 7313 16-Core Processor",
+    "cpus_visible": 48,
+    "loadavg": [
+      "28.42",
+      "24.26",
+      "25.19"
+    ]
+  },
+  "images": []
+}

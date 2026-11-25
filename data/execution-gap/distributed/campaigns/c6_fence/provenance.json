@@ -1,0 +1,14 @@
+{
+ "commit": "8b92628f73dfdd30af37eb085b014cfe89535173",
+ "stop_fence": 1,
+ "seed_offset": 5,
+ "suites": "e10_boundary e10_atomic e10_natural e10_natural_atomic e10_deadline e10_aba e21 e21_aba e16 e16_trace e1 e17 e9 e14",
+ "note": "fence on (default build), seed offset 5, review CPU sets",
+ "compose_extra": "compose.cpus-review.yml",
+ "started_utc": "2026-11-24T21:56:57Z",
+ "loadavg": [
+  "35.78",
+  "30.20",
+  "25.30"
+ ]
+}

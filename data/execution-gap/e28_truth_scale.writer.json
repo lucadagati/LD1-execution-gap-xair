@@ -1,0 +1,110 @@
+[
+ {
+  "layout": "document",
+  "registered": 10,
+  "rate_hz": 20,
+  "updates": 280,
+  "achieved_hz": 20.051720834390206,
+  "update_p50_ms": 2.750665007624775,
+  "update_p99_ms": 7.422334980219603
+ },
+ {
+  "layout": "document",
+  "registered": 10,
+  "rate_hz": 100,
+  "updates": 1413,
+  "achieved_hz": 100.02457188171323,
+  "update_p50_ms": 2.3467859718948603,
+  "update_p99_ms": 6.028167030308396
+ },
+ {
+  "layout": "document",
+  "registered": 1000,
+  "rate_hz": 20,
+  "updates": 460,
+  "achieved_hz": 20.01390351782305,
+  "update_p50_ms": 14.526932965964079,
+  "update_p99_ms": 52.7425900218077
+ },
+ {
+  "layout": "document",
+  "registered": 1000,
+  "rate_hz": 100,
+  "updates": 1574,
+  "achieved_hz": 53.11926347728584,
+  "update_p50_ms": 16.534051042981446,
+  "update_p99_ms": 61.34946900419891
+ },
+ {
+  "layout": "document",
+  "registered": 10000,
+  "rate_hz": 20,
+  "updates": 1118,
+  "achieved_hz": 4.854620607782051,
+  "update_p50_ms": 204.87393502844498,
+  "update_p99_ms": 294.1617670003325
+ },
+ {
+  "layout": "document",
+  "registered": 10000,
+  "rate_hz": 100,
+  "updates": 1115,
+  "achieved_hz": 4.861693149750208,
+  "update_p50_ms": 205.84808301646262,
+  "update_p99_ms": 283.51925796596333
+ },
+ {
+  "layout": "hash",
+  "registered": 10,
+  "rate_hz": 20,
+  "updates": 268,
+  "achieved_hz": 20.02709300412503,
+  "update_p50_ms": 2.2428809897974133,
+  "update_p99_ms": 5.891300970688462
+ },
+ {
+  "layout": "hash",
+  "registered": 10,
+  "rate_hz": 100,
+  "updates": 1343,
+  "achieved_hz": 100.00133161099461,
+  "update_p50_ms": 1.9351040245965123,
+  "update_p99_ms": 4.355598008260131
+ },
+ {
+  "layout": "hash",
+  "registered": 1000,
+  "rate_hz": 20,
+  "updates": 321,
+  "achieved_hz": 20.007736531739354,
+  "update_p50_ms": 7.353044988121837,
+  "update_p99_ms": 24.42091004922986
+ },
+ {
+  "layout": "hash",
+  "registered": 1000,
+  "rate_hz": 100,
+  "updates": 1649,
+  "achieved_hz": 99.99727019564088,
+  "update_p50_ms": 7.118425040971488,
+  "update_p99_ms": 22.316238027997315
+ },
+ {
+  "layout": "hash",
+  "registered": 10000,
+  "rate_hz": 20,
+  "updates": 1124,
+  "achieved_hz": 10.754282197363313,
+  "update_p50_ms": 93.34746701642871,
+  "update_p99_ms": 146.5221110265702
+ },
+ {
+  "layout": "hash",
+  "registered": 10000,
+  "rate_hz": 100,
+  "updates": 1129,
+  "achieved_hz": 10.837012609890166,
+  "update_p50_ms": 93.0034940247424,
+  "update_p99_ms": 135.77267399523407
+ }
+]

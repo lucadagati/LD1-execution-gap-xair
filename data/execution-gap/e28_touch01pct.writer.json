@@ -1,0 +1,164 @@
+[
+ {
+  "layout": "document",
+  "registered": 10,
+  "rate_hz": 20,
+  "updates": 233,
+  "achieved_hz": 20.022036688414058,
+  "update_p50_ms": 1.652201171964407,
+  "update_p99_ms": 4.047316033393145
+ },
+ {
+  "layout": "document",
+  "registered": 10,
+  "rate_hz": 100,
+  "updates": 1174,
+  "achieved_hz": 100.0413546150341,
+  "update_p50_ms": 1.5265550464391708,
+  "update_p99_ms": 3.4214009065181017
+ },
+ {
+  "layout": "document",
+  "registered": 1000,
+  "rate_hz": 20,
+  "updates": 337,
+  "achieved_hz": 20.000495883972956,
+  "update_p50_ms": 9.4471899792552,
+  "update_p99_ms": 53.49023197777569
+ },
+ {
+  "layout": "document",
+  "registered": 1000,
+  "rate_hz": 100,
+  "updates": 1406,
+  "achieved_hz": 66.64884692358095,
+  "update_p50_ms": 11.611873982474208,
+  "update_p99_ms": 62.89483397267759
+ },
+ {
+  "layout": "document",
+  "registered": 10000,
+  "rate_hz": 20,
+  "updates": 768,
+  "achieved_hz": 6.497517165413958,
+  "update_p50_ms": 155.0026349723339,
+  "update_p99_ms": 242.4582971725613
+ },
+ {
+  "layout": "document",
+  "registered": 10000,
+  "rate_hz": 100,
+  "updates": 771,
+  "achieved_hz": 6.4845600628976365,
+  "update_p50_ms": 155.7098759803921,
+  "update_p99_ms": 246.5984399896115
+ },
+ {
+  "layout": "hash",
+  "registered": 10,
+  "rate_hz": 20,
+  "updates": 227,
+  "achieved_hz": 20.024734379251413,
+  "update_p50_ms": 1.8085651099681854,
+  "update_p99_ms": 3.5064909607172012
+ },
+ {
+  "layout": "hash",
+  "registered": 10,
+  "rate_hz": 100,
+  "updates": 1157,
+  "achieved_hz": 100.04484771790952,
+  "update_p50_ms": 1.7758130561560392,
+  "update_p99_ms": 3.675557905808091
+ },
+ {
+  "layout": "hash",
+  "registered": 1000,
+  "rate_hz": 20,
+  "updates": 268,
+  "achieved_hz": 20.04098281694038,
+  "update_p50_ms": 5.064915865659714,
+  "update_p99_ms": 21.764338947832584
+ },
+ {
+  "layout": "hash",
+  "registered": 1000,
+  "rate_hz": 100,
+  "updates": 1433,
+  "achieved_hz": 100.0111447109661,
+  "update_p50_ms": 4.6221548691391945,
+  "update_p99_ms": 14.026796910911798
+ },
+ {
+  "layout": "hash",
+  "registered": 10000,
+  "rate_hz": 20,
+  "updates": 833,
+  "achieved_hz": 19.408616449773287,
+  "update_p50_ms": 43.4767110273242,
+  "update_p99_ms": 97.12300985120237
+ },
+ {
+  "layout": "hash",
+  "registered": 10000,
+  "rate_hz": 100,
+  "updates": 1006,
+  "achieved_hz": 20.979815122930052,
+  "update_p50_ms": 45.83253199234605,
+  "update_p99_ms": 95.42718692682683
+ },
+ {
+  "layout": "shard",
+  "registered": 10,
+  "rate_hz": 20,
+  "updates": 227,
+  "achieved_hz": 20.049042919801863,
+  "update_p50_ms": 1.7341440543532372,
+  "update_p99_ms": 3.0842190608382225
+ },
+ {
+  "layout": "shard",
+  "registered": 10,
+  "rate_hz": 100,
+  "updates": 1139,
+  "achieved_hz": 100.00539722678165,
+  "update_p50_ms": 1.575276954099536,
+  "update_p99_ms": 2.7714520692825317
+ },
+ {
+  "layout": "shard",
+  "registered": 1000,
+  "rate_hz": 20,
+  "updates": 228,
+  "achieved_hz": 20.04254347553437,
+  "update_p50_ms": 1.8675748724490404,
+  "update_p99_ms": 3.694023936986923
+ },
+ {
+  "layout": "shard",
+  "registered": 1000,
+  "rate_hz": 100,
+  "updates": 1137,
+  "achieved_hz": 100.04518421637692,
+  "update_p50_ms": 1.634849002584815,
+  "update_p99_ms": 3.0956401024013758
+ },
+ {
+  "layout": "shard",
+  "registered": 10000,
+  "rate_hz": 20,
+  "updates": 229,
+  "achieved_hz": 20.045950353388857,
+  "update_p50_ms": 3.2851460855454206,
+  "update_p99_ms": 5.572788883000612
+ },
+ {
+  "layout": "shard",
+  "registered": 10000,
+  "rate_hz": 100,
+  "updates": 1163,
+  "achieved_hz": 100.05001011217377,
+  "update_p50_ms": 2.7447519823908806,
+  "update_p99_ms": 4.545432049781084
+ }
+]

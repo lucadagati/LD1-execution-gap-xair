@@ -1,0 +1,10 @@
+\multirow{3}{*}{induced} & blocked / ordered before check & 680/680 & 690/690 \\ \genrule
+ & released (write ordered after check) & 520 & 510 \\ \genrule
+ & write before / overlapping / after $t_m$ & 0 / 0 / 520 & 0 / 0 / 510 \\ \genrule
+\multirow{3}{*}{natural} & blocked / ordered before check & 91/91 & 90/90 \\ \genrule
+ & released (write ordered after check) & 359 & 360 \\ \genrule
+ & write before / overlapping / after $t_m$ & 0 / 0 / 359 & 0 / 0 / 360 \\ \genrule
+\midrule
+\multicolumn{2}{@{}l}{check-to-$t_m$, lower bound p50 [ms]} & 0.96--1.04 & 0.90--0.98 \\ \genrule
+\multicolumn{2}{@{}l}{check-to-$t_m$, upper bound p50 [ms]} & 2.12--2.18 & 2.18--2.28 \\ \genrule
+\multicolumn{2}{@{}l}{validation to release p50 [ms]} & 4.26--4.33 & 4.34--4.49 \\ \genrule

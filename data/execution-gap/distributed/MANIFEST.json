@@ -1,0 +1,134 @@
+{
+  "manifest_version": 1,
+  "directory": "data/execution-gap/distributed",
+  "kind": "retroactive",
+  "commands": [
+    "OUT_SUB=distributed sudo ./scripts/run_distributed.sh 0.5ms 0.1ms",
+    "(cd experiments && python run_e18b_durability.py --n 1000 --reps 5)"
+  ],
+  "seeds": [
+    "per suite in scripts/run_distributed.sh: e1 42+S, e10 boundary/atomic 43+S, e10 natural 44+S, e10-deadline 10+S, e10-aba 11+S, e21 21+S, e21-aba 31+S, e16 42+S, e16-trace 16+S, e20 20+S, e18 18+S (S = SEED_OFFSET in environment.txt); S=0"
+  ],
+  "files": [
+    {
+      "path": "e10_aba.csv",
+      "bytes": 47703,
+      "sha256": "651265411b86bab109fda15d1fdfcc5a8b816b65763c7ef9abfc98a9c73cc271"
+    },
+    {
+      "path": "e10_deadline.csv",
+      "bytes": 203696,
+      "sha256": "882dde9989120398f28d5d80fda6162685645e25808136fdedd348b25914d403"
+    },
+    {
+      "path": "e10_natural_window.csv",
+      "bytes": 45076,
+      "sha256": "10ccaaf2e2762a5f5e499f5290b101b38992b3fc9141bec8daa34752183d303d"
+    },
+    {
+      "path": "e10_natural_window_atomic.csv",
+      "bytes": 48670,
+      "sha256": "e952637ddec3e1d2a5d56b79f738c40bcc763c0efdf40967aee6395e84a49a02"
+    },
+    {
+      "path": "e10_toctou_atomic.csv",
+      "bytes": 119949,
+      "sha256": "61df5da241aacbc1ac48593effdfa5f7868ce93a22b5c79856927de762929bc0"
+    },
+    {
+      "path": "e10_toctou_boundary.csv",
+      "bytes": 111212,
+      "sha256": "bc06ef6c1c164fe5e09e9e32b904503dda05af5d32ecfb738147250de294f5cd"
+    },
+    {
+      "path": "e12_scaling.csv",
+      "bytes": 7951,
+      "sha256": "71400b70c8c5d16e4e301a60cde31b606bdab2e63b4069296bff94fc795d8b91"
+    },
+    {
+      "path": "e16_context_churn.csv",
+      "bytes": 527365,
+      "sha256": "a32ebfbbe7b1c4839a1b7027dcab6c95bc87494747027ca9ae2bc9a2b370db69"
+    },
+    {
+      "path": "e16_trace_churn.csv",
+      "bytes": 375406,
+      "sha256": "35d7f99be6d11200c8edbc5fe2d6b9d52ed47352afbfe25a649af30ff2ffb924"
+    },
+    {
+      "path": "e17_policy.csv",
+      "bytes": 18401,
+      "sha256": "cc4c132aae531c8ac8d4b0481d1f9e4d8935fc492e4600759f9f0af5966d7990"
+    },
+    {
+      "path": "e18_outbox_faults.csv",
+      "bytes": 4087,
+      "sha256": "6e1e2ca916c70dad4205c63ff1758e415089b5bf9e12601f36bb3e1f47de6926"
+    },
+    {
+      "path": "e18b_durability.csv",
+      "bytes": 376,
+      "sha256": "a15cd9c16ceaa8853b12f7be87ae81d0216bc684a35eb409bf547b13ff3ea201"
+    },
+    {
+      "path": "e1_baselines.csv",
+      "bytes": 75324,
+      "sha256": "c474b494be1356510f2dc983faedbc12f2a6ad57c65685fca87f7bfed4b9fb10"
+    },
+    {
+      "path": "e1_fpr.csv",
+      "bytes": 13242,
+      "sha256": "0f534bf64e11d0827f92a875be29139f0ff6fbf303b82fc646a83407a1ff89ba"
+    },
+    {
+      "path": "e20_mes_offline.csv",
+      "bytes": 1178,
+      "sha256": "b03ef3d17b916838709689958af48778ab31f274a6b1975fa8f9c82c14add910"
+    },
+    {
+      "path": "e20_mes_replay.csv",
+      "bytes": 222203,
+      "sha256": "9e46f697870c3b4e489949efe812eb375179cad203000054edae89d009a762b0"
+    },
+    {
+      "path": "e20_mes_sensitivity.csv",
+      "bytes": 3250,
+      "sha256": "53bdafc8b9149ffdcf61089c83b8d9f120d4b8971effb931aae14b1c95cc38e7"
+    },
+    {
+      "path": "e21_cell_aba.csv",
+      "bytes": 197856,
+      "sha256": "e8483a87f879c51dc2d601bbf6705589516c917eb2c3fd4cf903e43afcb88f0c"
+    },
+    {
+      "path": "e21_cell_controller.csv",
+      "bytes": 212306,
+      "sha256": "74f02e4a06917239b71abf1d80c23b276aeba4f11a51a31ee32d42ea07b7bcc1"
+    },
+    {
+      "path": "e9_consistency_sweep.csv",
+      "bytes": 16042,
+      "sha256": "9d0180151e2a8c8f32202c54250b15fe39f836894d0e1a2c7a64b0689d4b048a"
+    },
+    {
+      "path": "environment.txt",
+      "bytes": 346,
+      "sha256": "0b42f215e4fb8e8fc2bee9171075443b191635dd9b4d7a34636aceee0b795df1"
+    }
+  ],
+  "environment_recorded_at_run_time": {
+    "environment.txt": [
+      "{\"netem_one_way_delay\": \"0.5ms\", \"netem_jitter\": \"0.1ms\", \"suites\": \"all\", \"seed_offset\": 0, \"compose_extra\": \"\", \"trace_phase\": \"random\", \"tcp_connect_rtt_ms_p50_p99\": {\"bench->xair\": [1.243, 1.641], \"bench->gateway\": [1.282, 2.468], \"bench->redis\": [1.239, 1.536]}, \"shared_monotonic_clock_check\": \"50/50\", \"loadavg\": [\"7.45\", \"7.32\", \"6.36\"]}"
+    ]
+  },
+  "notes": [
+    "campaign 1 of scripts/run_distributed_campaigns.sh; E20 here is the v1.6 rotation design (run_e20_mes.py --design rotation --seed 20)"
+  ],
+  "manifest_written": "2026-10-05T23:20:35+00:00",
+  "not_recorded_at_run_time": [
+    "git commit",
+    "dependency versions beyond environment.txt",
+    "container image digests"
+  ],
+  "published_snapshot": "github.com/ProSoDiAC/LD1-execution-gap-xair (single-commit snapshot)"
+}

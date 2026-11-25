@@ -1,0 +1,16 @@
+{
+ "changes": 32768,
+ "seconds": 327.8,
+ "non_consecutive_steps": 0,
+ "witness": {
+  "counter": 0,
+  "epoch": 0
+ },
+ "after": {
+  "counter": 0,
+  "epoch": 1
+ },
+ "old_witness_result": "refused:version_changed:32768",
+ "fresh_witness_result": "executed:RUN:32768",
+ "pass": true
+}

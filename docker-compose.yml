@@ -1,0 +1,16 @@
+name: ld1
+services:
+  redis:
+    image: redis:7-alpine@sha256:520775a41a63e77e06c73e35d2fd9cc15921a609516818796b4ecbb813078bc7
+    container_name: ld1-redis
+    ports:
+      - "6379:6379"
+  xair:
+    build: .
+    container_name: ld1-xair
+    ports:
+      - "8082:8080"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
